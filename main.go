@@ -4,23 +4,21 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jorm/coin"
 	"log"
 	"time"
 )
 
 func main() {
 	jorm := app.NewJORM()
-	coins := coin.LoadCoinsBase()
 	//_ = exchange.ReadAllExchanges()
-	app.Tickers(coins)
+	go app.Tickers(jorm.Coins)
 	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				app.Tickers(coins)
+				//app.Tickers(jorm.Coins)
 				fmt.Println("OKNO wooikos")
 			case <-quit:
 				ticker.Stop()

@@ -11,7 +11,7 @@ import (
 
 func GetCoin(src, slug string, get func(c *Coin)) {
 	c := Coin{}
-	_, err := os.Stat(cfg.C.Path + "/" + cfg.C.Out + "/coins/" + slug)
+	_, err := os.Stat(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug)
 	if err != nil {
 		c.Slug = slug
 		fmt.Println("Insert Coin: ", slug)

@@ -42,7 +42,7 @@ func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *c
 				c.SetLogo("https://cryptocompare.com" + imgurl)
 			}
 		}
-		c.SetName(coinSrc["Name"])
+		c.SetName(coinSrc["CoinName"])
 		c.SetTicker(coinSrc["Symbol"])
 		c.SetDescription(coinSrc["Description"])
 		c.SetAlgo(coinSrc["Algorithm"])

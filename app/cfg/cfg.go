@@ -4,7 +4,6 @@ package cfg
 type config struct {
 	COMHTTP []string
 	Port    string
-	Path    string
 	Out     string
 	RPC     RPClogin
 	CF      CloudFlare

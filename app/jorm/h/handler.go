@@ -13,7 +13,6 @@ import (
 	"github.com/comhttp/jorm/app/jorm/coin"
 
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/app/tpl"
 	//"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/tdewolff/minify"
@@ -44,8 +43,8 @@ type home struct {
 
 // ChatHandler handles a request for (?)
 func ChatHandler(w http.ResponseWriter, r *http.Request) {
-	data := home{}
-	tpl.TemplateHandler(cfg.Path+"/templates/chat").ExecuteTemplate(w, "chat_gohtml", data)
+	//data := home{}
+	//tpl.TemplateHandler(cfg.Path+"/templates/chat").ExecuteTemplate(w, "chat_gohtml", data)
 }
 
 // AddCoinHandler handles a request for adding coin data

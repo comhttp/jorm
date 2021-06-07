@@ -2,8 +2,6 @@ package app
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/tpl"
 	"net/http"
 )
 
@@ -46,7 +44,7 @@ func DefaultErrorHandler(w http.ResponseWriter, status int) {
 	//w.Header().Set("Content-Type", "text/html")
 	//t.Execute(w, map[string]interface{}{"status": status})
 	w.Header().Set("Content-Type", "text/html")
-	tpl.TemplateHandler(cfg.Path).ExecuteTemplate(w, "error_gohtml", map[string]interface{}{"status": status})
+	//tpl.TemplateHandler(cfg.Path).ExecuteTemplate(w, "error_gohtml", map[string]interface{}{"status": status})
 }
 
 func InterceptHandler(next http.Handler, errH ErrorHandler) http.Handler {

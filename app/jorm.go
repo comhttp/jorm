@@ -3,6 +3,8 @@ package app
 import (
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jorm/coin"
+
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"
 	"net/http"
@@ -19,16 +21,13 @@ const (
 )
 
 func NewJORM() *JORM {
-	//jdb.JDB.Write("conf", "conf", cfg.CONFIG)
 	err := jdb.JDB.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 
-	//go csrc.GetCoinSources()
-
-	//fmt.Println(":ajdeeeeee", cfg.CONFIG)
 	//go u.CloudFlare()
-	o := &JORM{}
-	//o.Hosts = o.GetHosts()
+	o := &JORM{
+		Coins: coin.LoadCoinsBase(),
+	}
 
 	srv := &http.Server{
 		Handler:      o.Handler(),

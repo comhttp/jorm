@@ -181,13 +181,15 @@ func (j *jdb) ReadAll(collection string) ([]string, error) {
 	// iterate over each of the files, attempting to read the file. If successful
 	// append the files to the collection of read files
 	for _, file := range files {
-		b, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
-		if err != nil {
-			return nil, err
-		}
+		if !file.IsDir() {
+			b, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
+			if err != nil {
+				return nil, err
+			}
 
-		// append read file
-		records = append(records, string(b))
+			// append read file
+			records = append(records, string(b))
+		}
 	}
 
 	// unmarhsal the read files as a comma delimeted byte array
