@@ -14,7 +14,7 @@ func main() {
 	okno := app.NewJORM()
 	coins := coin.LoadCoinsBase()
 	//_ = exchange.ReadAllExchanges()
-	ticker := time.NewTicker(99 * time.Second)
+	ticker := time.NewTicker(9 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {

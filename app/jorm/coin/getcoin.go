@@ -11,7 +11,7 @@ import (
 
 func GetCoin(src, slug string, get func(c *Coin)) {
 	c := Coin{}
-	_, err := os.Stat(cfg.Path + "/jorm/coins/" + slug)
+	_, err := os.Stat(cfg.Path + "/coins/" + slug)
 	if err != nil {
 		c.Slug = slug
 		fmt.Println("Insert Coin: ", slug)
@@ -20,9 +20,9 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 		}
 		get(&c)
 		c.Checked[src] = true
-		jdb.JDB.Write("jorm/coins", slug, c)
+		jdb.JDB.Write("coins", slug, c)
 	} else {
-		err = jdb.JDB.Read("jorm/coins", slug, &c)
+		err = jdb.JDB.Read("coins", slug, &c)
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", c.Name)
 		if c.Checked == nil {
@@ -33,7 +33,7 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 			get(&c)
 			c.Checked[src] = true
 		}
-		jdb.JDB.Write("jorm/coins", slug, c)
+		jdb.JDB.Write("coins", slug, c)
 	}
 	return
 }

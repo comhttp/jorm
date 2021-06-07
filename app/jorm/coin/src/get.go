@@ -4,7 +4,7 @@ package csrc
 func GetCoinSources() {
 	go getCryptoCompare()
 	// getCoinCodex()
-	go getCoinGecko()
+	//go getCoinGecko()
 
 	return
 }
