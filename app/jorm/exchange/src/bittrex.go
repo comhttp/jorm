@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -73,7 +74,7 @@ func getBitTrexExchange() {
 				}
 			}
 		}
-		jdb.JDB.Write("jorm/exchanges", e.Slug, e)
+		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 		fmt.Println("Get BitTrex Exchange Done")
 	}
 }

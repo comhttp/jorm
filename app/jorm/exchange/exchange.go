@@ -3,6 +3,7 @@ package exchange
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/comhttp/jorm/app/jdb"
@@ -59,7 +60,7 @@ func ReadAllExchanges() map[string]map[string]map[string]float64 {
 		}
 		ex[e[i].Slug] = m
 	}
-	jdb.JDB.Write("jorm/info", "exchanges", map[string]interface{}{
+	jdb.JDB.Write(cfg.C.Out+"/info", "exchanges", map[string]interface{}{
 		"n": len(e),
 		"e": ex,
 	})
@@ -67,7 +68,7 @@ func ReadAllExchanges() map[string]map[string]map[string]float64 {
 }
 
 func getExchanges() []Exchange {
-	data, err := jdb.JDB.ReadAll("jorm/exchanges")
+	data, err := jdb.JDB.ReadAll(cfg.C.Out + "/exchanges")
 	utl.ErrorLog(err)
 	exchanges := make([][]byte, len(data))
 	for i := range data {

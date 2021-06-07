@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
@@ -44,6 +45,6 @@ func getGateExchange() {
 			mSrc["low"],
 			mSrc["vol"])
 	}
-	jdb.JDB.Write("jorm/exchanges", e.Slug, e)
+	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 	fmt.Println("Get DigiFinex Exchange Done")
 }

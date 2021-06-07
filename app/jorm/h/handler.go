@@ -117,7 +117,7 @@ func ViewJSON() http.Handler {
 	m := minify.New()
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 
-	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg.Path+"/jorm"))))
+	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg.Path+cfg.C.Out))))
 }
 
 // NodeHandler handles a request for (?)
@@ -137,7 +137,7 @@ func ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println("index[height]", index[height])
 		out := map[string]interface{}{}
-		if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
+		if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
 			fmt.Println("Error", err)
 		}
 		m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)

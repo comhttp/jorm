@@ -81,7 +81,7 @@ func getHuobiExchange() {
 				}
 			}
 		}
-		jdb.JDB.Write("jorm/exchanges", e.Slug, e)
+		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 		fmt.Println("Get Huobi Exchange Done")
 	}
 }

@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"io/ioutil"
 	"net/http"
 
@@ -62,7 +63,7 @@ func getBinanceExchange() {
 					}
 				}
 			}
-			jdb.JDB.Write("jorm/exchanges", e.Slug, e)
+			jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 			fmt.Println("Get Binance Exchange Done")
 		}
 	}

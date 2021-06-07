@@ -27,7 +27,7 @@ func getCoinCodex() {
 			if coinSrc["name"] != nil {
 				slug := utl.MakeSlug(coinSrc["name"].(string))
 				var coin coin.Coin
-				if jdb.JDB.Read(cfg.Path+"/jorm/coins", slug, &coin) != nil {
+				if jdb.JDB.Read(cfg.C.Out+"/coins", slug, &coin) != nil {
 					if coin.Checked == nil {
 						coin.Checked = make(map[string]bool)
 						if !coin.Checked["cx"] {
@@ -61,7 +61,7 @@ func getCoinCodex() {
 							coin.Checked["cx"] = true
 							coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
 							coin.Logo = true
-							jdb.JDB.Write(cfg.Path+"/coins/", slug, coin)
+							jdb.JDB.Write(cfg.C.Out+"/coins/", slug, coin)
 						}
 					}
 				}

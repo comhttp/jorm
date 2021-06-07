@@ -20,12 +20,12 @@ type BitNode struct {
 
 func RPCSRC(c string) (b *BitNode) {
 	bitNodes := BitNodes{}
-	if err := jdb.JDB.Read("conf/nodes", c, &bitNodes); err != nil {
+	if err := jdb.JDB.Read("nodes", c, &bitNodes); err != nil {
 		fmt.Println("Errdor", err)
 	}
 	for _, bn := range bitNodes {
 		b = &bn
-		b.Jrc = utl.NewClient(cfg.CONFIG.RPC.Username, cfg.CONFIG.RPC.Password, b.IP, b.Port)
+		b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 		if b.Jrc != nil {
 			fmt.Println("bitb:", b.IP)
 			break

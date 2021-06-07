@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"io/ioutil"
 	"net/http"
@@ -45,6 +46,6 @@ func getPoloniexExchange() {
 			marketSrc["low24Hr"],
 			marketSrc["baseVolume"])
 	}
-	jdb.JDB.Write("jorm/exchanges", e.Slug, e)
+	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 	fmt.Println("GetPoloniexExchangeDone")
 }

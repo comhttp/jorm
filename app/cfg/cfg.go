@@ -2,8 +2,10 @@ package cfg
 
 // Conf is the configuration for accessing bitnodes endpoint
 type config struct {
+	COMHTTP []string
 	Port    string
 	Path    string
+	Out     string
 	RPC     RPClogin
 	CF      CloudFlare
 	ApiKeys map[string]string
@@ -17,6 +19,6 @@ type CloudFlare struct {
 
 // configurations for jorm
 var (
-	Path   = "/jorm"
-	CONFIG *config
+	Path = "/jorm/"
+	C    *config
 )

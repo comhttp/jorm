@@ -20,7 +20,7 @@ const (
 
 func NewJORM() *JORM {
 	//jdb.JDB.Write("conf", "conf", cfg.CONFIG)
-	err := jdb.JDB.Read("conf", "conf", &cfg.CONFIG)
+	err := jdb.JDB.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 
 	//go csrc.GetCoinSources()
@@ -32,7 +32,7 @@ func NewJORM() *JORM {
 
 	srv := &http.Server{
 		Handler:      o.Handler(),
-		Addr:         ":" + cfg.CONFIG.Port,
+		Addr:         ":" + cfg.C.Port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

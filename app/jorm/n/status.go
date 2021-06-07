@@ -9,7 +9,7 @@ import (
 
 // GetBitNodeStatus returns the full set of information about a node
 func GetBitNodeStatus(b a.BitNode) (bitnodeStatus *BitNodeStatus) {
-	b.Jrc = utl.NewClient(cfg.CONFIG.RPC.Username, cfg.CONFIG.RPC.Password, b.IP, b.Port)
+	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 	if b.Jrc != nil {
 		//fmt.Println("bitb:", b.IP)
 		getInfo := b.GetInfo()

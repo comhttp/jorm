@@ -8,7 +8,7 @@ import (
 )
 
 func (rpc *BitNode) GetTx(txid string) (t interface{}) {
-	jrc := utl.NewClient(cfg.CONFIG.RPC.Username, cfg.CONFIG.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}
@@ -76,7 +76,7 @@ func (rpc *BitNode) GetTx(txid string) (t interface{}) {
 }
 
 func (rpc *BitNode) GetBlockTxAddr(blockheight int) interface{} {
-	jrc := utl.NewClient(cfg.CONFIG.RPC.Username, cfg.CONFIG.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}

@@ -13,10 +13,10 @@ import (
 )
 
 func CloudFlare() {
-	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.CONFIG)
+	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
-	api, err := cf.New(cfg.CONFIG.CF.CloudFlareAPIkey, cfg.CONFIG.CF.CloudFlareEmail)
+	api, err := cf.New(cfg.C.CF.CloudFlareAPIkey, cfg.C.CF.CloudFlareEmail)
 	utl.ErrorLog(err)
 
 	//delAllCNameDNS(api, ctx, "com-http.us")

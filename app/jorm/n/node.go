@@ -61,10 +61,10 @@ func GetBitNodes(coins coin.Coins) {
 	bns := make(map[string]BitNoded)
 	for _, coin := range coins.C {
 		var bn BitNoded
-		if utl.FileExists(cfg.Path + "/conf/nodes/" + coin) {
+		if utl.FileExists(cfg.Path + "/nodes/" + coin) {
 			b = append(b, coin)
 			bitNodes := a.BitNodes{}
-			if err := jdb.JDB.Read("conf/nodes", coin, &bitNodes); err != nil {
+			if err := jdb.JDB.Read("nodes", coin, &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			for _, bitnode := range bitNodes {
@@ -74,12 +74,12 @@ func GetBitNodes(coins coin.Coins) {
 					if n.IP[:3] == "10." {
 						n.IP = "212.62.35.158"
 					}
-					jdb.JDB.Write("jorm/nodes/"+coin, n.IP, n)
+					jdb.JDB.Write(cfg.C.Out+"/nodes/"+coin, n.IP, n)
 				}
 				if bitnode.IP[:3] == "10." {
 					bitnode.IP = "212.62.35.158"
 				}
-				jdb.JDB.Write("jorm/bitnodes/"+coin, bitnode.IP, bitNode)
+				jdb.JDB.Write(cfg.C.Out+"/bitnodes/"+coin, bitnode.IP, bitNode)
 				//
 				//fmt.Println("--------------------")
 				//fmt.Println("bitNodes", nds)
@@ -89,9 +89,9 @@ func GetBitNodes(coins coin.Coins) {
 				bn.BitNodes = append(bn.BitNodes, *bitNode)
 			}
 			bns[coin] = bn
-			jdb.JDB.Write("jorm/info/"+coin, "bitnodes", bn)
+			jdb.JDB.Write(cfg.C.Out+"/info/"+coin, "bitnodes", bn)
 
-			data, err := jdb.JDB.ReadAll("jorm/nodes/" + coin)
+			data, err := jdb.JDB.ReadAll(cfg.C.Out + "/nodes/" + coin)
 			utl.ErrorLog(err)
 			nodes := make([][]byte, len(data))
 			for i := range data {
@@ -105,11 +105,11 @@ func GetBitNodes(coins coin.Coins) {
 					fmt.Println("Error", err)
 				}
 			}
-			jdb.JDB.Write("jorm/info/"+coin, "nodes", ns)
+			jdb.JDB.Write(cfg.C.Out+"/info/"+coin, "nodes", ns)
 		}
 	}
 
-	jdb.JDB.Write("jorm/info", "bitnoded", b)
-	jdb.JDB.Write("jorm/info", "bitnodestat", bns)
+	jdb.JDB.Write(cfg.C.Out+"/info", "bitnoded", b)
+	jdb.JDB.Write(cfg.C.Out+"/info", "bitnodestat", bns)
 
 }

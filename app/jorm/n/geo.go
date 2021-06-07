@@ -2,6 +2,7 @@ package n
 
 import (
 	"encoding/json"
+	"github.com/comhttp/jorm/app/cfg"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -37,7 +38,7 @@ type GeoResponse struct {
 }
 
 func GetGeoIP(ip string) (n NodeInfo) {
-	if jdb.JDB.Read("jorm/geo", ip, &n) != nil {
+	if jdb.JDB.Read(cfg.C.Out+"/geo", ip, &n) != nil {
 		if ip[:3] == "10." {
 			ip = "212.62.35.158"
 		}
@@ -76,7 +77,7 @@ func GetGeoIP(ip string) (n NodeInfo) {
 		n.Longitude = geo.Longitude
 		n.Postcode = geo.PostalCode
 		n.Timezone = geo.Timezone
-		jdb.JDB.Write("jorm/geo", ip, n)
+		jdb.JDB.Write(cfg.C.Out+"/geo", ip, n)
 	}
 	return n
 }

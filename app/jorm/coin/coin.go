@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"image"
 	"strings"
@@ -108,7 +109,7 @@ func LoadLogo(slug, size string) image.Image {
 	// Load logo image from database
 	logos := make(map[string]interface{})
 	fmt.Println("slug", slug)
-	err := jdb.JDB.Read("jorm/data/"+slug, "logo", logos)
+	err := jdb.JDB.Read(cfg.C.Out+"/data/"+slug, "logo", logos)
 	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
 	logo, _, err := image.Decode(reader)
 	utl.ErrorLog(err)
@@ -186,19 +187,19 @@ func LoadCoinsBase() Coins {
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
 
-	jdb.JDB.Write("jorm/info", "restcoins", restCoins)
-	jdb.JDB.Write("jorm/info", "algos", algoCoins)
-	jdb.JDB.Write("jorm/info", "usableinfo", usableCoins)
-	jdb.JDB.Write("jorm/info", "allcoins", allCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "usableinfo", usableCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "allcoins", allCoins)
 
 	//jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
-	jdb.JDB.Write("jorm/info", "nodecoins", nodeCoins)
-	jdb.JDB.Write("jorm/info", "coinsbin", coinsBin)
+	jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
 	return usableCoins
 }
 
 func getCoins() []Coin {
-	data, err := jdb.JDB.ReadAll("jorm/coins")
+	data, err := jdb.JDB.ReadAll(cfg.C.Out + "/coins")
 	utl.ErrorLog(err)
 	coins := make([][]byte, len(data))
 	for i := range data {

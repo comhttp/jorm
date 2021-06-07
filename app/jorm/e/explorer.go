@@ -71,7 +71,7 @@ func GetBlockchain(dir, www string, a a.BitNode) (err error) {
 				if blockRaw != nil && blockRaw != "" {
 					blockHash := blockRaw.(map[string]interface{})["hash"].(string)
 					blocksIndex[e.Status["blocks"]] = blockHash
-					go jdb.JDB.Write(www+"/blocks", blockHash, blockRaw)
+					go jdb.JDB.Write(cfg.C.Out+"/blocks", blockHash, blockRaw)
 					block := (blockRaw).(map[string]interface{})
 					if e.Status["blocks"] != 0 {
 						for _, t := range (block["tx"]).([]interface{}) {
@@ -79,7 +79,7 @@ func GetBlockchain(dir, www string, a a.BitNode) (err error) {
 						}
 					}
 					//fmt.Println("BlocksPosle", e.Status["blocks"])
-					jdb.JDB.Write(www+"/info", "explorer", e)
+					jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
 					jdb.JDB.Write(www+"/index", "blocks", blocksIndex)
 				} else {
 					break
