@@ -54,10 +54,10 @@ func GetIMG(url, path, coin string) Images {
 		Img256: base64.StdEncoding.EncodeToString(img256),
 	}
 	//Create a empty file
-	ioutil.WriteFile(path+"/"+coin+"16.png", img16, 777)
-	ioutil.WriteFile(path+"/"+coin+"32.png", img32, 777)
-	ioutil.WriteFile(path+"/"+coin+"64.png", img64, 777)
-	ioutil.WriteFile(path+"/"+coin+"128.png", img128, 777)
-	ioutil.WriteFile(path+"/"+coin+"256.png", img256, 777)
+	ioutil.WriteFile(path+"/16/"+coin+".png", img16, 777)
+	ioutil.WriteFile(path+"/32/"+coin+".png", img32, 777)
+	ioutil.WriteFile(path+"/64/"+coin+".png", img64, 777)
+	ioutil.WriteFile(path+"/128/"+coin+".png", img128, 777)
+	ioutil.WriteFile(path+"/256/"+coin+".png", img256, 777)
 	return imgs
 }

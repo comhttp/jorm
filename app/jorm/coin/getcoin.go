@@ -2,9 +2,9 @@ package coin
 
 import (
 	"fmt"
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/jdb"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 	"os"
 	"strings"
 )
@@ -108,12 +108,17 @@ func (c *Coin) SetChat(chat interface{}) {
 }
 
 func (c *Coin) SetLogo(logo interface{}) {
-	if c.Logo.Img256 == "" {
-		var cImgs utl.Images
-		if logo.(string) != "" && logo.(string) != "missing_large.png" {
-			cImgs = utl.GetIMG(logo.(string), cfg.Path+"/static/coins/", c.Slug)
-		}
-		c.Logo = cImgs
+	if logo.(string) != "" && logo.(string) != "missing_large.png" {
+		imgs := utl.GetIMG(logo.(string), cfg.Path+"/imgs/coins/", c.Slug)
+
+		jdb.JDB.Write("imgs", c.Slug+"/base64", imgs.Img16)
+		jdb.JDB.Write("imgs", c.Slug+"/base64", imgs.Img32)
+		jdb.JDB.Write("imgs", c.Slug+"/base64", imgs.Img64)
+		jdb.JDB.Write("imgs", c.Slug+"/base64", imgs.Img128)
+		jdb.JDB.Write("imgs", c.Slug+"/base64", imgs.Img256)
+
+		//Create a empty file
+		c.Logo = true
 	}
 	return
 }

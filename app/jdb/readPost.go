@@ -3,9 +3,9 @@ package jdb
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/mod"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/mod"
-	"github.com/p9c/jorm/pkg/utl"
 	"net/http"
 )
 

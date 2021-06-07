@@ -3,9 +3,9 @@ package a
 import (
 	"fmt"
 
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/jdb"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 // BitNodes is array of bitnodes addresses

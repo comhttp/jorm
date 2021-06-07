@@ -3,11 +3,11 @@ package u
 import (
 	"context"
 	"fmt"
-	"github.com/p9c/jorm/app/jorm/coin"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/pkg/utl"
 	"log"
 
-	"github.com/p9c/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/cfg"
 
 	cf "github.com/cloudflare/cloudflare-go"
 )

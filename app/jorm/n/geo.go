@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/p9c/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jdb"
 )
 
 type GeoResponse struct {

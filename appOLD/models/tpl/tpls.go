@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"text/template"
 
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 // TemplateHandler reads in templates

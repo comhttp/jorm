@@ -4,11 +4,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl"
 	"image"
 	"strings"
 
-	"github.com/p9c/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jdb"
 )
 
 type Coins struct {
@@ -76,17 +76,18 @@ type Coin struct {
 	BlockRewardReduction string  `json:"rew"`
 	Start                string  `json:"start"`
 
-	WebSite     []string   `json:"web"`
-	Explorer    []string   `json:"explorer"`
-	Chat        []string   `json:"chat"`
-	Twitter     string     `json:"tw"`
-	Facebook    string     `json:"facebook"`
-	Telegram    string     `json:"telegram"`
-	Reddit      string     `json:"reddit"`
-	Github      []string   `json:"github"`
-	BitcoinTalk string     `json:"bitcointalk"`
-	WhitePaper  string     `json:"whitepaper"`
-	Logo        utl.Images `json:"logo" form:"logo"`
+	WebSite     []string `json:"web"`
+	Explorer    []string `json:"explorer"`
+	Chat        []string `json:"chat"`
+	Twitter     string   `json:"tw"`
+	Facebook    string   `json:"facebook"`
+	Telegram    string   `json:"telegram"`
+	Reddit      string   `json:"reddit"`
+	Github      []string `json:"github"`
+	BitcoinTalk string   `json:"bitcointalk"`
+	WhitePaper  string   `json:"whitepaper"`
+	Logo        bool     `json:"logo" form:"logo"`
+	//Logo        utl.Images `json:"logo" form:"logo"`
 
 	Published bool `json:"published" form:"published"`
 	BitNode   bool `json:"bitnode" form:"bitnode"`

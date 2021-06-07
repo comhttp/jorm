@@ -1,62 +1,41 @@
 package app
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/jorm/h"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/jdb"
+	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
+	"github.com/comhttp/jorm/pkg/utl"
+	"net/http"
+	"time"
 )
 
-func (o *JORM) jorm(r *mux.Router) {
-	////////////////
-	// jorm
-	////////////////
-	s := r.Host("jorm.okno.rs").Subrouter()
-	s.StrictSlash(true)
+const (
+	// HTTPMethodOverrideHeader is a commonly used
+	// http header to override a request method.
+	HTTPMethodOverrideHeader = "X-HTTP-Method-Override"
+	// HTTPMethodOverrideFormKey is a commonly used
+	// HTML form key to override a request method.
+	HTTPMethodOverrideFormKey = "_method"
+)
 
-	//s.HandleFunc("/", h.HomeHandler)
+func NewJORM() *JORM {
+	//jdb.JDB.Write("conf", "conf", cfg.CONFIG)
+	err := jdb.JDB.Read("conf", "conf", &cfg.CONFIG)
+	utl.ErrorLog(err)
 
-	//f := s.PathPrefix("/f").Subrouter()
-	//f.HandleFunc("/addcoin", h.AddCoinHandler).Methods("POST")
-	//f.HandleFunc("/addnode", h.AddNodeHandler).Methods("POST")
+	//go csrc.GetCoinSources()
 
-	a := s.PathPrefix("/a").Subrouter()
-	a.HandleFunc("/coins", h.CoinsHandler).Methods("GET")
-	a.HandleFunc("/{coin}/nodes", h.CoinNodesHandler).Methods("GET")
-	a.HandleFunc("/{coin}/{nodeip}", h.NodeHandler).Methods("GET")
+	//fmt.Println(":ajdeeeeee", cfg.CONFIG)
+	//go u.CloudFlare()
+	o := &JORM{}
+	//o.Hosts = o.GetHosts()
 
-	b := s.PathPrefix("/b").Subrouter()
-	b.HandleFunc("/{coin}/blocks/{per}/{page}", h.ViewBlocks).Methods("GET")
-	b.HandleFunc("/{coin}/lastblock", h.LastBlock).Methods("GET")
-	b.HandleFunc("/{coin}/block/{id}", h.ViewBlock).Methods("GET")
-	b.HandleFunc("/{coin}/tx/{txid}", h.ViewTx).Methods("GET")
-
-	b.HandleFunc("/{coin}/mempool", h.ViewRawMemPool).Methods("GET")
-	b.HandleFunc("/{coin}/mining", h.ViewMiningInfo).Methods("GET")
-	b.HandleFunc("/{coin}/info", h.ViewInfo).Methods("GET")
-	b.HandleFunc("/{coin}/peers", h.ViewPeers).Methods("GET")
-	b.HandleFunc("/{coin}/market", h.ViewMarket).Methods("GET")
-
-	j := s.PathPrefix("/j").Subrouter()
-
-	j.PathPrefix("/").Handler(h.ViewJSON())
-
-	j.Headers("Access-Control-Allow-Origin", "*")
-
-	e := s.PathPrefix("/e").Subrouter()
-	//e.HandleFunc("/{coin}/blocks/{per}/{page}", h.ViewBlocks).Methods("GET")
-	//e.HandleFunc("/{coin}/lastblock", h.LastBlock).Methods("GET")
-	e.HandleFunc("/{sec}/{coin}/{type}/{file}", h.ViewJSONfolder)
-	//e.HandleFunc("/{sec}/{coin}/{app}/{type}/{file}", h.ViewJSONfolder)
-	//e.HandleFunc("/{coin}/hash/{blockhash}", h.ViewHash).Methods("GET")
-	//e.HandleFunc("/{coin}/tx/{txid}", h.ViewTx).Methods("GET")
-
-	//a.HandleFunc("/", o.goodBye).Methods("GET")
-	e.Headers("Access-Control-Allow-Origin", "*")
-
-	filename = "/okno/sites/w/jdb/home"
-
-	w := s.PathPrefix("/w").Subrouter()
-	w.StrictSlash(true)
-	w.HandleFunc("/home", serveHome)
-	w.HandleFunc("/ws", serveWs)
-
+	srv := &http.Server{
+		Handler:      o.Handler(),
+		Addr:         ":" + cfg.CONFIG.Port,
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	o.Server = srv
+	return o
 }

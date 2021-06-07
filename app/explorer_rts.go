@@ -1,9 +1,9 @@
 package app
 
 import (
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/tpl"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/tpl"
 
 	"net/http"
 )
@@ -32,8 +32,8 @@ func (o *JORM) explorerHandlerItem(w http.ResponseWriter, r *http.Request) {
 //
 //	"net/http"
 //
-//	"github.com/p9c/jorm/app/our/amp"
-//	"github.com/p9c/jorm/app/our/mod"
+//	"github.com/comhttp/jorm/app/our/amp"
+//	"github.com/comhttp/jorm/app/our/mod"
 //	"github.com/gorilla/mux"
 //)
 //

@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/cfg"
 	"net/http"
 	"os"
 	"os/exec"

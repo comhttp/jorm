@@ -3,12 +3,12 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/p9c/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jdb"
 	"io/ioutil"
 	"net/http"
 	"strings"
 
-	"github.com/p9c/jorm/app/jorm/exchange"
+	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
 func getPoloniexExchange() {

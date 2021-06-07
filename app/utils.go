@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/tpl"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/tpl"
 	"net/http"
 )
 

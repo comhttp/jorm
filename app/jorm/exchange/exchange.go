@@ -3,9 +3,9 @@ package exchange
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl"
 
-	"github.com/p9c/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jdb"
 )
 
 type Exchange struct {

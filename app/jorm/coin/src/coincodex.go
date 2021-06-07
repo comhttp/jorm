@@ -6,10 +6,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/jdb"
-	"github.com/p9c/jorm/app/jorm/coin"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func getCoinCodex() {
@@ -59,9 +59,8 @@ func getCoinCodex() {
 								fmt.Println("Insert ICO Coin: ", coinDetails["ico_price"])
 							}
 							coin.Checked["cx"] = true
-							var cImgs utl.Images
-							cImgs = utl.GetIMG("https://coincodex.com/en/resources/images/admin/coins/"+slug+".png", cfg.Path+"/static/coins/", coin.Slug)
-							coin.Logo = cImgs
+							coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
+							coin.Logo = true
 							jdb.JDB.Write(cfg.Path+"/coins/", slug, coin)
 						}
 					}

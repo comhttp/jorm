@@ -1,9 +1,9 @@
 package app
 
 import (
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/tpl"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/tpl"
 	"net/http"
 	"strings"
 	//"net/url"

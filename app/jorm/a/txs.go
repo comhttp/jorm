@@ -3,8 +3,8 @@ package a
 import (
 	"fmt"
 
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func (rpc *BitNode) GetTx(txid string) (t interface{}) {

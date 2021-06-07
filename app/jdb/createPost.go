@@ -3,8 +3,8 @@ package jdb
 import (
 	"github.com/gorilla/schema"
 
+	"github.com/comhttp/jorm/app/mod"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/mod"
 	"net/http"
 )
 

@@ -1,12 +1,12 @@
 package app
 
 import (
+	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/mod"
+	"github.com/comhttp/jorm/app/tpl"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/cfg"
-	"github.com/p9c/jorm/app/mod"
-	"github.com/p9c/jorm/app/tpl"
-	"github.com/p9c/jorm/pkg/utl"
 	"net/http"
 	"os"
 	"text/template"

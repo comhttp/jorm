@@ -2,19 +2,19 @@ package h
 
 import (
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/gorilla/mux"
-	"github.com/p9c/jorm/app/cfg"
 	"net/http"
 	"regexp"
 	"strconv"
 
 	"encoding/json"
-	"github.com/p9c/jorm/app/jorm/a"
-	"github.com/p9c/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/app/jorm/a"
+	"github.com/comhttp/jorm/app/jorm/coin"
 
-	"github.com/p9c/jorm/app/jdb"
-	"github.com/p9c/jorm/app/tpl"
-	//"github.com/p9c/jorm/pkg/utl"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/tpl"
+	//"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/tdewolff/minify"
 	mjson "github.com/tdewolff/minify/json"

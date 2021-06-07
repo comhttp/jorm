@@ -2,12 +2,12 @@ package app
 
 import (
 	"fmt"
-	"github.com/p9c/jorm/app/jorm/coin"
-	csrc "github.com/p9c/jorm/app/jorm/coin/src"
+	"github.com/comhttp/jorm/app/jorm/coin"
+	csrc "github.com/comhttp/jorm/app/jorm/coin/src"
 
-	//"github.com/p9c/jorm/app/jorm/coin/src"
-	//"github.com/p9c/jorm/app/jorm/exchange/src"
-	"github.com/p9c/jorm/app/jorm/n"
+	//"github.com/comhttp/jorm/app/jorm/coin/src"
+	//"github.com/comhttp/jorm/app/jorm/exchange/src"
+	"github.com/comhttp/jorm/app/jorm/n"
 )
 
 func Tickers(coins coin.Coins) {

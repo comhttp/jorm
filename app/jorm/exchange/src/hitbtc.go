@@ -8,7 +8,7 @@ package xsrc
 //	"net/http"
 //	"time"
 //
-//	"github.com/p9c/jorm/app/jorm/x"
+//	"github.com/comhttp/jorm/app/jorm/x"
 //)
 //
 //type HitBTCExchange struct {

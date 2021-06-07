@@ -3,8 +3,8 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/p9c/jorm/app/jdb"
-	"github.com/p9c/jorm/app/jorm/exchange"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jorm/exchange"
 	"io/ioutil"
 	"net/http"
 	"strings"
