@@ -7,6 +7,7 @@ import (
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"image"
+	"path/filepath"
 	"strings"
 
 	"github.com/comhttp/jorm/app/jdb"
@@ -109,7 +110,7 @@ func LoadLogo(slug, size string) image.Image {
 	// Load logo image from database
 	logos := make(map[string]interface{})
 	fmt.Println("slug", slug)
-	err := jdb.JDB.Read(cfg.C.Out+"/data/"+slug, "logo", logos)
+	err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/data/"+slug), "logo", logos)
 	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
 	logo, _, err := image.Decode(reader)
 	utl.ErrorLog(err)
@@ -119,7 +120,7 @@ func LoadLogo(slug, size string) image.Image {
 func LoadInfo(slug string) Coin {
 	// Load coin data from database
 	info := Coin{}
-	err := jdb.JDB.Read("data/"+slug, "info", info)
+	err := jdb.JDB.Read(filepath.FromSlash("data/"+slug), "info", info)
 	utl.ErrorLog(err)
 	//jsonString, _ := json.Marshal(info)
 
@@ -140,14 +141,14 @@ func LoadCoinsBase() Coins {
 	c := getCoins()
 
 	var bitNodes []string
-	if err := jdb.JDB.Read(cfg.C.Out+"/info", "bitnoded", &bitNodes); err != nil {
+	if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", &bitNodes); err != nil {
 		fmt.Println("Error", err)
 	}
 	for _, coiNn := range c {
 		for _, bitNode := range bitNodes {
 			if bitNode == coiNn.Slug {
 				coiNn.BitNode = true
-				jdb.JDB.Write(cfg.C.Out+"/coins", coiNn.Slug, coiNn)
+				jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), coiNn.Slug, coiNn)
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/app/jorm/n"
 	"github.com/comhttp/jorm/pkg/utl"
+	"path/filepath"
 )
 
 type Explorer struct {
@@ -20,11 +21,11 @@ func GetExplorer(coins coin.Coins) {
 	var b []string
 	for _, coin := range coins.C {
 		var bn n.BitNoded
-		www := "/www/data/" + coin.Slug
-		if utl.FileExists(cfg.Path + www + "/info/bitnodes") {
-			b = append(b, coin.Slug)
+		www := "/www/data/" + coin
+		if utl.FileExists(filepath.FromSlash(cfg.Path + www + "/info/bitnodes")) {
+			b = append(b, coin)
 			bitNodes := a.BitNodes{}
-			if err := jdb.JDB.Read("/info", "bitnodes", &bitNodes); err != nil {
+			if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodes", &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			for _, bitnode := range bitNodes {
@@ -35,7 +36,7 @@ func GetExplorer(coins coin.Coins) {
 				bn.Coin = coin
 			}
 			//bns = append(bns, bn)
-			nodes := jdb.ReadData(cfg.Path + "/nodes")
+			nodes := jdb.ReadData(filepath.FromSlash(cfg.Path + "/nodes"))
 			ns := make(n.Nodes, len(nodes))
 
 			for i := range nodes {

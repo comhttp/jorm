@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
+	"path/filepath"
 
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
@@ -62,7 +63,7 @@ func GetBitNodes(coins coin.Coins) {
 	for _, coin := range coins.C {
 		var bn BitNoded
 
-		if utl.FileExists(cfg.Path + "nodes/" + coin) {
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin)) {
 			fmt.Println("coincoincoincoincoin", cfg.Path+"nodes/"+coin)
 
 			b = append(b, coin)
@@ -78,12 +79,12 @@ func GetBitNodes(coins coin.Coins) {
 					if n.IP[:3] == "10." {
 						n.IP = "212.62.35.158"
 					}
-					jdb.JDB.Write(cfg.C.Out+"/nodes/"+coin, n.IP, n)
+					jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
 				}
 				if bitnode.IP[:3] == "10." {
 					bitnode.IP = "212.62.35.158"
 				}
-				jdb.JDB.Write(cfg.C.Out+"/bitnodes/"+coin, bitnode.IP, bitNode)
+				jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
 				//
 				//fmt.Println("--------------------")
 				//fmt.Println("bitNodes", nds)
@@ -93,9 +94,9 @@ func GetBitNodes(coins coin.Coins) {
 				bn.BitNodes = append(bn.BitNodes, *bitNode)
 			}
 			bns[coin] = bn
-			jdb.JDB.Write(cfg.C.Out+"/info/nodes/"+coin, "bitnodes", bn)
+			jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "bitnodes", bn)
 
-			data, err := jdb.JDB.ReadAll(cfg.C.Out + "/nodes/" + coin)
+			data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))
 			utl.ErrorLog(err)
 			nodes := make([][]byte, len(data))
 			for i := range data {
@@ -109,12 +110,12 @@ func GetBitNodes(coins coin.Coins) {
 					fmt.Println("Error", err)
 				}
 			}
-			jdb.JDB.Write(cfg.C.Out+"/info/nodes/"+coin, "nodes", ns)
+			jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "nodes", ns)
 		}
 	}
 	fmt.Println("11111bitnoded", b)
 	fmt.Println("111111bitnodestat", bns)
 
-	jdb.JDB.Write(cfg.C.Out+"/info", "bitnoded", b)
-	jdb.JDB.Write(cfg.C.Out+"/info", "bitnodestat", bns)
+	jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
+	jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
 }

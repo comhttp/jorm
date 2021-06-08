@@ -6,12 +6,13 @@ import (
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 func GetCoin(src, slug string, get func(c *Coin)) {
 	c := Coin{}
-	_, err := os.Stat(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug)
+	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug))
 	if err != nil {
 		c.Slug = slug
 		fmt.Println("Insert Coin: ", slug)
@@ -20,9 +21,9 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 		}
 		get(&c)
 		c.Checked[src] = true
-		jdb.JDB.Write(cfg.C.Out+"/coins", slug, c)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
 	} else {
-		err = jdb.JDB.Read(cfg.C.Out+"/coins", slug, &c)
+		err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/coins"), slug, &c)
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", c.Name)
 		if c.Checked == nil {
@@ -33,7 +34,7 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 			get(&c)
 			c.Checked[src] = true
 		}
-		jdb.JDB.Write(cfg.C.Out+"/coins", slug, c)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
 	}
 	return
 }
@@ -110,12 +111,12 @@ func (c *Coin) SetChat(chat interface{}) {
 func (c *Coin) SetLogo(logo interface{}) {
 	if logo.(string) != "" && logo.(string) != "missing_large.png" {
 		imgs := utl.GetIMG(logo.(string), cfg.Path+cfg.C.Out+"/imgs/", c.Slug)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "all", imgs)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "16", imgs.Img16)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "32", imgs.Img32)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "64", imgs.Img64)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "128", imgs.Img128)
-		jdb.JDB.Write(cfg.C.Out+"/imgs/"+c.Slug+"/base64/", "256", imgs.Img256)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "all", imgs)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "16", imgs.Img16)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "32", imgs.Img32)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "64", imgs.Img64)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "128", imgs.Img128)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "256", imgs.Img256)
 		//Create a empty file
 		c.Logo = true
 	}

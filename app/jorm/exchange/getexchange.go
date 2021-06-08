@@ -6,11 +6,12 @@ import (
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"os"
+	"path/filepath"
 )
 
 func GetExchange(src, slug string, get func(e *Exchange)) {
 	e := Exchange{}
-	_, err := os.Stat(cfg.Path + cfg.C.Out + "/exchanges/" + slug)
+	_, err := os.Stat(filepath.FromSlash(cfg.Path + cfg.C.Out + "/exchanges/" + slug))
 	if err != nil {
 		e.Slug = slug
 		fmt.Println("Insert Exchange: ", slug)
@@ -19,9 +20,9 @@ func GetExchange(src, slug string, get func(e *Exchange)) {
 		//}
 		//get(&e)
 		//e.Checked[src] = true
-		jdb.JDB.Write(cfg.C.Out+"/exchanges", slug, e)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
 	} else {
-		err = jdb.JDB.Read(cfg.C.Out+"/exchanges", slug, &e)
+		err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", e.Name)
 		//if c.Checked == nil {
@@ -32,7 +33,7 @@ func GetExchange(src, slug string, get func(e *Exchange)) {
 		//	get(&c)
 		//	c.Checked[src] = true
 		//}
-		jdb.JDB.Write(cfg.C.Out+"/exchanges", slug, e)
+		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
 	}
 	return
 }
