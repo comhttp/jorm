@@ -3,6 +3,8 @@ package app
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/coin"
+	xsrc "github.com/comhttp/jorm/app/jorm/exchange/src"
+
 	//"github.com/comhttp/jorm/app/jorm/coin/src"
 	//"github.com/comhttp/jorm/app/jorm/exchange/src"
 	"github.com/comhttp/jorm/app/jorm/n"
@@ -15,6 +17,6 @@ func Tickers(coins coin.Coins) {
 	//go e.GetExplorer(coins)
 	go n.GetBitNodes(coins)
 	//go csrc.GetCoinSources()
-	//go xsrc.GetExchangeSources()
+	go xsrc.GetExchangeSources()
 	// dsrc.GetDataSources()
 }

@@ -143,54 +143,61 @@ func LoadCoinsBase() Coins {
 	if err := jdb.JDB.Read(cfg.C.Out+"/info", "bitnoded", &bitNodes); err != nil {
 		fmt.Println("Error", err)
 	}
+	for _, coiNn := range c {
+		for _, bitNode := range bitNodes {
+			if bitNode == coiNn.Slug {
+				coiNn.BitNode = true
+				jdb.JDB.Write(cfg.C.Out+"/coins", coiNn.Slug, coiNn)
+			}
+		}
+	}
+
 	for i, coin := range c {
-		for _, b := range bitNodes {
-			if b == coin.Slug {
-				nodeCoins.N++
-				nodeCoins.C = append(nodeCoins.C, NodeCoin{
+		if coin.BitNode {
+			nodeCoins.N++
+			nodeCoins.C = append(nodeCoins.C, NodeCoin{
+				Rank:   coin.Rank,
+				Name:   coin.Name,
+				Ticker: coin.Ticker,
+				Slug:   coin.Slug,
+				Algo:   coin.Algo,
+			})
+		} else {
+			if coin.Algo != "N/A" && coin.Algo != "" {
+				algoCoins.N++
+				algoCoins.C = append(algoCoins.C, AlgoCoin{
 					Rank:   coin.Rank,
 					Name:   coin.Name,
 					Ticker: coin.Ticker,
 					Slug:   coin.Slug,
 					Algo:   coin.Algo,
 				})
-			} else {
-				if coin.Algo != "N/A" && coin.Algo != "" {
-					algoCoins.N++
-					algoCoins.C = append(algoCoins.C, AlgoCoin{
-						Rank:   coin.Rank,
-						Name:   coin.Name,
-						Ticker: coin.Ticker,
-						Slug:   coin.Slug,
-						Algo:   coin.Algo,
-					})
-					for _, a := range algoCoins.A {
-						if a != coin.Algo {
-							algoCoins.A = append(algoCoins.A, coin.Algo)
-							fmt.Println("111aaa", a)
-							fmt.Println("111coin.Algo", coin.Algo)
-						}
-						fmt.Println("222aaa", a)
-						fmt.Println("2222coin.Algo", coin.Algo)
+				for _, a := range algoCoins.A {
+					if a != coin.Algo {
+						algoCoins.A = append(algoCoins.A, coin.Algo)
+						fmt.Println("111aaa", a)
+						fmt.Println("111coin.Algo", coin.Algo)
 					}
-				} else {
-					if coin.Description != "" {
-						//len(c[i].WebSite) > 0 &&
-						// len(coin.WebSite) > 0 &&
-						//if c[i].Platform != "token" &&
-						restCoins.N++
-						restCoins.C = append(restCoins.C, coin.Slug)
-					} else {
-						coinsBin.N++
-						coinsBin.C = append(coinsBin.C, coin.Slug)
-					}
+					fmt.Println("222aaa", a)
+					fmt.Println("2222coin.Algo", coin.Algo)
 				}
-				usableCoins.N = i
-				usableCoins.C = append(usableCoins.C, coin.Slug)
+			} else {
+				if coin.Description != "" {
+					//len(c[i].WebSite) > 0 &&
+					// len(coin.WebSite) > 0 &&
+					//if c[i].Platform != "token" &&
+					restCoins.N++
+					restCoins.C = append(restCoins.C, coin.Slug)
+				} else {
+					coinsBin.N++
+					coinsBin.C = append(coinsBin.C, coin.Slug)
+				}
 			}
-			allCoins.N = i
-			allCoins.C = append(allCoins.C, coin.Slug)
+			usableCoins.N = i
+			usableCoins.C = append(usableCoins.C, coin.Slug)
 		}
+		allCoins.N = i
+		allCoins.C = append(allCoins.C, coin.Slug)
 	}
 	jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
 	jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)

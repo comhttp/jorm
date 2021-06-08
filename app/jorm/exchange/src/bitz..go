@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
