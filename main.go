@@ -13,7 +13,7 @@ func main() {
 	jorm := app.NewJORM()
 	_ = exchange.ReadAllExchanges()
 	go app.Tickers(jorm.Coins)
-	ticker := time.NewTicker(99 * time.Second)
+	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {

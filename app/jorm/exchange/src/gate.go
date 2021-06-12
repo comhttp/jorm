@@ -24,27 +24,31 @@ func getGateExchange() {
 	utl.ErrorLog(err)
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)
-	json.Unmarshal(mapBody, &marketsRaw)
-	e.Markets = make(map[string]exchange.Market)
-	for symbol, marketSrc := range marketsRaw {
-		m := strings.Split(symbol, "_")
-		mSrc := marketSrc.(map[string]interface{})
-		if nq := strings.ToUpper(m[1]); nq != e.Markets[nq].Symbol {
-			e.Markets[nq] = exchange.Market{
-				Symbol:     nq,
-				Currencies: make(map[string]exchange.Currency),
+	if mapBody != nil {
+		json.Unmarshal(mapBody, &marketsRaw)
+		e.Markets = make(map[string]exchange.Market)
+		for symbol, marketSrc := range marketsRaw {
+			m := strings.Split(symbol, "_")
+			mSrc := marketSrc.(map[string]interface{})
+			if nq := strings.ToUpper(m[1]); nq != e.Markets[nq].Symbol {
+				e.Markets[nq] = exchange.Market{
+					Symbol:     nq,
+					Currencies: make(map[string]exchange.Currency),
+				}
 			}
+			e.SetCurrencyMarket(
+				strings.ToUpper(m[1]),
+				strings.ToUpper(m[0]),
+				mSrc["sell"],
+				mSrc["buy"],
+				mSrc["high"],
+				mSrc["last"],
+				mSrc["low"],
+				mSrc["vol"])
 		}
-		e.SetCurrencyMarket(
-			strings.ToUpper(m[1]),
-			strings.ToUpper(m[0]),
-			mSrc["sell"],
-			mSrc["buy"],
-			mSrc["high"],
-			mSrc["last"],
-			mSrc["low"],
-			mSrc["vol"])
+		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+		fmt.Println("Get Gate Exchange Done")
+	} else {
+		fmt.Println("Get Gate Exchange Fail")
 	}
-	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	fmt.Println("Get DigiFinex Exchange Done")
 }

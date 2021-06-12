@@ -21,7 +21,7 @@ func GetExplorer(coins coin.Coins) {
 	var b []string
 	for _, coin := range coins.C {
 		var bn n.BitNoded
-		www := "/www/data/" + coin
+		www := cfg.C.Out + "/data/" + coin
 		if utl.FileExists(filepath.FromSlash(cfg.Path + www + "/info/bitnodes")) {
 			b = append(b, coin)
 			bitNodes := a.BitNodes{}

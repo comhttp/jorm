@@ -17,6 +17,6 @@ func Tickers(coins coin.Coins) {
 	//go e.GetExplorer(coins)
 	go n.GetBitNodes(coins)
 	//go csrc.GetCoinSources()
-	go xsrc.GetExchangeSources()
+	xsrc.GetExchangeSources()
 	// dsrc.GetDataSources()
 }

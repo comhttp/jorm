@@ -2,16 +2,16 @@ package xsrc
 
 // GetCoinSources updates the available coin information sources
 func GetExchangeSources() {
-	go getPoloniexExchange()
-	go getDigiFinexExchange()
-	go getBitTrexExchange()
-	go getBinanceExchange()
-	go getHuobiExchange()
-	go getGateExchange()
-	go getGeminiExchange()
-	go getDexTradeExchange()
-	go getBitZExchange()
-
+	getPoloniexExchange()
+	getDigiFinexExchange()
+	getBitTrexExchange()
+	getBinanceExchange()
+	getHuobiExchange()
+	getGateExchange()
+	getGeminiExchange()
+	getDexTradeExchange()
+	getBitZExchange()
+	getLiquidExchange()
 	//go getCoinBeneExchange()
 	//go getBitMartExchange()
 	//go getHitBTCExchange()

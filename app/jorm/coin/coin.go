@@ -27,6 +27,10 @@ type AlgoCoins struct {
 	A []string   `json:"a"`
 	C []AlgoCoin `json:"c"`
 }
+type CoinsWords struct {
+	N int    `json:"n"`
+	C string `json:"c"`
+}
 type BaseCoins struct {
 	N int        `json:"n"`
 	C []BaseCoin `json:"c"`
@@ -134,6 +138,7 @@ func LoadCoinsBase() Coins {
 	usableCoins := Coins{N: 0}
 	nodeCoins := NodeCoins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
+	coinsWords := CoinsWords{N: 0}
 	restCoins := Coins{N: 0}
 
 	coinsBin := Coins{N: 0}
@@ -196,19 +201,22 @@ func LoadCoinsBase() Coins {
 			}
 			usableCoins.N = i
 			usableCoins.C = append(usableCoins.C, coin.Slug)
+			coinsWords.C = coinsWords.C + " " + coin.Name
+			coinsWords.N = usableCoins.N
 		}
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
 	jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
 	jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
+	jdb.JDB.Write(cfg.C.Out+"/info", "coinswords", coinsWords)
 	jdb.JDB.Write(cfg.C.Out+"/info", "usableinfo", usableCoins)
 	jdb.JDB.Write(cfg.C.Out+"/info", "allcoins", allCoins)
 
 	//jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
 	jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
 	jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
-	return usableCoins
+	return allCoins
 }
 
 func getCoins() []Coin {

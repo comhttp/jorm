@@ -20,6 +20,11 @@ type Exchange struct {
 	Volume      float64 `json:"volume"`
 	Markets     Markets `json:"markets"`
 }
+type BaseExchange struct {
+	Name   string  `json:"name"`
+	Slug   string  `json:"slug"`
+	Volume float64 `json:"volume"`
+}
 
 type Currency struct {
 	Symbol string  `json:"symbol"`
@@ -48,8 +53,14 @@ type CoinMarkets map[string]CoinMarket
 // ReadAllExchanges reads in all of the data about all coins in the database
 func ReadAllExchanges() map[string]map[string]map[string]float64 {
 	e := getExchanges()
+	baseExchanges := []BaseExchange{}
 	ex := make(map[string]map[string]map[string]float64)
 	for i := range e {
+		baseExchanges = append(baseExchanges, BaseExchange{
+			Name:   e[i].Name,
+			Slug:   e[i].Slug,
+			Volume: e[i].Volume,
+		})
 		m := make(map[string]map[string]float64)
 		for marketSymbol, market := range e[i].Markets {
 			c := make(map[string]float64)
@@ -63,6 +74,10 @@ func ReadAllExchanges() map[string]map[string]map[string]float64 {
 	jdb.JDB.Write(cfg.C.Out+"/info", "exchanges", map[string]interface{}{
 		"n": len(e),
 		"e": ex,
+	})
+	jdb.JDB.Write(cfg.C.Out+"/info", "exc", map[string]interface{}{
+		"n": len(e),
+		"e": baseExchanges,
 	})
 	return ex
 }

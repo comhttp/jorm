@@ -25,7 +25,7 @@ func CloudFlare() {
 }
 
 func createDNS(api *cf.API, ctx context.Context, domain string) {
-	coins := coin.LoadCoinsBase(false, true)
+	coins := coin.LoadCoinsBase()
 	// Fetch the zone ID
 	id, err := api.ZoneIDByName(domain) // Assuming example.com exists in your Cloudflare account already
 	if err != nil {
@@ -43,8 +43,7 @@ func createDNS(api *cf.API, ctx context.Context, domain string) {
 		}
 	}
 
-	for _, c := range coins.C {
-		slug := c.Slug
+	for _, slug := range coins.C {
 		//_, err := http.Get("https://" + slug + "." + domain)
 		//if err != nil {
 		var exist bool
