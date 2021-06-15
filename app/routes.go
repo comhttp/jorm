@@ -61,5 +61,6 @@ func (o *JORM) jorm(r *mux.Router) {
 	//http.HandleFunc("/ws", serveWs)
 	w.HandleFunc("/", serveHome)
 	w.HandleFunc("/ws", serveWs)
+	w.Headers("Access-Control-Allow-Origin", "*")
 
 }

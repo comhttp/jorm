@@ -1,6 +1,7 @@
 package app
 
 import (
+	"crypto/tls"
 	"github.com/comhttp/jorm/app/jorm/coin"
 	"net/http"
 )
@@ -8,5 +9,6 @@ import (
 type JORM struct {
 	Coins coin.Coins
 	//Hosts         map[string]Host
-	Server *http.Server
+	Server    *http.Server
+	TLSconfig *tls.Config
 }
