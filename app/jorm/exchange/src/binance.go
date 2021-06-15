@@ -3,27 +3,45 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func getBinanceExchange() {
 	fmt.Println("Get Binance Exchange Start")
-	exchangeRaw := make(map[string]interface{})
-	slug := "binance"
-	var e exchange.Exchange
-	e.Name = "Binance"
-	e.Slug = slug
-	resps, err := http.Get("https://api.binance.com/api/v3/exchangeInfo")
-	utl.ErrorLog(err)
-	defer resps.Body.Close()
-	mapBodyS, err := ioutil.ReadAll(resps.Body)
-	json.Unmarshal(mapBodyS, &exchangeRaw)
+	t := exchange.ExchangeTicker{
+		Ask:    "lowestAsk",
+		Bid:    "highestBid",
+		High24: "high24Hr",
+		Last:   "last",
+		Low24:  "low24Hr",
+		Vol:    "baseVolume",
+	}
+	e := exchange.ExchangeSrc{
+		Name:        "Binance",
+		Slug:        "binance",
+		Url:         "https://api.binance.com/api/v3/exchangeInfo",
+		Logo:        "",
+		Description: "",
+		Established: "",
+		Country:     "",
+		Ticker:      t,
+	}
+	var ex exchange.Exchange
+	ex.Name = e.Name
+	ex.Slug = e.Slug
+
+	//exchangeRaw := make(map[string]interface{})
+	//resps, err := http.Get("https://api.binance.com/api/v3/exchangeInfo")
+	//utl.ErrorLog(err)
+	//defer resps.Body.Close()
+	//mapBodyS, err := ioutil.ReadAll(resps.Body)
+	//json.Unmarshal(mapBodyS, &exchangeRaw)
+
+	marketsSrc := exchange.GetSource(e.Url).(map[string]interface{})
 
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.binance.com/api/v3/ticker/24hr")
@@ -37,14 +55,14 @@ func getBinanceExchange() {
 			tickers[exchangeTicker["symbol"].(string)] = exchangeTicker
 		}
 	}
-	e.Markets = make(map[string]exchange.Market)
-	if exchangeRaw != nil {
-		if exchangeRaw["symbols"] != nil {
-			for _, marketSrcRaw := range exchangeRaw["symbols"].([]interface{}) {
+	e.Markets = make(map[string]exchange.MarketSrc)
+	if marketsSrc != nil {
+		if marketsSrc["symbols"] != nil {
+			for _, marketSrcRaw := range marketsSrc["symbols"].([]interface{}) {
 				marketSrc := marketSrcRaw.(map[string]interface{})
 				if q := marketSrc["quoteAsset"]; q != nil {
 					if nq := q.(string); nq != e.Markets[nq].Symbol {
-						e.Markets[nq] = exchange.Market{
+						e.Markets[nq] = exchange.MarketSrc{
 							Symbol:     nq,
 							Currencies: make(map[string]exchange.Currency),
 						}
@@ -63,7 +81,8 @@ func getBinanceExchange() {
 					}
 				}
 			}
-			jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+			ex.WriteExchange(e)
 			fmt.Println("Get Binance Exchange Done")
 		}
 	}

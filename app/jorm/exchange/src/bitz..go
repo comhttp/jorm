@@ -3,14 +3,10 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/app/jorm/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
-	"strings"
-
-	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
 func getBitZExchange() {
@@ -26,30 +22,30 @@ func getBitZExchange() {
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)
 	json.Unmarshal(mapBody, &marketsRaw)
-	e.Markets = make(map[string]exchange.Market)
-	if marketsRaw["data"] != nil {
-		for symbol, marketSrc := range marketsRaw["data"].(map[string]interface{}) {
-			mSrc := marketSrc.(map[string]interface{})
-			if mSrc[symbol] != nil {
-				m := strings.Split(symbol, "_")
-				if nq := strings.ToUpper(m[1]); nq != e.Markets[nq].Symbol {
-					e.Markets[nq] = exchange.Market{
-						Symbol:     strings.ToUpper(nq),
-						Currencies: make(map[string]exchange.Currency),
-					}
-				}
-				e.SetCurrencyMarket(
-					strings.ToUpper(m[1]),
-					strings.ToUpper(m[0]),
-					mSrc["askPrice"],
-					mSrc["bidPrice"],
-					mSrc["high"],
-					mSrc["now"],
-					mSrc["low"],
-					mSrc["volume"])
-			}
-		}
-		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-		fmt.Println("Get BitZ Exchange Done")
-	}
+	//e.Markets = make(map[string]exchange.Market)
+	//if marketsRaw["data"] != nil {
+	//	for symbol, marketSrc := range marketsRaw["data"].(map[string]interface{}) {
+	//		mSrc := marketSrc.(map[string]interface{})
+	//		if mSrc[symbol] != nil {
+	//			m := strings.Split(symbol, "_")
+	//			if nq := strings.ToUpper(m[1]); nq != e.Markets[nq].Symbol {
+	//				e.Markets[nq] = exchange.Market{
+	//					Symbol:     strings.ToUpper(nq),
+	//					Currencies: make(map[string]exchange.Currency),
+	//				}
+	//			}
+	//			e.SetCurrencyMarket(
+	//				strings.ToUpper(m[1]),
+	//				strings.ToUpper(m[0]),
+	//				mSrc["askPrice"],
+	//				mSrc["bidPrice"],
+	//				mSrc["high"],
+	//				mSrc["now"],
+	//				mSrc["low"],
+	//				mSrc["volume"])
+	//		}
+	//	}
+	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+	//	fmt.Println("Get BitZ Exchange Done")
+	//}
 }

@@ -52,11 +52,14 @@ func (o *JORM) jorm(r *mux.Router) {
 	//a.HandleFunc("/", o.goodBye).Methods("GET")
 	e.Headers("Access-Control-Allow-Origin", "*")
 
-	filename = "/okno/sites/w/jdb/home"
+	//filename = "/okno/sites/w/jdb/home"
 
-	w := s.PathPrefix("/w").Subrouter()
+	w := r.Host("ws.okno.rs").Subrouter()
 	w.StrictSlash(true)
-	w.HandleFunc("/home", serveHome)
+
+	//http.HandleFunc("/", serveHome)
+	//http.HandleFunc("/ws", serveWs)
+	w.HandleFunc("/", serveHome)
 	w.HandleFunc("/ws", serveWs)
 
 }

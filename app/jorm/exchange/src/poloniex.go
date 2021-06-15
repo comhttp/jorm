@@ -1,51 +1,38 @@
 package xsrc
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
-	"io/ioutil"
-	"net/http"
-	"strings"
-
 	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
 func getPoloniexExchange() {
-	fmt.Println("GetPoloniexExchangeStart")
-	marketsRaw := make(map[string]interface{})
-
-	slug := "poloniex"
-	var e exchange.Exchange
-	e.Name = "Poloniex"
-	e.Slug = slug
-	respcs, err := http.Get("https://poloniex.com/public?command=returnTicker")
-	if err != nil {
+	//e.Markets = make(map[string]exchange.Market)
+	//for key, marketSrcRaw := range marketsRaw {
+	//	marketSrc := marketSrcRaw.(map[string]interface{})
+	//	m := strings.Split(key, "_")
+	//	if nq := m[0]; nq != e.Markets[nq].Symbol {
+	//		e.Markets[nq] = exchange.Market{
+	//			Symbol:     nq,
+	//			Currencies: make(map[string]exchange.Currency),
+	//		}
+	//	}
+	//}
+	t := exchange.ExchangeTicker{
+		Ask:    "lowestAsk",
+		Bid:    "highestBid",
+		High24: "high24Hr",
+		Last:   "last",
+		Low24:  "low24Hr",
+		Vol:    "baseVolume",
 	}
-	defer respcs.Body.Close()
-	mapBody, err := ioutil.ReadAll(respcs.Body)
-	json.Unmarshal(mapBody, &marketsRaw)
-	e.Markets = make(map[string]exchange.Market)
-	for key, marketSrcRaw := range marketsRaw {
-		marketSrc := marketSrcRaw.(map[string]interface{})
-		m := strings.Split(key, "_")
-		if nq := m[0]; nq != e.Markets[nq].Symbol {
-			e.Markets[nq] = exchange.Market{
-				Symbol:     nq,
-				Currencies: make(map[string]exchange.Currency),
-			}
-		}
-		e.SetCurrencyMarket(
-			m[0],
-			m[1],
-			marketSrc["lowestAsk"],
-			marketSrc["highestBid"],
-			marketSrc["high24Hr"],
-			marketSrc["last"],
-			marketSrc["low24Hr"],
-			marketSrc["baseVolume"])
+	e := exchange.ExchangeSrc{
+		Name:        "Poloniex",
+		Slug:        "poloniex",
+		Url:         "https://poloniex.com/public?command=returnTicker",
+		Logo:        "",
+		Description: "",
+		Established: "",
+		Country:     "",
+		Ticker:      t,
 	}
-	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	fmt.Println("GetPoloniexExchangeDone")
+	e.GetExchange()
 }

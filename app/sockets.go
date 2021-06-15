@@ -1,6 +1,8 @@
 package app
 
 import (
+	"github.com/comhttp/jorm/app/cfg"
+
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -13,6 +15,30 @@ import (
 )
 
 const (
+	homeHTML = `<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>WebSocket Example</title>
+    </head>
+    <body>
+        <pre id="fileData">{{.Data}}</pre>
+        <script type="text/javascript">
+            (function() {
+                var data = document.getElementById("fileData");
+                var conn = new WebSocket("ws://{{.Host}}/ws?lastMod={{.LastMod}}");
+                conn.onclose = function(evt) {
+                    data.textContent = 'Connection closed';
+                }
+                conn.onmessage = function(evt) {
+                    console.log('file updated');
+                    data.textContent = evt.data;
+                }
+            })();
+        </script>
+    </body>
+</html>
+`
+
 	// Time allowed to write the file to the client.
 	writeWait = 10 * time.Second
 
@@ -28,15 +54,15 @@ const (
 
 var (
 	homeTempl = template.Must(template.New("").Parse(homeHTML))
-	filename  string
-
-	upgrader = websocket.Upgrader{
+	upgrader  = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
 )
 
 func readFileIfModified(lastMod time.Time) ([]byte, time.Time, error) {
+	filename := cfg.Path + cfg.C.Out + "/exchanges/poloniex"
+
 	fi, err := os.Stat(filename)
 	if err != nil {
 		return nil, lastMod, err
@@ -149,27 +175,3 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 	}
 	homeTempl.Execute(w, &v)
 }
-
-const homeHTML = `<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>WebSocket Example</title>
-    </head>
-    <body>
-        <pre id="fileData">{{.Data}}</pre>
-        <script type="text/javascript">
-            (function() {
-                var data = document.getElementById("fileData");
-                var conn = new WebSocket("ws://{{.Host}}/ws?lastMod={{.LastMod}}");
-                conn.onclose = function(evt) {
-                    data.textContent = 'Connection closed';
-                }
-                conn.onmessage = function(evt) {
-                    console.log('file updated');
-                    data.textContent = evt.data;
-                }
-            })();
-        </script>
-    </body>
-</html>
-`

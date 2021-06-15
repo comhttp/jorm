@@ -3,8 +3,6 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
@@ -49,32 +47,32 @@ func getBitTrexExchange() {
 		}
 	}
 
-	e.Markets = make(map[string]exchange.Market)
-	if exchangeRaw != nil {
-		for _, marketSrc := range exchangeRaw {
-			//m := marketSrc.(map[string]interface{})
-			if q := marketSrc["quoteCurrencySymbol"]; q != nil {
-				if nq := q.(string); nq != e.Markets[nq].Symbol {
-					e.Markets[nq] = exchange.Market{
-						Symbol:     nq,
-						Currencies: make(map[string]exchange.Currency),
-					}
-				}
-				if marketSrc["symbol"] != nil {
-					m := marketSrc["symbol"].(string)
-					e.SetCurrencyMarket(
-						q.(string),
-						marketSrc["baseCurrencySymbol"].(string),
-						tickers[m]["askRate"],
-						tickers[m]["bidRate"],
-						summaries[m]["high"],
-						tickers[m]["lastTradeRate"],
-						summaries[m]["low"],
-						summaries[m]["volume"])
-				}
-			}
-		}
-		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-		fmt.Println("Get BitTrex Exchange Done")
-	}
+	//e.Markets = make(map[string]exchange.Market)
+	//if exchangeRaw != nil {
+	//	for _, marketSrc := range exchangeRaw {
+	//		//m := marketSrc.(map[string]interface{})
+	//		if q := marketSrc["quoteCurrencySymbol"]; q != nil {
+	//			if nq := q.(string); nq != e.Markets[nq].Symbol {
+	//				e.Markets[nq] = exchange.Market{
+	//					Symbol:     nq,
+	//					Currencies: make(map[string]exchange.Currency),
+	//				}
+	//			}
+	//			if marketSrc["symbol"] != nil {
+	//				m := marketSrc["symbol"].(string)
+	//				e.SetCurrencyMarket(
+	//					q.(string),
+	//					marketSrc["baseCurrencySymbol"].(string),
+	//					tickers[m]["askRate"],
+	//					tickers[m]["bidRate"],
+	//					summaries[m]["high"],
+	//					tickers[m]["lastTradeRate"],
+	//					summaries[m]["low"],
+	//					summaries[m]["volume"])
+	//			}
+	//		}
+	//	}
+	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+	//	fmt.Println("Get BitTrex Exchange Done")
+	//}
 }

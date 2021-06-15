@@ -11,7 +11,7 @@ import (
 
 func GetExchange(src, slug string, get func(e *Exchange)) {
 	e := Exchange{}
-	_, err := os.Stat(filepath.FromSlash(cfg.Path + cfg.C.Out + "/exchanges/" + slug))
+	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
 	if err != nil {
 		e.Slug = slug
 		fmt.Println("Insert Exchange: ", slug)
@@ -54,7 +54,7 @@ func (e *Exchange) SetLogo(logo interface{}) {
 	return
 }
 
-func (e *Exchange) SetCurrencyMarket(market, symbol string, ask, bid, high, last, low, vol interface{}) {
+func (e *ExchangeSrc) SetCurrencyMarket(market, symbol string, ask, bid, high, last, low, vol interface{}) {
 	e.Markets[market].Currencies[symbol] = Currency{
 		Symbol: symbol,
 		Ask:    utl.InsertFloat(ask),

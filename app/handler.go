@@ -23,7 +23,7 @@ type PageData struct {
 func (o *JORM) Handler() http.Handler {
 	r := mux.NewRouter()
 
-	o.img(r)
+	//o.img(r)
 	//o.out(r)
 	o.jorm(r)
 
