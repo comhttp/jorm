@@ -38,7 +38,7 @@ func (o *JORM) jorm(r *mux.Router) {
 	j := s.PathPrefix("/j").Subrouter()
 
 	j.PathPrefix("/").Handler(h.ViewJSON())
-
+	j.Headers("Strict-Transport-Security", "max-age=15768000 ; includeSubDomains")
 	j.Headers("Access-Control-Allow-Origin", "*")
 
 	e := s.PathPrefix("/e").Subrouter()
@@ -62,5 +62,6 @@ func (o *JORM) jorm(r *mux.Router) {
 	w.HandleFunc("/", serveHome)
 	w.HandleFunc("/ws", serveWs)
 	w.Headers("Access-Control-Allow-Origin", "*")
+	w.Headers("Strict-Transport-Security", "max-age=15768000 ; includeSubDomains")
 
 }
