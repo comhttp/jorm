@@ -14,7 +14,7 @@ import (
 
 // BitNoded data
 type BitNoded struct {
-	//Coin     coin.Coin          `json:"coin"`
+	Coin     string          `json:"coin"`
 	BitNodes []BitNodeStatus `json:"bitnodes"`
 }
 

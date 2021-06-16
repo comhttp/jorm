@@ -9,3 +9,4 @@ func ErrorLog(err error) {
 		fmt.Println("Error", err)
 	}
 }
+

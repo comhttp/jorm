@@ -7,6 +7,8 @@ import (
 )
 
 func (rpc *BitNode) GetBlockCount() (b int) {
+	fmt.Println("rpcrpcrpcrpcrpcrpcrpcrpcrpcrpcrpcrpc", rpc)
+
 	bparams := []int{}
 	gbc, err := rpc.Jrc.MakeRequest("getblockcount", bparams)
 	if err != nil {

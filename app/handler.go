@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/comhttp/jorm/app/mod"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -9,23 +9,30 @@ import (
 
 type PageData struct {
 	Title string
-	//Host     Host
 	Site     string
 	HostSlug string
-	Post     mod.Post
 	Slug     string
 	Section  string
 	Template string
-	Posts    []mod.Post
-	//Hosts    []Host
 }
 
-func (o *JORM) Handler() http.Handler {
+func (o *JORM) WWWhandleR() http.Handler {
 	r := mux.NewRouter()
 
 	//o.img(r)
 	//o.out(r)
 	o.jorm(r)
 
-	return handlers.CORS()(handlers.CompressHandler(InterceptHandler(r, DefaultErrorHandler)))
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+}
+
+func (o *JORM) WShandleR() http.Handler {
+	r := mux.NewRouter()
+	r.Host("ws.okno.rs").Subrouter()
+	r.StrictSlash(true)
+	r.HandleFunc("/", serveHome)
+	r.HandleFunc("/ws", serveWs)
+	r.Headers("Access-Control-Allow-Origin", "*")
+
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 }

@@ -10,7 +10,8 @@ import (
 type JORM struct {
 	Coins coin.Coins
 	//Hosts         map[string]Host
-	Server      *http.Server
+	WWW      *http.Server
+	WS      *http.Server
 	TLSconfig   *tls.Config
 	CertManager autocert.Manager
 }
