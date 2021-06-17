@@ -1,6 +1,7 @@
 package n
 
 import (
+	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
 	"path/filepath"
 
@@ -63,9 +64,9 @@ func GetBitNodes(coins coin.Coins) {
 
 			b = append(b, coin)
 			bitNodes := a.BitNodes{}
-			//if err := jdb.JDB.Read("nodes", coin, &bitNodes); err != nil {
-			//	fmt.Println("Error", err)
-			//}
+			if err := cfg.CFG.Read("nodes", coin, &bitNodes); err != nil {
+				fmt.Println("Error", err)
+			}
 			for _, bitnode := range bitNodes {
 				bitNode := GetBitNodeStatus(bitnode)
 				nds := GetNodes(bitNode)

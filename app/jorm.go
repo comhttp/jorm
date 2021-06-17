@@ -24,12 +24,11 @@ const (
 )
 
 func NewJORM() *JORM {
-	err := cfg.JDB.Read("conf", "conf", &cfg.C)
+	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 	//go u.CloudFlare()
 	fmt.Println("Get ", cfg.C.JDBservers)
 	j := &JORM{
-		Coins: coin.LoadCoinsBase(),
 		CertManager: autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
@@ -37,6 +36,7 @@ func NewJORM() *JORM {
 		},
 		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}
+	j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
 		Handler:      j.WWWhandleR(),
 		Addr:         ":" + cfg.C.Port,

@@ -12,8 +12,6 @@ import (
 	"github.com/jcelliott/lumber"
 )
 
-var JDB, _ = NewJDB(Path, nil)
-
 type (
 
 	// Logger is a generic logger interface
@@ -43,7 +41,7 @@ type Options struct {
 
 // New creates a new scribble database at the desired directory location, and
 // returns a *Driver to then use for interacting with the database
-func NewJDB(path string, options *Options) (*jdb, error) {
+func NewCFG(path string, options *Options) (*jdb, error) {
 	// a new javazac database, providing the directory where it will be writing to,
 	// and a qualified logger if desired
 
@@ -256,7 +254,7 @@ func (j *jdb) getOrCreateMutex(collection string) *sync.Mutex {
 
 // ReadCoins reads in all coin data in and converts to bytes for unmarshalling
 func ReadData(path string) [][]byte {
-	data, err := JDB.ReadAll(path)
+	data, err := CFG.ReadAll(path)
 	utl.ErrorLog(err)
 	b := make([][]byte, len(data))
 	for i := range data {

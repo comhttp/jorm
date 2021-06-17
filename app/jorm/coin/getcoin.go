@@ -2,16 +2,15 @@ package coin
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"os"
-	"path/filepath"
 	"strings"
 )
 
-func GetCoin(src, slug string, get func(c *Coin)) {
+func GetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 	c := Coin{}
-	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug))
+	//_, err := os.Stat(filepath.FromSlash(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug))
+	err := j.Read("coins", "coins_"+slug, &c)
 	if err != nil {
 		c.Slug = slug
 		fmt.Println("Insert Coin: ", slug)
@@ -21,6 +20,7 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 		get(&c)
 		c.Checked[src] = true
 		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
+		j.Write("coins", "coins_"+slug, c)
 	} else {
 		//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/coins"), slug, &c)
 		utl.ErrorLog(err)
@@ -34,6 +34,7 @@ func GetCoin(src, slug string, get func(c *Coin)) {
 			c.Checked[src] = true
 		}
 		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
+		j.Write("coins", "coins_"+slug, c)
 	}
 	return
 }

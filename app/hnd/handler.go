@@ -92,12 +92,12 @@ func AddNodeHandler(w http.ResponseWriter, r *http.Request) {
 
 // CoinsHandler handles a request for coin data
 func CoinsHandler(w http.ResponseWriter, r *http.Request) {
-	out, err := json.Marshal(coin.LoadCoinsBase())
-	if err != nil {
-		fmt.Println("Error encoding JSON")
-		return
-	}
-	w.Write([]byte(out))
+	//out, err := json.Marshal(coin.LoadCoinsBase())
+	//if err != nil {
+	//	fmt.Println("Error encoding JSON")
+	//	return
+	//}
+	//w.Write([]byte(out))
 }
 
 // CoinNodesHandler handles a request for (?)

@@ -19,6 +19,7 @@ type CloudFlare struct {
 
 // configurations for jorm
 var (
-	Path = "/jorm/"
-	C    *config
+	Path   = "/jorm/"
+	C      *config
+	CFG, _ = NewCFG(Path, nil)
 )

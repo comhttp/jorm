@@ -118,15 +118,19 @@ func (j *JDB) Read(db, key string, v interface{}) error {
 
 	// unmarshal data
 	//return json.Unmarshal(b, &v)
-	return j.clients[db].GetJSON(key, v)
+	return j.clients[db].GetJSON(key, &v)
 }
 
 // ReadAll records from a collection; this is returned as a slice of strings because
 // there is no way of knowing what type the record is.
-func (j *JDB) ReadAll(collection string) ([]string, error) {
+func (j *JDB) ReadAll(db, prefix string) ([]string, error) {
+	var all []string
+	al, err := j.clients[db].GetByPrefix(prefix)
+	for a, _ := range al {
+		all = append(all, a)
+	}
 
-	// unmarhsal the read files as a comma delimeted byte array
-	return nil, nil
+	return all, err
 }
 
 // Delete locks that database and then attempts to remove the collection/resource

@@ -3,6 +3,7 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
@@ -10,7 +11,7 @@ import (
 	"time"
 )
 
-func getCoinGecko() {
+func getCoinGecko(j *jdb.JDB) {
 	fmt.Println("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")
@@ -23,7 +24,7 @@ func getCoinGecko() {
 			if coinSrc["id"] != nil {
 				if coinSrc["id"] != nil && coinSrc["id"].(string) != "" {
 					slug := utl.MakeSlug(coinSrc["id"].(string))
-					coin.GetCoin("cg", slug, getCoinGeckoCoin(slug, coinSrc))
+					coin.GetCoin(j, "cg", slug, getCoinGeckoCoin(slug, coinSrc))
 				}
 			}
 		}

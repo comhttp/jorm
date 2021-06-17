@@ -19,7 +19,7 @@ type BitNode struct {
 
 func RPCSRC(c string) (b *BitNode) {
 	bitNodes := BitNodes{}
-	if err := cfg.JDB.Read("nodes", c, &bitNodes); err != nil {
+	if err := cfg.CFG.Read("nodes", c, &bitNodes); err != nil {
 		fmt.Println("Errdor", err)
 	}
 	for _, bn := range bitNodes {

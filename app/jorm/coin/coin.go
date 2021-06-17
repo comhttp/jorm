@@ -1,7 +1,8 @@
 package coin
 
 import (
-	"fmt"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 type Coins struct {
@@ -126,16 +127,17 @@ func (coin *Coin) SelectCoin() *Coin {
 //	return info
 //}
 
-func LoadCoinsBase() Coins {
-	usableCoins := Coins{N: 0}
-	nodeCoins := NodeCoins{N: 0}
-	algoCoins := AlgoCoins{N: 0}
-	coinsWords := CoinsWords{N: 0}
-	restCoins := Coins{N: 0}
-
-	coinsBin := Coins{N: 0}
-	allCoins := Coins{N: 0}
-	c := getCoins()
+func LoadCoinsBase(j *jdb.JDB) Coins {
+	//usableCoins := Coins{N: 0}
+	//nodeCoins := NodeCoins{N: 0}
+	//algoCoins := AlgoCoins{N: 0}
+	//coinsWords := CoinsWords{N: 0}
+	//restCoins := Coins{N: 0}
+	//
+	//coinsBin := Coins{N: 0}
+	//allCoins := Coins{N: 0}
+	c := getCoins(j)
+	//fmt.Println("cccccccccc::",c)
 
 	//var bitNodes []string
 	//if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", &bitNodes); err != nil {
@@ -150,55 +152,55 @@ func LoadCoinsBase() Coins {
 	//	}
 	//}
 
-	for i, coin := range c {
-		if coin.BitNode {
-			nodeCoins.N++
-			nodeCoins.C = append(nodeCoins.C, NodeCoin{
-				Rank:   coin.Rank,
-				Name:   coin.Name,
-				Ticker: coin.Ticker,
-				Slug:   coin.Slug,
-				Algo:   coin.Algo,
-			})
-		} else {
-			if coin.Algo != "N/A" && coin.Algo != "" {
-				algoCoins.N++
-				algoCoins.C = append(algoCoins.C, AlgoCoin{
-					Rank:   coin.Rank,
-					Name:   coin.Name,
-					Ticker: coin.Ticker,
-					Slug:   coin.Slug,
-					Algo:   coin.Algo,
-				})
-				for _, a := range algoCoins.A {
-					if a != coin.Algo {
-						algoCoins.A = append(algoCoins.A, coin.Algo)
-						fmt.Println("111aaa", a)
-						fmt.Println("111coin.Algo", coin.Algo)
-					}
-					fmt.Println("222aaa", a)
-					fmt.Println("2222coin.Algo", coin.Algo)
-				}
-			} else {
-				if coin.Description != "" {
-					//len(c[i].WebSite) > 0 &&
-					// len(coin.WebSite) > 0 &&
-					//if c[i].Platform != "token" &&
-					restCoins.N++
-					restCoins.C = append(restCoins.C, coin.Slug)
-				} else {
-					coinsBin.N++
-					coinsBin.C = append(coinsBin.C, coin.Slug)
-				}
-			}
-			usableCoins.N = i
-			usableCoins.C = append(usableCoins.C, coin.Slug)
-			coinsWords.C = coinsWords.C + " " + coin.Name
-			coinsWords.N = usableCoins.N
-		}
-		allCoins.N = i
-		allCoins.C = append(allCoins.C, coin.Slug)
-	}
+	//for i, coin := range c {
+	//if coin.BitNode {
+	//	nodeCoins.N++
+	//	nodeCoins.C = append(nodeCoins.C, NodeCoin{
+	//		Rank:   coin.Rank,
+	//		Name:   coin.Name,
+	//		Ticker: coin.Ticker,
+	//		Slug:   coin.Slug,
+	//		Algo:   coin.Algo,
+	//	})
+	//} else {
+	//	if coin.Algo != "N/A" && coin.Algo != "" {
+	//		algoCoins.N++
+	//		algoCoins.C = append(algoCoins.C, AlgoCoin{
+	//			Rank:   coin.Rank,
+	//			Name:   coin.Name,
+	//			Ticker: coin.Ticker,
+	//			Slug:   coin.Slug,
+	//			Algo:   coin.Algo,
+	//		})
+	//		for _, a := range algoCoins.A {
+	//			if a != coin.Algo {
+	//				algoCoins.A = append(algoCoins.A, coin.Algo)
+	//				fmt.Println("111aaa", a)
+	//				fmt.Println("111coin.Algo", coin.Algo)
+	//			}
+	//			fmt.Println("222aaa", a)
+	//			fmt.Println("2222coin.Algo", coin.Algo)
+	//		}
+	//	} else {
+	//		if coin.Description != "" {
+	//			//len(c[i].WebSite) > 0 &&
+	//			// len(coin.WebSite) > 0 &&
+	//			//if c[i].Platform != "token" &&
+	//			restCoins.N++
+	//			restCoins.C = append(restCoins.C, coin.Slug)
+	//		} else {
+	//			coinsBin.N++
+	//			coinsBin.C = append(coinsBin.C, coin.Slug)
+	//		}
+	//	}
+	//	usableCoins.N = i
+	//	usableCoins.C = append(usableCoins.C, coin.Slug)
+	//	coinsWords.C = coinsWords.C + " " + coin.Name
+	//	coinsWords.N = usableCoins.N
+	//}
+	//allCoins.N = i
+	//allCoins.C = append(allCoins.C, coin.Slug)
+	//}
 	//jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
 	//jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
 	//jdb.JDB.Write(cfg.C.Out+"/info", "coinswords", coinsWords)
@@ -208,12 +210,19 @@ func LoadCoinsBase() Coins {
 	////jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
 	//jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
 	//jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
-	return allCoins
+	return c
 }
 
-func getCoins() []Coin {
+func getCoins(j *jdb.JDB) Coins {
+	coins, err := j.ReadAll("coins", "coins_")
+	utl.ErrorLog(err)
+	allCoins := Coins{N: 0}
+	for i, c := range coins {
+		allCoins.C = append(allCoins.C, c)
+		allCoins.N = i
+	}
 	//data, err := jdb.JDB.ReadAll(cfg.C.Out + "/coins")
-	//utl.ErrorLog(err)
+
 	//coins := make([][]byte, len(data))
 	//for i := range data {
 	//	coins[i] = []byte(data[i])
@@ -225,5 +234,5 @@ func getCoins() []Coin {
 	//	}
 	//}
 	//return cs
-	return nil
+	return allCoins
 }

@@ -4,14 +4,14 @@ import "github.com/comhttp/jorm/app/jdb"
 
 // GetCoinSources updates the available coin information sources
 func GetExchangeSources(j *jdb.JDB) {
-	getPoloniexExchange(j)
+	go getPoloniexExchange(j)
 	//getDigiFinexExchange()
 	//getBitTrexExchange()
-	getBinanceExchange(j)
+	go getBinanceExchange(j)
 	//getHuobiExchange()
 	//getGateExchange()
 	//getGeminiExchange()
-	getDexTradeExchange(j)
+	go getDexTradeExchange(j)
 	//getBitZExchange()
 	//getLiquidExchange()
 	//go getCoinBeneExchange()
