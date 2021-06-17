@@ -12,14 +12,14 @@ import (
 func main() {
 	j := app.NewJORM()
 	exchange.ReadAllExchanges()
-	go app.Tickers(j.Coins)
+	go j.Tickers()
 	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				app.Tickers(j.Coins)
+				j.Tickers()
 				fmt.Println("OKNO wooikos")
 			case <-quit:
 				ticker.Stop()

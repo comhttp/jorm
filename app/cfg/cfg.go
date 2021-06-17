@@ -2,12 +2,13 @@ package cfg
 
 // Conf is the configuration for accessing bitnodes endpoint
 type config struct {
-	COMHTTP []string
-	Port    string
-	Out     string
-	RPC     RPClogin
-	CF      CloudFlare
-	ApiKeys map[string]string
+	COMHTTP    []string
+	Port       string
+	Out        string
+	RPC        RPClogin
+	CF         CloudFlare
+	ApiKeys    map[string]string
+	JDBservers map[string]string
 }
 type RPClogin struct {
 	Username, Password string

@@ -2,10 +2,11 @@ package xsrc
 
 import (
 	"fmt"
+	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
-func getDexTradeExchange() {
+func getDexTradeExchange(j *jdb.JDB) {
 	t := exchange.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
@@ -64,7 +65,7 @@ func getDexTradeExchange() {
 				}
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-			ex.WriteExchange(e)
+			ex.WriteExchange(j, e)
 			fmt.Println("Get Dex Trade Exchange Done")
 		}
 	} else {

@@ -3,8 +3,6 @@ package exchange
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -99,30 +97,31 @@ func ReadAllExchanges() {
 			Volume: e[i].Volume,
 		})
 	}
-	jdb.JDB.Write(cfg.C.Out+"/info", "exchanges", map[string]interface{}{
-		"n": len(e),
-		"e": exchanges,
-	})
-	jdb.JDB.Write(cfg.C.Out+"/info", "exc", map[string]interface{}{
-		"n": len(e),
-		"e": baseExchanges,
-	})
+	//jdb.JDB.Write(cfg.C.Out+"/info", "exchanges", map[string]interface{}{
+	//	"n": len(e),
+	//	"e": exchanges,
+	//})
+	//jdb.JDB.Write(cfg.C.Out+"/info", "exc", map[string]interface{}{
+	//	"n": len(e),
+	//	"e": baseExchanges,
+	//})
 }
 
 func getExchanges() []Exchange {
-	data, err := jdb.JDB.ReadAll(cfg.C.Out + "/exchanges")
-	utl.ErrorLog(err)
-	exchanges := make([][]byte, len(data))
-	for i := range data {
-		exchanges[i] = []byte(data[i])
-	}
-	ex := make([]Exchange, len(exchanges))
-	for i := range exchanges {
-		if err := json.Unmarshal(exchanges[i], &ex[i]); err != nil {
-			fmt.Println("Error", err)
-		}
-	}
-	return ex
+	//data, err := jdb.JDB.ReadAll(cfg.C.Out + "/exchanges")
+	//utl.ErrorLog(err)
+	//exchanges := make([][]byte, len(data))
+	//for i := range data {
+	//	exchanges[i] = []byte(data[i])
+	//}
+	//ex := make([]Exchange, len(exchanges))
+	//for i := range exchanges {
+	//	if err := json.Unmarshal(exchanges[i], &ex[i]); err != nil {
+	//		fmt.Println("Error", err)
+	//	}
+	//}
+	//return ex
+	return nil
 }
 
 func GetSource(url string) interface{} {
@@ -139,7 +138,7 @@ func GetSource(url string) interface{} {
 	return marketsRaw
 }
 
-func (e *Exchange) WriteExchange(ex ExchangeSrc) {
+func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 	for _, exs := range ex.Markets {
 		mSrc := Market{}
 		for _, cur := range exs.Currencies {
@@ -148,10 +147,10 @@ func (e *Exchange) WriteExchange(ex ExchangeSrc) {
 		}
 		e.Markets = append(e.Markets, mSrc)
 	}
-	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
+	j.Write("exchanges", e.Slug, e)
 }
 
-func (es *ExchangeSrc) GetExchange() {
+func (es *ExchangeSrc) GetExchange(j *jdb.JDB) {
 	fmt.Println("Get " + es.Name + " Exchange Start")
 	var e Exchange
 	e.Name = es.Name
@@ -179,7 +178,7 @@ func (es *ExchangeSrc) GetExchange() {
 				marketSrc[es.Ticker.Low24],
 				marketSrc[es.Ticker.Vol])
 		}
-		e.WriteExchange(*es)
+		e.WriteExchange(j, *es)
 		fmt.Println("Get " + e.Name + " Exchange Done")
 	} else {
 		fmt.Println("Get " + e.Name + " Exchange Fail")

@@ -3,6 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/comhttp/jorm/app/jdb"
 	"io/ioutil"
 	"net/http"
 
@@ -10,7 +11,7 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func getBinanceExchange() {
+func getBinanceExchange(j *jdb.JDB) {
 	fmt.Println("Get Binance Exchange Start")
 	t := exchange.ExchangeTicker{
 		Ask:    "lowestAsk",
@@ -82,7 +83,7 @@ func getBinanceExchange() {
 				}
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-			ex.WriteExchange(e)
+			ex.WriteExchange(j, e)
 			fmt.Println("Get Binance Exchange Done")
 		}
 	}

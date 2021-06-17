@@ -1,16 +1,7 @@
 package coin
 
 import (
-	"encoding/base64"
-	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/pkg/utl"
-	"image"
-	"path/filepath"
-	"strings"
-
-	"github.com/comhttp/jorm/app/jdb"
 )
 
 type Coins struct {
@@ -110,29 +101,30 @@ func (coin *Coin) SelectCoin() *Coin {
 	//coin.Data = LoadInfo(coin.Slug)
 	return coin
 }
-func LoadLogo(slug, size string) image.Image {
-	// Load logo image from database
-	logos := make(map[string]interface{})
-	fmt.Println("slug", slug)
-	err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/data/"+slug), "logo", logos)
-	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
-	logo, _, err := image.Decode(reader)
-	utl.ErrorLog(err)
-	return logo
-}
 
-func LoadInfo(slug string) Coin {
-	// Load coin data from database
-	info := Coin{}
-	err := jdb.JDB.Read(filepath.FromSlash("data/"+slug), "info", info)
-	utl.ErrorLog(err)
-	//jsonString, _ := json.Marshal(info)
-
-	// convert json to struct
-	//s := CoinData{}
-	//json.Unmarshal(jsonString, &s)
-	return info
-}
+//func LoadLogo(slug, size string) image.Image {
+//	// Load logo image from database
+//	logos := make(map[string]interface{})
+//	fmt.Println("slug", slug)
+//	err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/data/"+slug), "logo", logos)
+//	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
+//	logo, _, err := image.Decode(reader)
+//	utl.ErrorLog(err)
+//	return logo
+//}
+//
+//func LoadInfo(slug string) Coin {
+//	// Load coin data from database
+//	info := Coin{}
+//	err := jdb.JDB.Read(filepath.FromSlash("data/"+slug), "info", info)
+//	utl.ErrorLog(err)
+//	//jsonString, _ := json.Marshal(info)
+//
+//	// convert json to struct
+//	//s := CoinData{}
+//	//json.Unmarshal(jsonString, &s)
+//	return info
+//}
 
 func LoadCoinsBase() Coins {
 	usableCoins := Coins{N: 0}
@@ -145,18 +137,18 @@ func LoadCoinsBase() Coins {
 	allCoins := Coins{N: 0}
 	c := getCoins()
 
-	var bitNodes []string
-	if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", &bitNodes); err != nil {
-		fmt.Println("Error", err)
-	}
-	for _, coiNn := range c {
-		for _, bitNode := range bitNodes {
-			if bitNode == coiNn.Slug {
-				coiNn.BitNode = true
-				jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), coiNn.Slug, coiNn)
-			}
-		}
-	}
+	//var bitNodes []string
+	//if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", &bitNodes); err != nil {
+	//	fmt.Println("Error", err)
+	//}
+	//for _, coiNn := range c {
+	//	for _, bitNode := range bitNodes {
+	//		if bitNode == coiNn.Slug {
+	//			coiNn.BitNode = true
+	//			jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), coiNn.Slug, coiNn)
+	//		}
+	//	}
+	//}
 
 	for i, coin := range c {
 		if coin.BitNode {
@@ -207,30 +199,31 @@ func LoadCoinsBase() Coins {
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
-	jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
-	jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
-	jdb.JDB.Write(cfg.C.Out+"/info", "coinswords", coinsWords)
-	jdb.JDB.Write(cfg.C.Out+"/info", "usableinfo", usableCoins)
-	jdb.JDB.Write(cfg.C.Out+"/info", "allcoins", allCoins)
-
-	//jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
-	jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
-	jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "coinswords", coinsWords)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "usableinfo", usableCoins)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "allcoins", allCoins)
+	//
+	////jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
+	//jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
+	//jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
 	return allCoins
 }
 
 func getCoins() []Coin {
-	data, err := jdb.JDB.ReadAll(cfg.C.Out + "/coins")
-	utl.ErrorLog(err)
-	coins := make([][]byte, len(data))
-	for i := range data {
-		coins[i] = []byte(data[i])
-	}
-	cs := make([]Coin, len(coins))
-	for i := range coins {
-		if err := json.Unmarshal(coins[i], &cs[i]); err != nil {
-			fmt.Println("Error", err)
-		}
-	}
-	return cs
+	//data, err := jdb.JDB.ReadAll(cfg.C.Out + "/coins")
+	//utl.ErrorLog(err)
+	//coins := make([][]byte, len(data))
+	//for i := range data {
+	//	coins[i] = []byte(data[i])
+	//}
+	//cs := make([]Coin, len(coins))
+	//for i := range coins {
+	//	if err := json.Unmarshal(coins[i], &cs[i]); err != nil {
+	//		fmt.Println("Error", err)
+	//	}
+	//}
+	//return cs
+	return nil
 }

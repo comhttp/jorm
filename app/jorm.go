@@ -2,6 +2,7 @@ package app
 
 import (
 	"crypto/tls"
+	"fmt"
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/coin"
@@ -23,17 +24,18 @@ const (
 )
 
 func NewJORM() *JORM {
-	err := jdb.JDB.Read("conf", "conf", &cfg.C)
+	err := cfg.JDB.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
-
 	//go u.CloudFlare()
+	fmt.Println("Get ", cfg.C.JDBservers)
 	j := &JORM{
 		Coins: coin.LoadCoinsBase(),
 		CertManager: autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
-			Cache: autocert.DirCache(cfg.Path),
+			Cache:      autocert.DirCache(cfg.Path),
 		},
+		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}
 	j.WWW = &http.Server{
 		Handler:      j.WWWhandleR(),
@@ -42,8 +44,8 @@ func NewJORM() *JORM {
 		ReadTimeout:  15 * time.Second,
 	}
 	j.WS = &http.Server{
-		Handler:      j.WShandleR(),
-		Addr: ":4489",
+		Handler: j.WShandleR(),
+		Addr:    ":4489",
 		TLSConfig: &tls.Config{
 			GetCertificate: j.CertManager.GetCertificate,
 		},

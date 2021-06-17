@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -20,7 +19,7 @@ type BitNode struct {
 
 func RPCSRC(c string) (b *BitNode) {
 	bitNodes := BitNodes{}
-	if err := jdb.JDB.Read("nodes", c, &bitNodes); err != nil {
+	if err := cfg.JDB.Read("nodes", c, &bitNodes); err != nil {
 		fmt.Println("Errdor", err)
 	}
 	for _, bn := range bitNodes {
