@@ -5,14 +5,13 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func (c *Coin) GetxXXXX(proof interface{}) {
-	c.Proof = utl.InsertString(c.Proof, proof)
-	return
+func GetCoin(j *jdb.JDB, slug string) Coin {
+	c := getCoin(j, "coins_"+slug)
+	return c
 }
-
-func GetCoin(j *jdb.JDB, slug string) *Coin {
-	c := &Coin{}
-	err := j.Read("coins", "coins_"+slug, &c)
+func getCoin(j *jdb.JDB, key string) Coin {
+	c := Coin{}
+	err := j.Read("coins", key, &c)
 	utl.ErrorLog(err)
 	return c
 }
@@ -26,4 +25,41 @@ func GetCoins(j *jdb.JDB) Coins {
 		allCoins.N = i
 	}
 	return allCoins
+}
+
+func GetRestCoins(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_rest", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetCoinsWords(j *jdb.JDB) CoinsWords {
+	c := CoinsWords{}
+	err := j.Read("coins", "info_words", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetAlgoCoins(j *jdb.JDB) AlgoCoins {
+	c := AlgoCoins{}
+	err := j.Read("coins", "info_algo", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetUsableCoins(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_usable", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetCoinsBin(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_bin", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetAllCoins(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_all", &c)
+	utl.ErrorLog(err)
+	return c
 }

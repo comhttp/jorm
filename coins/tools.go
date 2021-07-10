@@ -15,7 +15,6 @@ func ProcessCoins(j *jdb.JDB) {
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
 	c := GetCoins(j)
-	fmt.Println("cccccccccc::", c)
 
 	//var bitNodes []string
 	//if err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", &bitNodes); err != nil {
@@ -31,7 +30,9 @@ func ProcessCoins(j *jdb.JDB) {
 	//}
 
 	for i, slug := range c.C {
-		coin := GetCoin(j, slug)
+		fmt.Println("slugslugslugslug:", slug)
+
+		coin := getCoin(j, slug)
 		//if coin.BitNode {
 		//	nodeCoins.N++
 		//	nodeCoins.C = append(nodeCoins.C, NodeCoin{
@@ -83,12 +84,12 @@ func ProcessCoins(j *jdb.JDB) {
 
 	//jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
 	//jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
-	//jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
 
 	j.Write("coins", "info_rest", restCoins)
 	j.Write("coins", "info_algo", algoCoins)
 	j.Write("coins", "info_words", coinsWords)
 	j.Write("coins", "info_usable", usableCoins)
 	j.Write("coins", "info_all", allCoins)
+	j.Write("coins", "info_bin", coinsBin)
 
 }

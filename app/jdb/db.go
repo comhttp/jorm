@@ -62,7 +62,7 @@ func NewJDB(jbds map[string]string) *JDB {
 	}
 
 	for js, url := range jbds {
-		go j.cl(js, url)
+		j.cl(js, url)
 	}
 
 	return &j

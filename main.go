@@ -5,7 +5,7 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/coins"
-	csrc "github.com/comhttp/jorm/coins/src"
+	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
 	//"github.com/comhttp/jorm/app/jorm/exchange"
 	//"log"
@@ -16,7 +16,7 @@ func main() {
 	j := app.NewJORM()
 	//exchange.ReadAllExchanges()
 
-	csrc.GetCoinSources(j.JDB)
+	//csrc.GetCoinSources(j.JDB)
 
 	coins.ProcessCoins(j.JDB)
 	//go j.Tickers()
