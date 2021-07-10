@@ -5,7 +5,7 @@ import (
 	"github.com/comhttp/jorm/app/jdb"
 )
 
-func LoadCoinsBase(j *jdb.JDB) {
+func ProcessCoins(j *jdb.JDB) {
 	usableCoins := Coins{N: 0}
 	//nodeCoins := NodeCoins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
@@ -80,14 +80,15 @@ func LoadCoinsBase(j *jdb.JDB) {
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
-	//jdb.JDB.Write(cfg.C.Out+"/info", "restcoins", restCoins)
-	//jdb.JDB.Write(cfg.C.Out+"/info", "algos", algoCoins)
-	//jdb.JDB.Write(cfg.C.Out+"/info", "coinswords", coinsWords)
-	//jdb.JDB.Write(cfg.C.Out+"/info", "usableinfo", usableCoins)
-	//jdb.JDB.Write(cfg.C.Out+"/info", "allcoins", allCoins)
 
 	//jdb.JDB.Write("jorm/info", "bitnodes", LoadCoinsBase(true, true))
 	//jdb.JDB.Write(cfg.C.Out+"/info", "nodecoins", nodeCoins)
 	//jdb.JDB.Write(cfg.C.Out+"/info", "coinsbin", coinsBin)
+
+	j.Write("coins", "info_rest", restCoins)
+	j.Write("coins", "info_algo", algoCoins)
+	j.Write("coins", "info_words", coinsWords)
+	j.Write("coins", "info_usable", usableCoins)
+	j.Write("coins", "info_all", allCoins)
 
 }

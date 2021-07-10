@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/coins"
 	csrc "github.com/comhttp/jorm/coins/src"
 	"log"
 	//"github.com/comhttp/jorm/app/jorm/exchange"
@@ -16,6 +17,8 @@ func main() {
 	//exchange.ReadAllExchanges()
 
 	csrc.GetCoinSources(j.JDB)
+
+	coins.ProcessCoins(j.JDB)
 	//go j.Tickers()
 	//ticker := time.NewTicker(999 * time.Second)
 	//quit := make(chan struct{})
