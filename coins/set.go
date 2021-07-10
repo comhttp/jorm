@@ -1,4 +1,4 @@
-package coin
+package coins
 
 import (
 	"fmt"
@@ -7,9 +7,8 @@ import (
 	"strings"
 )
 
-func GetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
-	c := Coin{}
-	//_, err := os.Stat(filepath.FromSlash(cfg.Path + "/" + cfg.C.Out + "/coins/" + slug))
+func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
+	c := &Coin{}
 	err := j.Read("coins", "coins_"+slug, &c)
 	if err != nil {
 		c.Slug = slug
@@ -17,12 +16,10 @@ func GetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
-		get(&c)
+		get(c)
 		c.Checked[src] = true
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
 		j.Write("coins", "coins_"+slug, c)
 	} else {
-		//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/coins"), slug, &c)
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", c.Name)
 		if c.Checked == nil {
@@ -30,10 +27,9 @@ func GetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 		}
 		if !c.Checked[src] {
 			fmt.Println("Check Coin: ", c.Name)
-			get(&c)
+			get(c)
 			c.Checked[src] = true
 		}
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/coins"), slug, c)
 		j.Write("coins", "coins_"+slug, c)
 	}
 	return

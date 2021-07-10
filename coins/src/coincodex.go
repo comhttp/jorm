@@ -3,11 +3,11 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
+	coins2 "github.com/comhttp/jorm/coins"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -25,7 +25,7 @@ func getCoinCodex(j *jdb.JDB) {
 			coinSrc := cSrc.(map[string]interface{})
 			if coinSrc["name"] != nil {
 				slug := utl.MakeSlug(coinSrc["name"].(string))
-				var coin coin.Coin
+				var coin coins2.Coin
 				if j.Read("coins", slug, &coin) != nil {
 					if coin.Checked == nil {
 						coin.Checked = make(map[string]bool)

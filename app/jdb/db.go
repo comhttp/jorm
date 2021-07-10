@@ -131,7 +131,6 @@ func (j *JDB) ReadAll(db, prefix string) ([]string, error) {
 	for a, _ := range al {
 		all = append(all, a)
 	}
-
 	return all, err
 }
 

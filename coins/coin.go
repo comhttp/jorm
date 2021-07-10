@@ -1,4 +1,4 @@
-package coin
+package coins
 
 import (
 	"github.com/comhttp/jorm/pkg/utl"
@@ -48,3 +48,71 @@ type Coins struct {
 	N int      `json:"n"`
 	C []string `json:"c"`
 }
+
+type NodeCoins struct {
+	N int        `json:"n"`
+	C []NodeCoin `json:"c"`
+}
+type AlgoCoins struct {
+	N int        `json:"n"`
+	A []string   `json:"a"`
+	C []AlgoCoin `json:"c"`
+}
+type CoinsWords struct {
+	N int    `json:"n"`
+	C string `json:"c"`
+}
+type BaseCoins struct {
+	N int        `json:"n"`
+	C []BaseCoin `json:"c"`
+}
+
+// Coin stores identifying information about coins in the database
+type BaseCoin struct {
+	Rank   int    `json:"r"`
+	Name   string `json:"n"`
+	Ticker string `json:"t"`
+	Slug   string `json:"s"`
+}
+
+// Coin stores identifying information about coins in the database
+type NodeCoin struct {
+	Rank   int    `json:"r"`
+	Name   string `json:"n"`
+	Ticker string `json:"t"`
+	Slug   string `json:"s"`
+	Algo   string `json:"a"`
+}
+
+// Coin stores identifying information about coins in the database
+type AlgoCoin struct {
+	Rank   int    `json:"r"`
+	Name   string `json:"n"`
+	Ticker string `json:"t"`
+	Slug   string `json:"s"`
+	Algo   string `json:"a"`
+}
+
+//func LoadLogo(slug, size string) image.Image {
+//	// Load logo image from database
+//	logos := make(map[string]interface{})
+//	fmt.Println("slug", slug)
+//	err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/data/"+slug), "logo", logos)
+//	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
+//	logo, _, err := image.Decode(reader)
+//	utl.ErrorLog(err)
+//	return logo
+//}
+//
+//func LoadInfo(slug string) Coin {
+//	// Load coin data from database
+//	info := Coin{}
+//	err := jdb.JDB.Read(filepath.FromSlash("data/"+slug), "info", info)
+//	utl.ErrorLog(err)
+//	//jsonString, _ := json.Marshal(info)
+//
+//	// convert json to struct
+//	//s := CoinData{}
+//	//json.Unmarshal(jsonString, &s)
+//	return info
+//}

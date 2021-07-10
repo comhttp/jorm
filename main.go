@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/app/cfg"
-	csrc "github.com/comhttp/jorm/mod/coin/src"
+	csrc "github.com/comhttp/jorm/coins/src"
 	"log"
 	//"github.com/comhttp/jorm/app/jorm/exchange"
 	//"log"

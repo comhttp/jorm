@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/mod/coin"
+	coins2 "github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
@@ -32,8 +32,8 @@ func getCoinGecko(j *jdb.JDB) {
 	fmt.Println("GetCoinGeckoDone")
 }
 
-func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coin.Coin) {
-	return func(c *coin.Coin) {
+func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins2.Coin) {
+	return func(c *coins2.Coin) {
 		//c.SetName(coinSrc["name"])
 		//c.SetTicker(coinSrc["symbol"])
 		//fmt.Println("Checked1:", c.Checked)

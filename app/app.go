@@ -3,13 +3,13 @@ package app
 import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/mod/coin"
+	coins2 "github.com/comhttp/jorm/coins"
 	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 )
 
 type JORM struct {
-	Coins coin.Coins
+	Coins coins2.Coins
 	//Hosts         map[string]Host
 	WWW         *http.Server
 	WS          *http.Server
