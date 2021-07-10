@@ -1,11 +1,9 @@
 package app
 
 import (
-	"crypto/tls"
+	"fmt"
 	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/app/jorm/coin"
-	"golang.org/x/crypto/acme/autocert"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -23,31 +21,32 @@ const (
 )
 
 func NewJORM() *JORM {
-	err := jdb.JDB.Read("conf", "conf", &cfg.C)
+	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
-
 	//go u.CloudFlare()
+	fmt.Println("Get ", cfg.C)
 	j := &JORM{
-		Coins: coin.LoadCoinsBase(),
-		CertManager: autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
-			Cache: autocert.DirCache(cfg.Path),
-		},
+		//CertManager: autocert.Manager{
+		//	Prompt:     autocert.AcceptTOS,
+		//	HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
+		//	Cache:      autocert.DirCache(cfg.Path),
+		//},
+		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}
+	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
 		Handler:      j.WWWhandleR(),
-		Addr:         ":" + cfg.C.Port,
+		Addr:         ":" + cfg.C.Port["jorm"],
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	j.WS = &http.Server{
-		Handler:      j.WShandleR(),
-		Addr: ":4489",
-		TLSConfig: &tls.Config{
-			GetCertificate: j.CertManager.GetCertificate,
-		},
-	}
+	//j.WS = &http.Server{
+	//	Handler: j.WShandleR(),
+	//	Addr:    ":4489",
+	//	TLSConfig: &tls.Config{
+	//		GetCertificate: j.CertManager.GetCertificate,
+	//	},
+	//}
 
 	return j
 }

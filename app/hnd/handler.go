@@ -12,7 +12,6 @@ import (
 	"github.com/comhttp/jorm/app/jorm/a"
 	"github.com/comhttp/jorm/app/jorm/coin"
 
-	"github.com/comhttp/jorm/app/jdb"
 	//"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/tdewolff/minify"
@@ -93,12 +92,12 @@ func AddNodeHandler(w http.ResponseWriter, r *http.Request) {
 
 // CoinsHandler handles a request for coin data
 func CoinsHandler(w http.ResponseWriter, r *http.Request) {
-	out, err := json.Marshal(coin.LoadCoinsBase())
-	if err != nil {
-		fmt.Println("Error encoding JSON")
-		return
-	}
-	w.Write([]byte(out))
+	//out, err := json.Marshal(coin.LoadCoinsBase())
+	//if err != nil {
+	//	fmt.Println("Error encoding JSON")
+	//	return
+	//}
+	//w.Write([]byte(out))
 }
 
 // CoinNodesHandler handles a request for (?)
@@ -123,25 +122,26 @@ func ViewJSON() http.Handler {
 func ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	m := minify.New()
-	height, err := strconv.ParseUint(v["file"], 10, 64)
-	if err != nil {
-		m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
-		path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
-		http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg.Path+"/www/"+path)))).ServeHTTP(w, r)
-	} else {
-		index := map[uint64]string{}
-		if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {
-			fmt.Println("Error", err)
-		}
+	//height, err := strconv.ParseUint(v["file"], 10, 64)
+	//if err != nil {
+	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
+	path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
+	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg.Path+"/www/"+path)))).ServeHTTP(w, r)
+	//} else {
+	//	index := map[uint64]string{}
+	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {
+	//	fmt.Println("Error", err)
+	//}
 
-		fmt.Println("index[height]", index[height])
-		out := map[string]interface{}{}
-		if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
-			fmt.Println("Error", err)
-		}
-		m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
-		json.NewEncoder(w).Encode(out)
-		w.Header().Add("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-	}
+	//fmt.Println("index[height]", index[height])
+	//out := map[string]interface{}{}
+	//if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
+	//	fmt.Println("Error", err)
+	//}
+	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
+	//json.NewEncoder(w).Encode(out)
+	json.NewEncoder(w).Encode("out")
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//}
 }

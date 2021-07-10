@@ -2,12 +2,9 @@ package n
 
 import (
 	"encoding/json"
-	"github.com/comhttp/jorm/app/cfg"
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/comhttp/jorm/app/jdb"
 )
 
 type GeoResponse struct {
@@ -38,46 +35,46 @@ type GeoResponse struct {
 }
 
 func GetGeoIP(ip string) (n NodeInfo) {
-	if jdb.JDB.Read(cfg.C.Out+"/geo", ip, &n) != nil {
-		if ip[:3] == "10." {
-			ip = "212.62.35.158"
-		}
-		client := &http.Client{}
-		req, err := http.NewRequest("GET", "https://tools.keycdn.com/geo.json?host="+ip, nil)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		req.Header.Set("User-Agent", "keycdn-tools:https://com-http.us")
-		resp, err := client.Do(req)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer resp.Body.Close()
-		mapBody, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		var g GeoResponse
-		err = json.Unmarshal(mapBody, &g)
-		if err != nil {
-		}
-		geo := g.Data.Geo
-		n.IP = ip
-		n.Rdns = geo.RDSN
-		n.ISP = geo.ISP
-		n.CountryName = geo.CountryName
-		n.CountryCode = geo.CountryCode
-		n.RegionName = geo.RegionName
-		n.RegionCode = geo.RegionCode
-		n.City = geo.City
-		n.Zipcode = geo.PostalCode
-		n.ContinentName = geo.ContinentName
-		n.ContinentCode = geo.ContinentCode
-		n.Latitude = geo.Latitude
-		n.Longitude = geo.Longitude
-		n.Postcode = geo.PostalCode
-		n.Timezone = geo.Timezone
-		jdb.JDB.Write(cfg.C.Out+"/geo", ip, n)
+	//if jdb.JDB.Read(cfg.C.Out+"/geo", ip, &n) != nil {
+	if ip[:3] == "10." {
+		ip = "212.62.35.158"
 	}
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://tools.keycdn.com/geo.json?host="+ip, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	req.Header.Set("User-Agent", "keycdn-tools:https://com-http.us")
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer resp.Body.Close()
+	mapBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	var g GeoResponse
+	err = json.Unmarshal(mapBody, &g)
+	if err != nil {
+	}
+	geo := g.Data.Geo
+	n.IP = ip
+	n.Rdns = geo.RDSN
+	n.ISP = geo.ISP
+	n.CountryName = geo.CountryName
+	n.CountryCode = geo.CountryCode
+	n.RegionName = geo.RegionName
+	n.RegionCode = geo.RegionCode
+	n.City = geo.City
+	n.Zipcode = geo.PostalCode
+	n.ContinentName = geo.ContinentName
+	n.ContinentCode = geo.ContinentCode
+	n.Latitude = geo.Latitude
+	n.Longitude = geo.Longitude
+	n.Postcode = geo.PostalCode
+	n.Timezone = geo.Timezone
+	//jdb.JDB.Write(cfg.C.Out+"/geo", ip, n)
+	//}
 	return n
 }

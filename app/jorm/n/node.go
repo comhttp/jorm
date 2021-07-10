@@ -1,13 +1,11 @@
 package n
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
 	"path/filepath"
 
 	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
@@ -66,7 +64,7 @@ func GetBitNodes(coins coin.Coins) {
 
 			b = append(b, coin)
 			bitNodes := a.BitNodes{}
-			if err := jdb.JDB.Read("nodes", coin, &bitNodes); err != nil {
+			if err := cfg.CFG.Read("nodes", coin, &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			for _, bitnode := range bitNodes {
@@ -76,12 +74,12 @@ func GetBitNodes(coins coin.Coins) {
 					if n.IP[:3] == "10." {
 						n.IP = "212.62.35.158"
 					}
-					jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
+					//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
 				}
 				if bitnode.IP[:3] == "10." {
 					bitnode.IP = "212.62.35.158"
 				}
-				jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
+				//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
 				//
 				//fmt.Println("--------------------")
 				//fmt.Println("bitNodes", nds)
@@ -91,26 +89,26 @@ func GetBitNodes(coins coin.Coins) {
 				bn.BitNodes = append(bn.BitNodes, *bitNode)
 			}
 			bns[coin] = bn
-			jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "bitnodes", bn)
+			//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "bitnodes", bn)
 
-			data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))
-			utl.ErrorLog(err)
-			nodes := make([][]byte, len(data))
-			for i := range data {
-				nodes[i] = []byte(data[i])
-			}
+			//data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))
+			//utl.ErrorLog(err)
+			//nodes := make([][]byte, len(data))
+			//for i := range data {
+			//	nodes[i] = []byte(data[i])
+			//}
 
-			ns := make(Nodes, len(nodes))
+			//ns := make(Nodes, len(nodes))
 			//
-			for i := range nodes {
-				if err := json.Unmarshal(nodes[i], &ns[i]); err != nil {
-					fmt.Println("Error", err)
-				}
-			}
-			jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "nodes", ns)
+			//for i := range nodes {
+			//	if err := json.Unmarshal(nodes[i], &ns[i]); err != nil {
+			//		fmt.Println("Error", err)
+			//	}
+			//}
+			//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "nodes", ns)
 		}
 	}
 
-	jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
-	jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
+	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
+	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
 }

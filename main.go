@@ -4,36 +4,41 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jorm/exchange"
+	csrc "github.com/comhttp/jorm/mod/coin/src"
 	"log"
-	"time"
+	//"github.com/comhttp/jorm/app/jorm/exchange"
+	//"log"
+	//"time"
 )
 
 func main() {
 	j := app.NewJORM()
-	exchange.ReadAllExchanges()
-	go app.Tickers(j.Coins)
-	ticker := time.NewTicker(999 * time.Second)
-	quit := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <-ticker.C:
-				app.Tickers(j.Coins)
-				fmt.Println("OKNO wooikos")
-			case <-quit:
-				ticker.Stop()
-				return
-			}
-		}
-	}()
+	//exchange.ReadAllExchanges()
+
+	csrc.GetCoinSources(j.JDB)
+	//go j.Tickers()
+	//ticker := time.NewTicker(999 * time.Second)
+	//quit := make(chan struct{})
+	//go func() {
+	//	for {
+	//		select {
+	//		case <-ticker.C:
+	//			j.Tickers()
+	//			fmt.Println("OKNO wooikos")
+	//		case <-quit:
+	//			ticker.Stop()
+	//			return
+	//		}
+	//	}
+	//}()
 	//log.Fatal(srv.ListenAndServeTLS("./cfg/server.pem", "./cfg/server.key"))
-	fmt.Println("Listening on port: ", cfg.C.Port)
+	fmt.Println("JORM is listening on port: ", cfg.C.Port["jorm"])
 	log.Fatal(j.WWW.ListenAndServe())
-	log.Fatal(j.WS.ListenAndServeTLS("", ""))
+	//log.Fatal(j.WS.ListenAndServeTLS("", ""))
 
 	// port := 9898
 	// fmt.Println("Listening on port:", port)
+	fmt.Println("Listening on port:", j.Coins.N)
 	// log.Fatal(http.ListenAndServe(":"+port, handlers.CORS()(r)))
 
 }

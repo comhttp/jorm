@@ -3,7 +3,6 @@ package exchange
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"os"
 	"path/filepath"
@@ -20,9 +19,9 @@ func GetExchange(src, slug string, get func(e *Exchange)) {
 		//}
 		//get(&e)
 		//e.Checked[src] = true
-		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
+		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
 	} else {
-		err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
+		//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", e.Name)
 		//if c.Checked == nil {
@@ -33,7 +32,7 @@ func GetExchange(src, slug string, get func(e *Exchange)) {
 		//	get(&c)
 		//	c.Checked[src] = true
 		//}
-		jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
+		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
 	}
 	return
 }

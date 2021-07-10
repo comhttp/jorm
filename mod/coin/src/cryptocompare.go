@@ -3,13 +3,14 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
 )
 
-func getCryptoCompare() {
+func getCryptoCompare(j *jdb.JDB) {
 	fmt.Println("GetCryptoCompareStart")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
 	utl.ErrorLog(err)
@@ -25,7 +26,7 @@ func getCryptoCompare() {
 					cs := coinSrc.(map[string]interface{})
 					if cs["CoinName"] != nil {
 						slug := utl.MakeSlug(cs["CoinName"].(string))
-						coin.GetCoin("cc", slug, getCryptoCompareCoin(slug, cs))
+						coin.GetCoin(j, "cc", slug, getCryptoCompareCoin(slug, cs))
 					}
 				}
 			}

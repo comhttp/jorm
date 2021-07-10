@@ -1,10 +1,11 @@
 package xsrc
 
 import (
+	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
-func getPoloniexExchange() {
+func getPoloniexExchange(j *jdb.JDB) {
 	//e.Markets = make(map[string]exchange.Market)
 	//for key, marketSrcRaw := range marketsRaw {
 	//	marketSrc := marketSrcRaw.(map[string]interface{})
@@ -34,5 +35,5 @@ func getPoloniexExchange() {
 		Country:     "",
 		Ticker:      t,
 	}
-	e.GetExchange()
+	e.GetExchange(j)
 }

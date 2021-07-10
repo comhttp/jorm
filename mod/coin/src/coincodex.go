@@ -6,13 +6,12 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func getCoinCodex() {
+func getCoinCodex(j *jdb.JDB) {
 	fmt.Println("GetCoinCodexStart")
 	var coinsRaw []interface{}
 	respcs, err := http.Get("https://coincodex.com/apps/coincodex/cache/all_coins.json")
@@ -27,13 +26,13 @@ func getCoinCodex() {
 			if coinSrc["name"] != nil {
 				slug := utl.MakeSlug(coinSrc["name"].(string))
 				var coin coin.Coin
-				if jdb.JDB.Read(cfg.C.Out+"/coins", slug, &coin) != nil {
+				if j.Read("coins", slug, &coin) != nil {
 					if coin.Checked == nil {
 						coin.Checked = make(map[string]bool)
 						if !coin.Checked["cx"] {
-							coin.Name = coinSrc["name"].(string)
+							//coin.Name = coinSrc["name"].(string)
 							coin.Ticker = coinSrc["symbol"].(string)
-							coin.Slug = slug
+							//coin.Slug = slug
 							coinDetails := make(map[string]interface{})
 							respcCoin, err := http.Get("https://coincodex.com/api/coincodex/get_coin/" + coin.Ticker)
 							utl.ErrorLog(err)
@@ -59,9 +58,9 @@ func getCoinCodex() {
 								fmt.Println("Insert ICO Coin: ", coinDetails["ico_price"])
 							}
 							coin.Checked["cx"] = true
-							coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
+							//coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
 							coin.Logo = true
-							jdb.JDB.Write(cfg.C.Out+"/coins/", slug, coin)
+							j.Write("coins", slug, coin)
 						}
 					}
 				}
