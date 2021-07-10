@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -59,7 +59,7 @@ func getCoinCodex(j *jdb.JDB) {
 							}
 							coin.Checked["cx"] = true
 							//coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
-							coin.Logo = true
+							//coin.Logo = true
 							j.Write("coins", slug, coin)
 						}
 					}

@@ -62,16 +62,7 @@ func NewJDB(jbds map[string]string) *JDB {
 	}
 
 	for js, url := range jbds {
-		//go j.cl(js, url)
-		headers := http.Header{}
-		auth := ""
-		if auth != "" {
-			headers.Add("Authorization", "Bearer "+auth)
-		}
-		client, err := jdbc.NewClient("http://"+url, jdbc.ClientOptions{Headers: headers})
-		if err != nil {
-		}
-		j.clients[js] = client
+		go j.cl(js, url)
 	}
 
 	return &j

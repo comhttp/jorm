@@ -3,7 +3,7 @@ package app
 import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/mod/coin"
 	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 )

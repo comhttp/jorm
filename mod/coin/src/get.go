@@ -4,7 +4,7 @@ import "github.com/comhttp/jorm/app/jdb"
 
 // GetCoinSources updates the available coin information sources
 func GetCoinSources(j *jdb.JDB) {
-	go getCryptoCompare(j)
+	getCryptoCompare(j)
 	// getCoinCodex()
 	//go getCoinGecko()
 

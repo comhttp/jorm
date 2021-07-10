@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/comhttp/jorm/app/jdb"
-	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
