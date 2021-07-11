@@ -4,19 +4,18 @@ import (
 	"context"
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/coin"
+	cfg2 "github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
-
-	"github.com/comhttp/jorm/app/cfg"
 
 	cf "github.com/cloudflare/cloudflare-go"
 )
 
 func CloudFlare() {
-	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
+	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg2.C)
 	ctx := context.Background()
 	// Construct a new API object
-	api, err := cf.New(cfg.C.CF.CloudFlareAPIkey, cfg.C.CF.CloudFlareEmail)
+	api, err := cf.New(cfg2.C.CF.CloudFlareAPIkey, cfg2.C.CF.CloudFlareEmail)
 	utl.ErrorLog(err)
 
 	//delAllCNameDNS(api, ctx, "com-http.us")

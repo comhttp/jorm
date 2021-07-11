@@ -2,12 +2,12 @@ package coins
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jdb"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strings"
 )
 
-func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
+func SetCoin(j *jdb2.JDB, src, slug string, get func(c *Coin)) {
 	c := &Coin{}
 	err := j.Read("coins", "coins_"+slug, &c)
 	if err != nil {

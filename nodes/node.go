@@ -1,14 +1,19 @@
-package n
+package nodes
 
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
+	"github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/coins"
 	"path/filepath"
 
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
+
+type BitNode struct {
+	IP   string `json:"ip"`
+	Port int64  `json:"p"`
+}
 
 // BitNoded data
 type BitNoded struct {
@@ -55,7 +60,7 @@ type NodeInfo struct {
 }
 
 // GetBitNodes updates the data about all of the coins in the database
-func GetBitNodes(coins coin.Coins) {
+func GetBitNodes(coins coins.Coins) {
 	var b []string
 	bns := make(map[string]BitNoded)
 	for _, coin := range coins.C {

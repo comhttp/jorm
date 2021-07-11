@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	coins2 "github.com/comhttp/jorm/coins"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func getCoinCodex(j *jdb.JDB) {
+func getCoinCodex(j *jdb2.JDB) {
 	fmt.Println("GetCoinCodexStart")
 	var coinsRaw []interface{}
 	respcs, err := http.Get("https://coincodex.com/apps/coincodex/cache/all_coins.json")

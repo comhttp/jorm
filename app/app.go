@@ -2,8 +2,8 @@ package app
 
 import (
 	"crypto/tls"
-	"github.com/comhttp/jorm/app/jdb"
 	coins2 "github.com/comhttp/jorm/coins"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 )
@@ -15,5 +15,5 @@ type JORM struct {
 	WS          *http.Server
 	TLSconfig   *tls.Config
 	CertManager autocert.Manager
-	JDB         *jdb.JDB
+	JDB         *jdb2.JDB
 }

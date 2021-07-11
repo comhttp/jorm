@@ -2,11 +2,11 @@ package xsrc
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/app/jorm/exchange"
+	jdb2 "github.com/comhttp/jorm/jdb"
 )
 
-func getDexTradeExchange(j *jdb.JDB) {
+func getDexTradeExchange(j *jdb2.JDB) {
 	t := exchange.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",

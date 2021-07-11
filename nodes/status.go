@@ -1,9 +1,9 @@
-package n
+package nodes
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/app/jorm/a"
+	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 

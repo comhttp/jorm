@@ -1,7 +1,7 @@
 package coins
 
 import (
-	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -25,6 +25,18 @@ func GetCoins(j *jdb.JDB) Coins {
 		allCoins.N = i
 	}
 	return allCoins
+}
+func GetAllCoins(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_all", &c)
+	utl.ErrorLog(err)
+	return c
+}
+func GetNodeCoins(j *jdb.JDB) Coins {
+	c := Coins{}
+	err := j.Read("coins", "info_nodes", &c)
+	utl.ErrorLog(err)
+	return c
 }
 
 func GetRestCoins(j *jdb.JDB) Coins {
@@ -54,12 +66,6 @@ func GetUsableCoins(j *jdb.JDB) Coins {
 func GetCoinsBin(j *jdb.JDB) Coins {
 	c := Coins{}
 	err := j.Read("coins", "info_bin", &c)
-	utl.ErrorLog(err)
-	return c
-}
-func GetAllCoins(j *jdb.JDB) Coins {
-	c := Coins{}
-	err := j.Read("coins", "info_all", &c)
 	utl.ErrorLog(err)
 	return c
 }

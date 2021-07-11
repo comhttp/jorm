@@ -3,11 +3,10 @@ package exchange
 import (
 	"encoding/json"
 	"fmt"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	"github.com/comhttp/jorm/app/jdb"
 )
 
 type Exchange struct {
@@ -138,7 +137,7 @@ func GetSource(url string) interface{} {
 	return marketsRaw
 }
 
-func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
+func (e *Exchange) WriteExchange(j *jdb2.JDB, ex ExchangeSrc) {
 	for _, exs := range ex.Markets {
 		mSrc := Market{}
 		for _, cur := range exs.Currencies {
@@ -150,7 +149,7 @@ func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 	j.Write("exchanges", e.Slug, e)
 }
 
-func (es *ExchangeSrc) GetExchange(j *jdb.JDB) {
+func (es *ExchangeSrc) GetExchange(j *jdb2.JDB) {
 	fmt.Println("Get " + es.Name + " Exchange Start")
 	var e Exchange
 	e.Name = es.Name

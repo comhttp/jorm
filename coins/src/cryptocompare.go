@@ -3,14 +3,14 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/jdb"
 	"github.com/comhttp/jorm/coins"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
 )
 
-func getCryptoCompare(j *jdb.JDB) {
+func getCryptoCompare(j *jdb2.JDB) {
 	fmt.Println("GetCryptoCompareStart")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
 	utl.ErrorLog(err)

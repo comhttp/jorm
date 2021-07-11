@@ -1,9 +1,11 @@
 package xsrc
 
-import "github.com/comhttp/jorm/app/jdb"
+import (
+	jdb2 "github.com/comhttp/jorm/jdb"
+)
 
 // GetCoinSources updates the available coin information sources
-func GetExchangeSources(j *jdb.JDB) {
+func GetExchangeSources(j *jdb2.JDB) {
 	//go getPoloniexExchange(j)
 	//getDigiFinexExchange()
 	//getBitTrexExchange()

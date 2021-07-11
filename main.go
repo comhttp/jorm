@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
-	"github.com/comhttp/jorm/app/cfg"
+	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"

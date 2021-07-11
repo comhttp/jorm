@@ -2,8 +2,8 @@ package a
 
 import (
 	"fmt"
+	"github.com/comhttp/jorm/cfg"
 
-	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -29,7 +29,6 @@ func RPCSRC(c string) (b *BitNode) {
 			fmt.Println("bitb:", b.IP)
 			break
 		}
-
 	}
 	fmt.Println("b:", b)
 	return

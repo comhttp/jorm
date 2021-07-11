@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
-	"github.com/comhttp/jorm/app/jdb"
+	"github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/jdb"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -23,6 +23,7 @@ const (
 func NewJORM() *JORM {
 	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
+
 	//go u.CloudFlare()
 	fmt.Println("Get ", cfg.C)
 	j := &JORM{

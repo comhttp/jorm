@@ -3,7 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/jdb"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"io/ioutil"
 	"net/http"
 
@@ -11,7 +11,7 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func getBinanceExchange(j *jdb.JDB) {
+func getBinanceExchange(j *jdb2.JDB) {
 	fmt.Println("Get Binance Exchange Start")
 	t := exchange.ExchangeTicker{
 		Ask:    "lowestAsk",

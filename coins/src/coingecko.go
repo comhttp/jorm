@@ -3,15 +3,15 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/jdb"
 	coins2 "github.com/comhttp/jorm/coins"
+	jdb2 "github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
 	"time"
 )
 
-func getCoinGecko(j *jdb.JDB) {
+func getCoinGecko(j *jdb2.JDB) {
 	fmt.Println("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")

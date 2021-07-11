@@ -2,7 +2,7 @@ package hnd
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
+	cfg2 "github.com/comhttp/jorm/cfg"
 	"github.com/gorilla/mux"
 	"net/http"
 	"regexp"
@@ -115,7 +115,7 @@ func ViewJSON() http.Handler {
 	m := minify.New()
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 
-	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg.Path+cfg.C.Out))))
+	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg2.Path+cfg2.C.Out))))
 }
 
 // NodeHandler handles a request for (?)
@@ -126,7 +126,7 @@ func ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//if err != nil {
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
-	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg.Path+"/www/"+path)))).ServeHTTP(w, r)
+	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg2.Path+"/www/"+path)))).ServeHTTP(w, r)
 	//} else {
 	//	index := map[uint64]string{}
 	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {

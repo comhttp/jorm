@@ -2,14 +2,13 @@ package a
 
 import (
 	"fmt"
-
-	"github.com/comhttp/jorm/app/cfg"
+	cfg2 "github.com/comhttp/jorm/cfg"
 
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func (rpc *BitNode) GetRawMemPool() interface{} {
-	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}
@@ -22,7 +21,7 @@ func (rpc *BitNode) GetRawMemPool() interface{} {
 }
 
 func (rpc *BitNode) GetMiningInfo() interface{} {
-	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}

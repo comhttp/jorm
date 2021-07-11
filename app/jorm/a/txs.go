@@ -2,13 +2,13 @@ package a
 
 import (
 	"fmt"
+	cfg2 "github.com/comhttp/jorm/cfg"
 
-	"github.com/comhttp/jorm/app/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func (rpc *BitNode) GetTx(txid string) (t interface{}) {
-	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}
@@ -76,7 +76,7 @@ func (rpc *BitNode) GetTx(txid string) (t interface{}) {
 }
 
 func (rpc *BitNode) GetBlockTxAddr(blockheight int) interface{} {
-	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}

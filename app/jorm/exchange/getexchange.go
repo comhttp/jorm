@@ -2,7 +2,7 @@ package exchange
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/cfg"
+	cfg2 "github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"os"
 	"path/filepath"
@@ -10,7 +10,7 @@ import (
 
 func GetExchange(src, slug string, get func(e *Exchange)) {
 	e := Exchange{}
-	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
+	_, err := os.Stat(filepath.FromSlash(cfg2.Path + "/exchanges/" + slug))
 	if err != nil {
 		e.Slug = slug
 		fmt.Println("Insert Exchange: ", slug)
