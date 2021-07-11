@@ -32,8 +32,8 @@ func GetAllCoins(j *jdb.JDB) Coins {
 	utl.ErrorLog(err)
 	return c
 }
-func GetNodeCoins(j *jdb.JDB) Coins {
-	c := Coins{}
+func GetNodeCoins(j *jdb.JDB) NodeCoins {
+	c := NodeCoins{}
 	err := j.Read("coins", "info_nodes", &c)
 	utl.ErrorLog(err)
 	return c

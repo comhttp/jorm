@@ -1,7 +1,7 @@
 package xsrc
 
 import (
-	"github.com/comhttp/jorm/app/jorm/exchange"
+	exchange2 "github.com/comhttp/jorm/exchanges"
 	jdb2 "github.com/comhttp/jorm/jdb"
 )
 
@@ -17,7 +17,7 @@ func getPoloniexExchange(j *jdb2.JDB) {
 	//		}
 	//	}
 	//}
-	t := exchange.ExchangeTicker{
+	t := exchange2.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
 		High24: "high24Hr",
@@ -25,7 +25,7 @@ func getPoloniexExchange(j *jdb2.JDB) {
 		Low24:  "low24Hr",
 		Vol:    "baseVolume",
 	}
-	e := exchange.ExchangeSrc{
+	e := exchange2.ExchangeSrc{
 		Name:        "Poloniex",
 		Slug:        "poloniex",
 		Url:         "https://poloniex.com/public?command=returnTicker",

@@ -3,7 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/exchange"
+	exchange2 "github.com/comhttp/jorm/exchanges"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
@@ -13,7 +13,7 @@ func getBitZExchange() {
 	fmt.Println("Get BitZ Exchange Start")
 	marketsRaw := make(map[string]interface{})
 	slug := "bitz"
-	var e exchange.Exchange
+	var e exchange2.Exchange
 	e.Name = "BitZ"
 	e.Slug = slug
 	respcs, err := http.Get("https://apiv2.bitz.com/Market/tickerall")

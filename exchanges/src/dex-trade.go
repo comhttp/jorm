@@ -2,12 +2,12 @@ package xsrc
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/exchange"
+	exchange2 "github.com/comhttp/jorm/exchanges"
 	jdb2 "github.com/comhttp/jorm/jdb"
 )
 
 func getDexTradeExchange(j *jdb2.JDB) {
-	t := exchange.ExchangeTicker{
+	t := exchange2.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
 		High24: "high24Hr",
@@ -15,7 +15,7 @@ func getDexTradeExchange(j *jdb2.JDB) {
 		Low24:  "low24Hr",
 		Vol:    "baseVolume",
 	}
-	e := exchange.ExchangeSrc{
+	e := exchange2.ExchangeSrc{
 		Name:        "Dex Trade",
 		Slug:        "dex-trade",
 		Url:         "https://api.dex-trade.com/v1/public/symbols",
@@ -29,11 +29,11 @@ func getDexTradeExchange(j *jdb2.JDB) {
 	//var ex exchange.Exchange
 
 	fmt.Println("Get " + e.Name + " Exchange Start")
-	var ex exchange.Exchange
+	var ex exchange2.Exchange
 	ex.Name = e.Name
 	ex.Slug = e.Slug
-	marketsSrc := exchange.GetSource(e.Url).(map[string]interface{})
-	e.Markets = make(map[string]exchange.MarketSrc)
+	marketsSrc := exchange2.GetSource(e.Url).(map[string]interface{})
+	e.Markets = make(map[string]exchange2.MarketSrc)
 
 	if marketsSrc != nil {
 		if marketsSrc["data"] != nil {
@@ -41,13 +41,13 @@ func getDexTradeExchange(j *jdb2.JDB) {
 				m := marketSrc.(map[string]interface{})
 				if q := m["quote"]; q != nil {
 					if nq := q.(string); nq != e.Markets[nq].Symbol {
-						e.Markets[nq] = exchange.MarketSrc{
+						e.Markets[nq] = exchange2.MarketSrc{
 							Symbol:     nq,
-							Currencies: make(map[string]exchange.Currency),
+							Currencies: make(map[string]exchange2.Currency),
 						}
 					}
 					if m["pair"] != nil {
-						tickerRaw := exchange.GetSource("https://api.dex-trade.com/v1/public/ticker?pair=" + m["pair"].(string)).(map[string]interface{})
+						tickerRaw := exchange2.GetSource("https://api.dex-trade.com/v1/public/ticker?pair=" + m["pair"].(string)).(map[string]interface{})
 						if tickerRaw["data"] != nil {
 							ticker := tickerRaw["data"].(map[string]interface{})
 							//fmt.Println("Get ticker",ticker)

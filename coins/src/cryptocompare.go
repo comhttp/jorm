@@ -11,7 +11,7 @@ import (
 )
 
 func getCryptoCompare(j *jdb2.JDB) {
-	fmt.Println("GetCryptoCompareStart")
+	fmt.Println("Get Crypto Compare Start")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
 	utl.ErrorLog(err)
 	defer respcs.Body.Close()
@@ -32,7 +32,7 @@ func getCryptoCompare(j *jdb2.JDB) {
 			}
 		}
 	}
-	fmt.Println("GetCryptoCompareDone")
+	fmt.Println("Get Crypto Compare Done")
 }
 
 func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *coins.Coin) {

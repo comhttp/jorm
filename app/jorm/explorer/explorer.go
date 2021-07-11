@@ -3,10 +3,11 @@ package explorer
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
-	"github.com/comhttp/jorm/app/jorm/coin"
 	"github.com/comhttp/jorm/app/jorm/n"
-	cfg2 "github.com/comhttp/jorm/cfg"
-	jdb2 "github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/coins"
+	"github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )
@@ -16,13 +17,13 @@ type Explorer struct {
 }
 
 // GetExplorer updates the data from blockchain of a coin in the database
-func GetExplorer(j *jdb2.JDB, c coin.Coins) {
+func GetExplorer(j *jdb.JDB, c coins.Coins) {
 	var b []string
 
 	for _, coin := range c.C {
-		var bn n.BitNoded
+		var bn nodes.BitNoded
 		fmt.Println("Coin is BitNode:", coin)
-		if utl.FileExists(filepath.FromSlash(cfg2.Path + "nodes/" + coin)) {
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin)) {
 			b = append(b, coin)
 			bitNodes := a.BitNodes{}
 			//if err := jdb.JDB.Read(filepath.FromSlash("/nodes/"), coin, &bitNodes); err != nil {
@@ -31,7 +32,7 @@ func GetExplorer(j *jdb2.JDB, c coin.Coins) {
 			fmt.Println("Coin is BitNode:", coin)
 			for _, bitnode := range bitNodes {
 
-				fmt.Println("bitnodebitnodebitnode", cfg2.C.RPC.Username, cfg2.C.RPC.Password, bitnode.IP, bitnode.Port)
+				fmt.Println("bitnodebitnodebitnode", cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
 
 				err := GetBlockchain(bitnode)
 				if err != nil {
@@ -61,7 +62,7 @@ func GetBlockchain(b a.BitNode) (err error) {
 
 	fmt.Println("aaaaaaaaa", b)
 
-	if utl.FileExists(cfg2.Path + cfg2.C.Out + "/info/explorer") {
+	if utl.FileExists(cfg.Path + cfg.C.Out + "/info/explorer") {
 		e := Explorer{}
 		//if err := jdb.JDB.Read(cfg.C.Out+"/info", "explorer", &e); err != nil {
 		//	fmt.Println("Error", err)
@@ -109,7 +110,7 @@ func GetBlockchain(b a.BitNode) (err error) {
 		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "txs", map[uint64]string{})
 		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "addresses", map[uint64]string{})
 
-		fmt.Println("ExplorerExplorerExplorerExplorer", cfg2.C.Out+"/info")
+		fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
 
 	}
 	return
@@ -133,7 +134,7 @@ func (e *Explorer) tx(a a.BitNode, txid string) {
 					scriptPubKey := nRaw.(map[string]interface{})["scriptPubKey"].(map[string]interface{})
 					if scriptPubKey["addresses"] != nil {
 						for _, address := range (scriptPubKey["addresses"]).([]interface{}) {
-							e.addr(cfg2.C.Out, address.(string))
+							e.addr(cfg.C.Out, address.(string))
 						}
 					}
 				}

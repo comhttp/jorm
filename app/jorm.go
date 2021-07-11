@@ -1,8 +1,10 @@
 package app
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/jdb"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
@@ -19,6 +21,16 @@ const (
 	// HTML form key to override a request method.
 	HTTPMethodOverrideFormKey = "_method"
 )
+
+type JORM struct {
+	Coins coins.Coins
+	//Hosts         map[string]Host
+	WWW       *http.Server
+	WS        *http.Server
+	TLSconfig *tls.Config
+	//CertManager autocert.Manager
+	JDB *jdb.JDB
+}
 
 func NewJORM() *JORM {
 	err := cfg.CFG.Read("conf", "conf", &cfg.C)

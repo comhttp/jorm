@@ -5,6 +5,7 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
+
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
 	//"github.com/comhttp/jorm/app/jorm/exchange"
@@ -17,8 +18,10 @@ func main() {
 	//exchange.ReadAllExchanges()
 
 	//csrc.GetCoinSources(j.JDB)
+	coins.BitNodeCoins(j.JDB)
+	//coins.ProcessCoins(j.JDB)
 
-	coins.ProcessCoins(j.JDB)
+	//explorer.GetExplorer(j.JDB)
 	//go j.Tickers()
 	//ticker := time.NewTicker(999 * time.Second)
 	//quit := make(chan struct{})
@@ -41,7 +44,6 @@ func main() {
 
 	// port := 9898
 	// fmt.Println("Listening on port:", port)
-	fmt.Println("Listening on port:", j.Coins.N)
 	// log.Fatal(http.ListenAndServe(":"+port, handlers.CORS()(r)))
 
 }

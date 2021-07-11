@@ -3,17 +3,17 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
+	exchange2 "github.com/comhttp/jorm/exchanges"
 	jdb2 "github.com/comhttp/jorm/jdb"
 	"io/ioutil"
 	"net/http"
 
-	"github.com/comhttp/jorm/app/jorm/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func getBinanceExchange(j *jdb2.JDB) {
 	fmt.Println("Get Binance Exchange Start")
-	t := exchange.ExchangeTicker{
+	t := exchange2.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
 		High24: "high24Hr",
@@ -21,7 +21,7 @@ func getBinanceExchange(j *jdb2.JDB) {
 		Low24:  "low24Hr",
 		Vol:    "baseVolume",
 	}
-	e := exchange.ExchangeSrc{
+	e := exchange2.ExchangeSrc{
 		Name:        "Binance",
 		Slug:        "binance",
 		Url:         "https://api.binance.com/api/v3/exchangeInfo",
@@ -31,7 +31,7 @@ func getBinanceExchange(j *jdb2.JDB) {
 		Country:     "",
 		Ticker:      t,
 	}
-	var ex exchange.Exchange
+	var ex exchange2.Exchange
 	ex.Name = e.Name
 	ex.Slug = e.Slug
 
@@ -42,7 +42,7 @@ func getBinanceExchange(j *jdb2.JDB) {
 	//mapBodyS, err := ioutil.ReadAll(resps.Body)
 	//json.Unmarshal(mapBodyS, &exchangeRaw)
 
-	marketsSrc := exchange.GetSource(e.Url).(map[string]interface{})
+	marketsSrc := exchange2.GetSource(e.Url).(map[string]interface{})
 
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.binance.com/api/v3/ticker/24hr")
@@ -56,16 +56,16 @@ func getBinanceExchange(j *jdb2.JDB) {
 			tickers[exchangeTicker["symbol"].(string)] = exchangeTicker
 		}
 	}
-	e.Markets = make(map[string]exchange.MarketSrc)
+	e.Markets = make(map[string]exchange2.MarketSrc)
 	if marketsSrc != nil {
 		if marketsSrc["symbols"] != nil {
 			for _, marketSrcRaw := range marketsSrc["symbols"].([]interface{}) {
 				marketSrc := marketSrcRaw.(map[string]interface{})
 				if q := marketSrc["quoteAsset"]; q != nil {
 					if nq := q.(string); nq != e.Markets[nq].Symbol {
-						e.Markets[nq] = exchange.MarketSrc{
+						e.Markets[nq] = exchange2.MarketSrc{
 							Symbol:     nq,
-							Currencies: make(map[string]exchange.Currency),
+							Currencies: make(map[string]exchange2.Currency),
 						}
 					}
 					if marketSrc["symbol"] != nil {

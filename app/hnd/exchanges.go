@@ -3,15 +3,14 @@ package hnd
 import (
 	"encoding/json"
 	"fmt"
+	exchange2 "github.com/comhttp/jorm/exchanges"
 	"net/http"
-
-	"github.com/comhttp/jorm/app/jorm/exchange"
 )
 
 func ViewMarket(w http.ResponseWriter, r *http.Request) {
 	//rc := mux.Vars(r)["coin"]
 	//var coin coin.Coin
-	var coinMarkets exchange.CoinMarkets
+	var coinMarkets exchange2.CoinMarkets
 	//jdb.JDB.Read(cfg.Path+"/www/coins", rc, &coin)
 	//exchanges := exchange.ReadAllExchanges()
 	//for _, e := range exchanges {
