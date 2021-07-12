@@ -7,8 +7,6 @@ import (
 )
 
 func (rpc *BitNode) GetBlockCount() (b int) {
-	fmt.Println("rpcrpcrpcrpcrpcrpcrpcrpcrpcrpcrpcrpc", rpc)
-
 	bparams := []int{}
 	gbc, err := rpc.Jrc.MakeRequest("getblockcount", bparams)
 	if err != nil {
@@ -22,7 +20,7 @@ func (rpc *BitNode) GetBlockCount() (b int) {
 		b, _ := strconv.Atoi(gbc.(string))
 		return b
 	default:
-		b, _ := strconv.Atoi(gbc.(string))
+		//b, _ := strconv.Atoi(gbc.(string))
 		return b
 	}
 	return

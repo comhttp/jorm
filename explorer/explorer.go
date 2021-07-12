@@ -3,7 +3,6 @@ package explorer
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app/jorm/a"
-	"github.com/comhttp/jorm/app/jorm/n"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/jdb"
@@ -17,29 +16,17 @@ type Explorer struct {
 }
 
 // GetExplorer updates the data from blockchain of a coin in the database
-func GetExplorer(j *jdb.JDB, c coins.Coins) {
+func ExploreCoins(j *jdb.JDB, c coins.NodeCoins) {
 	var b []string
-
 	for _, coin := range c.C {
 		var bn nodes.BitNoded
-		fmt.Println("Coin is BitNode:", coin)
-		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin)) {
-			b = append(b, coin)
-			bitNodes := a.BitNodes{}
-			//if err := jdb.JDB.Read(filepath.FromSlash("/nodes/"), coin, &bitNodes); err != nil {
-			//	fmt.Println("Error", err)
-			//}
-			fmt.Println("Coin is BitNode:", coin)
-			for _, bitnode := range bitNodes {
-
-				fmt.Println("bitnodebitnodebitnode", cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
-
-				err := GetBlockchain(bitnode)
-				if err != nil {
-
-				}
-
-				bn.Coin = coin
+		fmt.Println("Coin is BitNode:", coin.Name)
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
+			b = append(b, coin.Slug)
+			for _, bitnode := range coin.Nodes {
+				go GetCoinBlockchain(j, bitnode)
+				fmt.Println("GetCoinBlockchain:", coin.Name)
+				bn.Coin = coin.Slug
 			}
 			//bns = append(bns, bn)
 			//nodes := jdb.ReadData(filepath.FromSlash(cfg.C.Out + "/nodes"))
@@ -58,20 +45,17 @@ func GetExplorer(j *jdb.JDB, c coins.Coins) {
 }
 
 // GetExplorer returns the full set of information about a block
-func GetBlockchain(b a.BitNode) (err error) {
-
-	fmt.Println("aaaaaaaaa", b)
-
-	if utl.FileExists(cfg.Path + cfg.C.Out + "/info/explorer") {
-		e := Explorer{}
+func GetCoinBlockchain(j *jdb.JDB, b a.BitNode) {
+	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
+	if b.Jrc != nil {
+		//if utl.FileExists(cfg.Path + cfg.C.Out + "/info/explorer") {
+		e := GetExplorer(j)
 		//if err := jdb.JDB.Read(cfg.C.Out+"/info", "explorer", &e); err != nil {
 		//	fmt.Println("Error", err)
 		//}
-		fmt.Println("PortPortPort", b.Port)
-		fmt.Println("IPIPIPIP", b.IP)
 		blockCount := b.GetBlockCount()
 
-		fmt.Println("blockCountblockCountblockCountblockCount", blockCount)
+		fmt.Println("Block Count: ", blockCount)
 
 		if e.Status != nil && blockCount >= int(e.Status["blocks"]) {
 			for {
@@ -100,18 +84,19 @@ func GetBlockchain(b a.BitNode) (err error) {
 					break
 				}
 			}
+			//}
+			//} else {
+			//e := &Explorer{
+			//	Status: map[string]uint64{"blocks": 0, "txs": 0, "addresses": 0},
+			//}
+			//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
+			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "blocks", map[uint64]string{})
+			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "txs", map[uint64]string{})
+			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "addresses", map[uint64]string{})
+
+			fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
+
 		}
-	} else {
-		//e := &Explorer{
-		//	Status: map[string]uint64{"blocks": 0, "txs": 0, "addresses": 0},
-		//}
-		//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
-		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "blocks", map[uint64]string{})
-		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "txs", map[uint64]string{})
-		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "addresses", map[uint64]string{})
-
-		fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
-
 	}
 	return
 }

@@ -28,44 +28,44 @@ func GetCoins(j *jdb.JDB) Coins {
 }
 func GetAllCoins(j *jdb.JDB) Coins {
 	c := Coins{}
-	err := j.Read("coins", "info_all", &c)
+	err := j.Read("info", "allcoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 func GetNodeCoins(j *jdb.JDB) NodeCoins {
 	c := NodeCoins{}
-	err := j.Read("coins", "info_nodes", &c)
+	err := j.Read("info", "nodecoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 
 func GetRestCoins(j *jdb.JDB) Coins {
 	c := Coins{}
-	err := j.Read("coins", "info_rest", &c)
+	err := j.Read("info", "restcoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 func GetCoinsWords(j *jdb.JDB) CoinsWords {
 	c := CoinsWords{}
-	err := j.Read("coins", "info_words", &c)
+	err := j.Read("info", "wordscoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 func GetAlgoCoins(j *jdb.JDB) AlgoCoins {
 	c := AlgoCoins{}
-	err := j.Read("coins", "info_algo", &c)
+	err := j.Read("info", "algocoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 func GetUsableCoins(j *jdb.JDB) Coins {
 	c := Coins{}
-	err := j.Read("coins", "info_usable", &c)
+	err := j.Read("info", "usablecoins", &c)
 	utl.ErrorLog(err)
 	return c
 }
 func GetCoinsBin(j *jdb.JDB) Coins {
 	c := Coins{}
-	err := j.Read("coins", "info_bin", &c)
+	err := j.Read("info", "bincoins", &c)
 	utl.ErrorLog(err)
 	return c
 }

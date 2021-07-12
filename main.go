@@ -5,6 +5,7 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
+	"github.com/comhttp/jorm/explorer"
 
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
@@ -18,10 +19,13 @@ func main() {
 	//exchange.ReadAllExchanges()
 
 	//csrc.GetCoinSources(j.JDB)
-	coins.BitNodeCoins(j.JDB)
-	//coins.ProcessCoins(j.JDB)
 
-	//explorer.GetExplorer(j.JDB)
+	coins.ProcessCoins(j.JDB)
+
+	coins.BitNodeCoins(j.JDB)
+	j.NodeCoins = coins.GetNodeCoins(j.JDB)
+
+	go explorer.ExploreCoins(j.JDB, j.NodeCoins)
 	//go j.Tickers()
 	//ticker := time.NewTicker(999 * time.Second)
 	//quit := make(chan struct{})

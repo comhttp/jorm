@@ -1,6 +1,7 @@
 package coins
 
 import (
+	"github.com/comhttp/jorm/app/jorm/a"
 	"github.com/comhttp/jorm/pkg/utl"
 	"time"
 )
@@ -77,11 +78,12 @@ type BaseCoin struct {
 
 // Coin stores identifying information about coins in the database
 type NodeCoin struct {
-	Rank   int    `json:"r"`
-	Name   string `json:"n"`
-	Ticker string `json:"t"`
-	Slug   string `json:"s"`
-	Algo   string `json:"a"`
+	Rank   int        `json:"r"`
+	Name   string     `json:"n"`
+	Ticker string     `json:"t"`
+	Slug   string     `json:"s"`
+	Algo   string     `json:"a"`
+	Nodes  a.BitNodes `json:"b"`
 }
 
 // Coin stores identifying information about coins in the database

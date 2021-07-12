@@ -10,7 +10,7 @@ import (
 
 	"encoding/json"
 	"github.com/comhttp/jorm/app/jorm/a"
-	"github.com/comhttp/jorm/app/jorm/coin"
+	"github.com/comhttp/jorm/coins"
 
 	//"github.com/comhttp/jorm/pkg/utl"
 

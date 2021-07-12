@@ -2,7 +2,6 @@ package app
 
 import (
 	"crypto/tls"
-	"fmt"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/jdb"
@@ -23,7 +22,8 @@ const (
 )
 
 type JORM struct {
-	Coins coins.Coins
+	Coins     coins.Coins
+	NodeCoins coins.NodeCoins
 	//Hosts         map[string]Host
 	WWW       *http.Server
 	WS        *http.Server
@@ -37,7 +37,7 @@ func NewJORM() *JORM {
 	utl.ErrorLog(err)
 
 	//go u.CloudFlare()
-	fmt.Println("Get ", cfg.C)
+	//fmt.Println("Get ", cfg.C)
 	j := &JORM{
 		//CertManager: autocert.Manager{
 		//	Prompt:     autocert.AcceptTOS,
