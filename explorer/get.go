@@ -11,3 +11,10 @@ func GetExplorer(j *jdb.JDB) Explorer {
 	utl.ErrorLog(err)
 	return e
 }
+
+func GetIndex(j *jdb.JDB, c, t string) map[int]string {
+	index := map[int]string{}
+	err := j.Read(c, t, &index)
+	utl.ErrorLog(err)
+	return index
+}

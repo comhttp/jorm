@@ -53,13 +53,8 @@ func ExploreCoins(j *jdb.JDB, c coins.NodeCoins) {
 func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 	if b.Jrc != nil {
-		//if utl.FileExists(cfg.Path + cfg.C.Out + "/info/explorer") {
 		e := GetExplorer(j)
-		//if err := jdb.JDB.Read(cfg.C.Out+"/info", "explorer", &e); err != nil {
-		//	fmt.Println("Error", err)
-		//}
 		blockCount := b.GetBlockCount()
-
 		fmt.Println("Block Count: ", blockCount)
 		fmt.Println("Be.Status: ", e.Status)
 
@@ -91,16 +86,12 @@ func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 	for {
 		fmt.Println("BlocksPre", e.Status[c].Blocks)
-		blocksIndex := map[int]string{}
-		//if err := jdb.JDB.Read(cfg.C.Out+"/index", "blocks", &blocksIndex); err != nil {
-		//	fmt.Println("Error", err)
-		//}
+		blocksIndex := GetIndex(j, c, "blocks")
 		e.Status[c].Blocks++
 		blockRaw := b.GetBlockByHeight(e.Status[c].Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
 			blocksIndex[e.Status[c].Blocks] = blockHash
-			//jdb.JDB.Write(cfg.C.Out+"/blocks", blockHash, blockRaw)
 			j.Write(c, "block_"+blockHash, blockRaw)
 			block := (blockRaw).(map[string]interface{})
 			if e.Status[c].Blocks != 0 {
@@ -110,10 +101,8 @@ func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 			}
 			fmt.Println("blockHashblockHashblockHashblockHash", blockHash)
 			fmt.Println("BlocksPosle", e.Status[c].Blocks)
-			j.Write(c, "index", blocksIndex)
+			j.Write(c, "blocks", blocksIndex)
 			j.Write("info", "explorer", e)
-			//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
-			//jdb.JDB.Write(cfg.C.Out+"/index", "blocks", blocksIndex)
 		} else {
 			break
 		}
@@ -121,16 +110,10 @@ func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 }
 func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 	txRaw := a.GetTx(txid)
-	txsIndex := map[int]string{}
-	//if err := jdb.JDB.Read(cfg.C.Out+"/index", "txs", &txsIndex); err != nil {
-	//	fmt.Println("Error", err)
-	//}
+	txsIndex := GetIndex(j, c, "txs")
 	e.Status[c].Txs++
 	txsIndex[e.Status[c].Txs] = txid
-	//fmt.Println("txid", txid)
-	//go jdb.JDB.Write(cfg.C.Out+"/txs", txid, txRaw)
 	j.Write(c, "tx_"+txid, txRaw)
-
 	if txRaw != nil {
 		tx := (txRaw).(map[string]interface{})
 		if tx["vout"] != nil {
@@ -146,15 +129,13 @@ func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 			}
 		}
 	}
-	//jdb.JDB.Write(cfg.C.Out+"/index", "txs", txsIndex)
+	j.Write(c, "txs", txsIndex)
 	return
 }
 
 func (e *Explorer) addr(j *jdb.JDB, c, address string) {
-	addressesIndex := map[int]string{}
-	//if err := jdb.JDB.Read(www+"/index", "addresses", &addressesIndex); err != nil {
-	//	fmt.Println("Error", err)
-	//}
+	addressesIndex := GetIndex(j, c, "addr")
+
 	//addressData := new(interface{})
 	//if err := jdb.JDB.Read(www, "explorer", &e); err != nil {
 	//	fmt.Println("Error", err)
