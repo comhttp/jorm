@@ -12,7 +12,12 @@ import (
 )
 
 type Explorer struct {
-	Status map[string]uint64 `json:"status"`
+	Status map[string]*Blockchain `json:"status"`
+}
+type Blockchain struct {
+	Blocks    int `json:"blocks"`
+	Txs       int `json:"txs"`
+	Addresses int `json:"addresses"`
 }
 
 // GetExplorer updates the data from blockchain of a coin in the database
@@ -24,7 +29,7 @@ func ExploreCoins(j *jdb.JDB, c coins.NodeCoins) {
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
 			for _, bitnode := range coin.Nodes {
-				go GetCoinBlockchain(j, bitnode)
+				go GetCoinBlockchain(j, bitnode, coin.Slug)
 				fmt.Println("GetCoinBlockchain:", coin.Name)
 				bn.Coin = coin.Slug
 			}
@@ -45,7 +50,7 @@ func ExploreCoins(j *jdb.JDB, c coins.NodeCoins) {
 }
 
 // GetExplorer returns the full set of information about a block
-func GetCoinBlockchain(j *jdb.JDB, b a.BitNode) {
+func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 	if b.Jrc != nil {
 		//if utl.FileExists(cfg.Path + cfg.C.Out + "/info/explorer") {
@@ -56,59 +61,70 @@ func GetCoinBlockchain(j *jdb.JDB, b a.BitNode) {
 		blockCount := b.GetBlockCount()
 
 		fmt.Println("Block Count: ", blockCount)
+		fmt.Println("Be.Status: ", e.Status)
 
-		if e.Status != nil && blockCount >= int(e.Status["blocks"]) {
-			for {
-				//e.block(a, www)
-				fmt.Println("BlocksPre", e.Status["blocks"])
-				blocksIndex := map[uint64]string{}
-				//if err := jdb.JDB.Read(cfg.C.Out+"/index", "blocks", &blocksIndex); err != nil {
-				//	fmt.Println("Error", err)
-				//}
-				e.Status["blocks"]++
-				blockRaw := b.GetBlockByHeight(int(e.Status["blocks"]))
-				if blockRaw != nil && blockRaw != "" {
-					blockHash := blockRaw.(map[string]interface{})["hash"].(string)
-					blocksIndex[e.Status["blocks"]] = blockHash
-					//jdb.JDB.Write(cfg.C.Out+"/blocks", blockHash, blockRaw)
-					block := (blockRaw).(map[string]interface{})
-					if e.Status["blocks"] != 0 {
-						for _, t := range (block["tx"]).([]interface{}) {
-							e.tx(b, t.(string))
-						}
-					}
-					fmt.Println("BlocksPosle", e.Status["blocks"])
-					//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
-					//jdb.JDB.Write(cfg.C.Out+"/index", "blocks", blocksIndex)
-				} else {
-					break
-				}
-			}
-			//}
-			//} else {
-			//e := &Explorer{
-			//	Status: map[string]uint64{"blocks": 0, "txs": 0, "addresses": 0},
-			//}
-			//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
-			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "blocks", map[uint64]string{})
-			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "txs", map[uint64]string{})
-			//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "addresses", map[uint64]string{})
-
-			fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
-
+		if e.Status == nil {
+			e.Status = make(map[string]*Blockchain)
 		}
+		if e.Status[c] == nil {
+			e.Status[c] = &Blockchain{
+				Blocks:    0,
+				Txs:       0,
+				Addresses: 0,
+			}
+		}
+		if blockCount >= e.Status[c].Blocks {
+			e.block(j, b, c)
+		}
+
+		//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
+		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "blocks", map[uint64]string{})
+		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "txs", map[uint64]string{})
+		//jdb.JDB.Write(cfg.C.Out+"/explorer/index", "addresses", map[uint64]string{})
+		j.Write("info", "explorer", e)
+
+		fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
+
 	}
-	return
 }
 
-func (e *Explorer) tx(a a.BitNode, txid string) {
+func (e *Explorer) block(j *jdb.JDB, b a.BitNode, c string) {
+	for {
+		fmt.Println("BlocksPre", e.Status[c].Blocks)
+		blocksIndex := map[int]string{}
+		//if err := jdb.JDB.Read(cfg.C.Out+"/index", "blocks", &blocksIndex); err != nil {
+		//	fmt.Println("Error", err)
+		//}
+		e.Status[c].Blocks++
+		blockRaw := b.GetBlockByHeight(e.Status[c].Blocks)
+		if blockRaw != nil && blockRaw != "" {
+			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
+			blocksIndex[e.Status[c].Blocks] = blockHash
+			//jdb.JDB.Write(cfg.C.Out+"/blocks", blockHash, blockRaw)
+			j.Write(c, "block_"+blockHash, blockRaw)
+			block := (blockRaw).(map[string]interface{})
+			if e.Status[c].Blocks != 0 {
+				for _, t := range (block["tx"]).([]interface{}) {
+					e.tx(j, b, c, t.(string))
+				}
+			}
+			fmt.Println("BlocksPosle", e.Status[c].Blocks)
+			j.Write("info", "explorer", e)
+			//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
+			//jdb.JDB.Write(cfg.C.Out+"/index", "blocks", blocksIndex)
+		} else {
+			break
+		}
+	}
+}
+func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 	txRaw := a.GetTx(txid)
-	txsIndex := map[uint64]string{}
+	txsIndex := map[int]string{}
 	//if err := jdb.JDB.Read(cfg.C.Out+"/index", "txs", &txsIndex); err != nil {
 	//	fmt.Println("Error", err)
 	//}
-	e.Status["txs"]++
-	txsIndex[e.Status["txs"]] = txid
+	e.Status[c].Txs++
+	txsIndex[e.Status[c].Txs] = txid
 	//fmt.Println("txid", txid)
 	//go jdb.JDB.Write(cfg.C.Out+"/txs", txid, txRaw)
 	if txRaw != nil {
@@ -119,7 +135,7 @@ func (e *Explorer) tx(a a.BitNode, txid string) {
 					scriptPubKey := nRaw.(map[string]interface{})["scriptPubKey"].(map[string]interface{})
 					if scriptPubKey["addresses"] != nil {
 						for _, address := range (scriptPubKey["addresses"]).([]interface{}) {
-							e.addr(cfg.C.Out, address.(string))
+							e.addr(c, cfg.C.Out, address.(string))
 						}
 					}
 				}
@@ -130,8 +146,8 @@ func (e *Explorer) tx(a a.BitNode, txid string) {
 	return
 }
 
-func (e *Explorer) addr(www, address string) {
-	addressesIndex := map[uint64]string{}
+func (e *Explorer) addr(c, www, address string) {
+	addressesIndex := map[int]string{}
 	//if err := jdb.JDB.Read(www+"/index", "addresses", &addressesIndex); err != nil {
 	//	fmt.Println("Error", err)
 	//}
@@ -140,8 +156,8 @@ func (e *Explorer) addr(www, address string) {
 	//	fmt.Println("Error", err)
 	//}
 	//addressData := address
-	e.Status["addresses"]++
-	addressesIndex[e.Status["addresses"]] = address
+	e.Status[c].Addresses++
+	addressesIndex[e.Status[c].Addresses] = address
 	//go jdb.JDB.Write(www+"/addresses", address, addressData)
 	//jdb.JDB.Write(www+"/index", "addresses", addressesIndex)
 	//fmt.Println("address", address)
