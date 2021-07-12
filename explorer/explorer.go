@@ -74,7 +74,7 @@ func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 			}
 		}
 		if blockCount >= e.Status[c].Blocks {
-			e.block(j, b, c)
+			e.blocks(j, b, c)
 		}
 
 		//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
@@ -88,7 +88,7 @@ func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 	}
 }
 
-func (e *Explorer) block(j *jdb.JDB, b a.BitNode, c string) {
+func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 	for {
 		fmt.Println("BlocksPre", e.Status[c].Blocks)
 		blocksIndex := map[int]string{}
@@ -108,7 +108,9 @@ func (e *Explorer) block(j *jdb.JDB, b a.BitNode, c string) {
 					e.tx(j, b, c, t.(string))
 				}
 			}
+			fmt.Println("blockHashblockHashblockHashblockHash", blockHash)
 			fmt.Println("BlocksPosle", e.Status[c].Blocks)
+			j.Write(c, "index", blocksIndex)
 			j.Write("info", "explorer", e)
 			//jdb.JDB.Write(cfg.C.Out+"/info", "explorer", e)
 			//jdb.JDB.Write(cfg.C.Out+"/index", "blocks", blocksIndex)
@@ -127,6 +129,8 @@ func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 	txsIndex[e.Status[c].Txs] = txid
 	//fmt.Println("txid", txid)
 	//go jdb.JDB.Write(cfg.C.Out+"/txs", txid, txRaw)
+	j.Write(c, "tx_"+txid, txRaw)
+
 	if txRaw != nil {
 		tx := (txRaw).(map[string]interface{})
 		if tx["vout"] != nil {
@@ -135,7 +139,7 @@ func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 					scriptPubKey := nRaw.(map[string]interface{})["scriptPubKey"].(map[string]interface{})
 					if scriptPubKey["addresses"] != nil {
 						for _, address := range (scriptPubKey["addresses"]).([]interface{}) {
-							e.addr(c, cfg.C.Out, address.(string))
+							e.addr(j, c, address.(string))
 						}
 					}
 				}
@@ -146,7 +150,7 @@ func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 	return
 }
 
-func (e *Explorer) addr(c, www, address string) {
+func (e *Explorer) addr(j *jdb.JDB, c, address string) {
 	addressesIndex := map[int]string{}
 	//if err := jdb.JDB.Read(www+"/index", "addresses", &addressesIndex); err != nil {
 	//	fmt.Println("Error", err)
@@ -158,6 +162,8 @@ func (e *Explorer) addr(c, www, address string) {
 	//addressData := address
 	e.Status[c].Addresses++
 	addressesIndex[e.Status[c].Addresses] = address
+	j.Write(c, "addr_"+address, address)
+
 	//go jdb.JDB.Write(www+"/addresses", address, addressData)
 	//jdb.JDB.Write(www+"/index", "addresses", addressesIndex)
 	//fmt.Println("address", address)
