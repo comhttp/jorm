@@ -3,7 +3,7 @@ package u
 import (
 	"context"
 	"fmt"
-	cfg2 "github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
@@ -12,10 +12,10 @@ import (
 )
 
 func CloudFlare() {
-	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg2.C)
+	fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
-	api, err := cf.New(cfg2.C.CF.CloudFlareAPIkey, cfg2.C.CF.CloudFlareEmail)
+	api, err := cf.New(cfg.C.CF.CloudFlareAPIkey, cfg.C.CF.CloudFlareEmail)
 	utl.ErrorLog(err)
 
 	//delAllCNameDNS(api, ctx, "com-http.us")
@@ -24,7 +24,7 @@ func CloudFlare() {
 }
 
 func createDNS(api *cf.API, ctx context.Context, domain string) {
-	coins := coin.LoadCoinsBase()
+	c := coins.LoadCoinsBase()
 	// Fetch the zone ID
 	id, err := api.ZoneIDByName(domain) // Assuming example.com exists in your Cloudflare account already
 	if err != nil {
@@ -42,7 +42,7 @@ func createDNS(api *cf.API, ctx context.Context, domain string) {
 		}
 	}
 
-	for _, slug := range coins.C {
+	for _, slug := range c.C {
 		//_, err := http.Get("https://" + slug + "." + domain)
 		//if err != nil {
 		var exist bool
