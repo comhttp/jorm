@@ -3,15 +3,16 @@ package coins
 import (
 	"github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
+	"strings"
 )
 
 func GetCoin(j *jdb.JDB, slug string) Coin {
-	c := getCoin(j, "coins_"+slug)
+	c := getCoin(j, slug)
 	return c
 }
 func getCoin(j *jdb.JDB, key string) Coin {
 	c := Coin{}
-	err := j.Read("coins", key, &c)
+	err := j.Read("coins", "coins_"+key, &c)
 	utl.ErrorLog(err)
 	return c
 }
@@ -21,7 +22,7 @@ func GetCoins(j *jdb.JDB) Coins {
 	utl.ErrorLog(err)
 	allCoins := Coins{N: 0}
 	for i, c := range coins {
-		allCoins.C = append(allCoins.C, c)
+		allCoins.C = append(allCoins.C, strings.TrimPrefix(c, "coins_"))
 		allCoins.N = i
 	}
 	return allCoins

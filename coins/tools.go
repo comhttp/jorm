@@ -13,9 +13,10 @@ func BitNodeCoins(j *jdb.JDB) {
 	fmt.Println("Start Process BitNodes Coins")
 	nodeCoins := NodeCoins{N: 0}
 	c := GetAllCoins(j)
+
 	for _, slug := range c.C {
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + slug)) {
-			coin := getCoin(j, "coins_"+slug)
+			coin := getCoin(j, slug)
 			fmt.Println("Bitnode Coin: ", coin.Name)
 			bitNodes := a.BitNodes{}
 			if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
@@ -48,9 +49,7 @@ func ProcessCoins(j *jdb.JDB) {
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
 	c := GetCoins(j)
-
 	for i, slug := range c.C {
-
 		coin := getCoin(j, slug)
 		if coin.Algo != "N/A" && coin.Algo != "" {
 			algoCoins.N++
@@ -64,11 +63,7 @@ func ProcessCoins(j *jdb.JDB) {
 			for _, a := range algoCoins.A {
 				if a != coin.Algo {
 					algoCoins.A = append(algoCoins.A, coin.Algo)
-					fmt.Println("111aaa", a)
-					fmt.Println("111coin.Algo", coin.Algo)
 				}
-				fmt.Println("222aaa", a)
-				fmt.Println("2222coin.Algo", coin.Algo)
 			}
 		} else {
 			if coin.Description != "" {
@@ -86,16 +81,13 @@ func ProcessCoins(j *jdb.JDB) {
 		usableCoins.C = append(usableCoins.C, coin.Slug)
 		coinsWords.C = coinsWords.C + " " + coin.Name
 		coinsWords.N = usableCoins.N
-
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
-
 	j.Write("info", "restcoins", restCoins)
 	j.Write("info", "algocoins", algoCoins)
 	j.Write("info", "wordscoins", coinsWords)
 	j.Write("info", "usablecoins", usableCoins)
 	j.Write("info", "allcoins", allCoins)
 	j.Write("info", "bincoins", coinsBin)
-
 }

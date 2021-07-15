@@ -9,6 +9,7 @@ import (
 	"github.com/comhttp/jorm/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
+	"strconv"
 )
 
 type Explorer struct {
@@ -29,7 +30,7 @@ func ExploreCoins(j *jdb.JDB, c coins.NodeCoins) {
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
 			for _, bitnode := range coin.Nodes {
-				go GetCoinBlockchain(j, bitnode, coin.Slug)
+				GetCoinBlockchain(j, bitnode, coin.Slug)
 				fmt.Println("GetCoinBlockchain:", coin.Name)
 				bn.Coin = coin.Slug
 			}
@@ -86,12 +87,13 @@ func GetCoinBlockchain(j *jdb.JDB, b a.BitNode, c string) {
 func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 	for {
 		fmt.Println("BlocksPre", e.Status[c].Blocks)
-		blocksIndex := GetIndex(j, c, "blocks")
+		//blocksIndex := GetIndex(j, c, "blocks")
 		e.Status[c].Blocks++
 		blockRaw := b.GetBlockByHeight(e.Status[c].Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
-			blocksIndex[e.Status[c].Blocks] = blockHash
+			//blocksIndex[e.Status[c].Blocks] = blockHash
+			j.Write(c, "block_"+strconv.Itoa(e.Status[c].Blocks), blockHash)
 			j.Write(c, "block_"+blockHash, blockRaw)
 			block := (blockRaw).(map[string]interface{})
 			if e.Status[c].Blocks != 0 {
@@ -101,7 +103,7 @@ func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 			}
 			fmt.Println("blockHashblockHashblockHashblockHash", blockHash)
 			fmt.Println("BlocksPosle", e.Status[c].Blocks)
-			j.Write(c, "blocks", blocksIndex)
+			//j.Write(c, "blocks", blocksIndex)
 			j.Write("info", "explorer", e)
 		} else {
 			break
@@ -110,9 +112,9 @@ func (e *Explorer) blocks(j *jdb.JDB, b a.BitNode, c string) {
 }
 func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 	txRaw := a.GetTx(txid)
-	txsIndex := GetIndex(j, c, "txs")
+	//txsIndex := GetIndex(j, c, "txs")
 	e.Status[c].Txs++
-	txsIndex[e.Status[c].Txs] = txid
+	//txsIndex[e.Status[c].Txs] = txid
 	j.Write(c, "tx_"+txid, txRaw)
 	if txRaw != nil {
 		tx := (txRaw).(map[string]interface{})
@@ -129,12 +131,12 @@ func (e *Explorer) tx(j *jdb.JDB, a a.BitNode, c, txid string) {
 			}
 		}
 	}
-	j.Write(c, "txs", txsIndex)
+	//j.Write(c, "txs", txsIndex)
 	return
 }
 
 func (e *Explorer) addr(j *jdb.JDB, c, address string) {
-	addressesIndex := GetIndex(j, c, "addr")
+	//addressesIndex := GetIndex(j, c, "addr")
 
 	//addressData := new(interface{})
 	//if err := jdb.JDB.Read(www, "explorer", &e); err != nil {
@@ -142,7 +144,7 @@ func (e *Explorer) addr(j *jdb.JDB, c, address string) {
 	//}
 	//addressData := address
 	e.Status[c].Addresses++
-	addressesIndex[e.Status[c].Addresses] = address
+	//addressesIndex[e.Status[c].Addresses] = address
 	j.Write(c, "addr_"+address, address)
 
 	//go jdb.JDB.Write(www+"/addresses", address, addressData)

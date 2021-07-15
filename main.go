@@ -25,7 +25,8 @@ func main() {
 	coins.BitNodeCoins(j.JDB)
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
 
-	go explorer.ExploreCoins(j.JDB, j.NodeCoins)
+	explorer.ExploreCoins(j.JDB, j.NodeCoins)
+	fmt.Println("nodessss: ", j.NodeCoins)
 	//go j.Tickers()
 	//ticker := time.NewTicker(999 * time.Second)
 	//quit := make(chan struct{})
