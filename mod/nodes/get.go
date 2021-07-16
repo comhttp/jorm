@@ -2,21 +2,19 @@ package nodes
 
 import (
 	"fmt"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 // GetBitNodeStatus returns the full set of information about a node
 func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
-	b.Jrc = utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, b.IP, b.Port)
+	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 	if b.Jrc != nil {
-		//fmt.Println("bitb:", b.IP)
 		getInfo := b.APIGetInfo()
 		getPeerInfo := b.APIGetPeerInfo()
 		getRawMemPool := b.APIGetRawMemPool()
 		getMiningInfo := b.APIGetMiningInfo()
 		getNetworkInfo := b.APIGetNetworkInfo()
-
 		if getInfo == nil && getPeerInfo == nil && getRawMemPool == nil && getMiningInfo == nil && getNetworkInfo == nil {
 			bitnodeStatus = &BitNodeStatus{
 				Live: false,

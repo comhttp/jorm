@@ -3,7 +3,7 @@ package nodes
 import (
 	"fmt"
 	cfg2 "github.com/comhttp/jorm/pkg/cfg"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	jdb "github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )
@@ -77,7 +77,7 @@ type NodeInfo struct {
 }
 
 //// GetBitNodes updates the data about all of the coins in the database
-func GetBitNodes(j *jdb2.JDB, coins NodeCoins) {
+func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	var b []string
 	bns := make(map[string]BitNoded)
 	for _, coin := range coins.C {
@@ -140,4 +140,11 @@ func GetBitNodes(j *jdb2.JDB, coins NodeCoins) {
 
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
+}
+func GetNode(j *jdb.JDB, c, ip string) NodeInfo {
+	//node := make(map[string]interface{})
+	node := NodeInfo{}
+	err := j.Read("info", c+"_"+ip, &node)
+	utl.ErrorLog(err)
+	return node
 }
