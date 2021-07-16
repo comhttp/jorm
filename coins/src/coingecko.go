@@ -3,15 +3,15 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	coins2 "github.com/comhttp/jorm/coins"
-	jdb2 "github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/coins"
+	"github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"net/http"
 	"time"
 )
 
-func getCoinGecko(j *jdb2.JDB) {
+func getCoinGecko(j *jdb.JDB) {
 	fmt.Println("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")
@@ -32,8 +32,8 @@ func getCoinGecko(j *jdb2.JDB) {
 	fmt.Println("GetCoinGeckoDone")
 }
 
-func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins2.Coin) {
-	return func(c *coins2.Coin) {
+func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins.Coin) {
+	return func(c *coins.Coin) {
 		//c.SetName(coinSrc["name"])
 		//c.SetTicker(coinSrc["symbol"])
 		//fmt.Println("Checked1:", c.Checked)

@@ -5,6 +5,7 @@ import (
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/nodes"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -23,7 +24,7 @@ const (
 
 type JORM struct {
 	Coins     coins.Coins
-	NodeCoins coins.NodeCoins
+	NodeCoins nodes.NodeCoins
 	//Hosts         map[string]Host
 	WWW       *http.Server
 	WS        *http.Server

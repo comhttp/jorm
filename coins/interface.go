@@ -1,11 +1,11 @@
 package coins
 
 import (
-	jdb2 "github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/jdb"
 )
 
 type JormCoins interface {
-	SetCoin(j *jdb2.JDB, src, slug string, get func(c *Coin))
+	SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin))
 	SetName(name interface{})
 	SetTicker(ticker interface{})
 	SetAlgo(algo interface{})

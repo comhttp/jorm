@@ -1,26 +1,22 @@
 package explorer
 
 import (
+	"fmt"
 	"github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strconv"
+	"time"
 )
 
-func GetExplorer(j *jdb.JDB) Explorer {
+func GetExplorer(j *jdb.JDB) *Explorer {
 	e := Explorer{}
 	err := j.Read("info", "explorer", &e)
 	utl.ErrorLog(err)
-	return e
+	e.j = j
+	return &e
 }
 
-func GetIndex(j *jdb.JDB, c, t string) map[int]string {
-	index := map[int]string{}
-	err := j.Read(c, t, &index)
-	utl.ErrorLog(err)
-	return index
-}
-
-func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
+func (e *Explorer) GetBlock(c, id string) map[string]interface{} {
 	blockHash := ""
 	block := make(map[string]interface{})
 	_, err := strconv.Atoi(id)
@@ -28,22 +24,80 @@ func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
 		blockHash = id
 	} else {
 		blockHash = ""
-		err = j.Read(c, "block_"+id, &blockHash)
+		err = e.j.Read(c, "block_"+id, &blockHash)
 	}
-	err = j.Read(c, "block_"+blockHash, &block)
+	err = e.j.Read(c, "block_"+blockHash, &block)
 	utl.ErrorLog(err)
 	return block
 }
+func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]interface{}) {
+	blockCount := e.Status[c].Blocks
+	fmt.Println("blockCount", blockCount)
+	startBlock := blockCount - per*page
+	minusBlockStart := int(startBlock + per)
+	for ibh := minusBlockStart; ibh >= startBlock; {
+		blocks = append(blocks, e.GetBlockShort(c, strconv.Itoa(ibh)))
+		ibh--
+	}
+	return blocks
+}
+func (e *Explorer) GetBlockShort(c, blockhash string) map[string]interface{} {
+	b := e.GetBlock(c, blockhash)
+	block := make(map[string]interface{})
+	if b["bits"] != nil {
+		block["bits"] = b["bits"].(string)
+	}
+	if b["confirmations"] != nil {
+		block["confirmations"] = int64(b["confirmations"].(float64))
+	}
+	if b["difficulty"] != nil {
+		block["difficulty"] = b["difficulty"].(float64)
+	}
+	if b["hash"] != nil {
+		block["hash"] = b["hash"].(string)
+	}
+	if b["height"] != nil {
+		block["height"] = int64(b["height"].(float64))
+	}
+	if b["tx"] != nil {
+		var txsNumber int
+		for _ = range b["tx"].([]interface{}) {
+			txsNumber++
+		}
+		block["txs"] = txsNumber
+	}
+	if b["size"] != nil {
+		block["size"] = int64(b["size"].(float64))
+	}
+	if b["time"] != nil {
+		unixTimeUTC := time.Unix(int64(b["time"].(float64)), 0)
+		block["time"] = unixTimeUTC.Format(time.RFC850)
+		block["timeutc"] = unixTimeUTC.Format(time.RFC3339)
+	}
+	return block
+}
 
-func GetTx(j *jdb.JDB, c, id string) map[string]interface{} {
+//func (e *Explorer)GetBlockShortByHeight(blockheight int) (block map[string]interface{}) {
+//	bparams := []int{blockheight}
+//	blockHash, err := rpc.Jrc.MakeRequest("getblockhash", bparams)
+//	if err != nil {
+//		fmt.Println("Jorm Node Get Block By Height Error", err)
+//	}
+//	if blockHash != nil {
+//		block = e.GetBlockShort((blockHash).(string))
+//	}
+//	return block
+//}
+
+func (e *Explorer) GetTx(c, id string) map[string]interface{} {
 	tx := make(map[string]interface{})
-	err := j.Read(c, "tx_"+id, &tx)
+	err := e.j.Read(c, "tx_"+id, &tx)
 	utl.ErrorLog(err)
 	return tx
 }
-func GetAddr(j *jdb.JDB, c, id string) map[string]interface{} {
+func (e *Explorer) GetAddr(c, id string) map[string]interface{} {
 	addr := make(map[string]interface{})
-	err := j.Read(c, "addr_"+id, &addr)
+	err := e.j.Read(c, "addr_"+id, &addr)
 	utl.ErrorLog(err)
 	return addr
 }

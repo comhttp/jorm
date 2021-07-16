@@ -6,6 +6,7 @@ import (
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/coins"
 	"github.com/comhttp/jorm/explorer"
+	"github.com/comhttp/jorm/nodes"
 
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
@@ -24,8 +25,9 @@ func main() {
 
 	coins.BitNodeCoins(j.JDB)
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
-
-	explorer.ExploreCoins(j.JDB, j.NodeCoins)
+	nodes.GetBitNodes(j.JDB, j.NodeCoins)
+	e := explorer.GetExplorer(j.JDB)
+	e.ExploreCoins(j.NodeCoins)
 	fmt.Println("nodessss: ", j.NodeCoins)
 	//go j.Tickers()
 	//ticker := time.NewTicker(999 * time.Second)

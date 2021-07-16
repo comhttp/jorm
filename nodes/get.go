@@ -2,24 +2,21 @@ package nodes
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/a"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 // GetBitNodeStatus returns the full set of information about a node
-func GetBitNodeStatus(b a.BitNode) (bitnodeStatus *BitNodeStatus) {
+func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
 	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
 	if b.Jrc != nil {
 		//fmt.Println("bitb:", b.IP)
-		getInfo := b.GetInfo()
-		getPeerInfo := b.GetPeerInfo()
-		getRawMemPool := b.GetRawMemPool()
-		getMiningInfo := b.GetMiningInfo()
-		getNetworkInfo := b.GetNetworkInfo()
-		if b.IP[:3] == "10." {
-			b.IP = "212.62.35.158"
-		}
+		getInfo := b.APIGetInfo()
+		getPeerInfo := b.APIGetPeerInfo()
+		getRawMemPool := b.APIGetRawMemPool()
+		getMiningInfo := b.APIGetMiningInfo()
+		getNetworkInfo := b.APIGetNetworkInfo()
+
 		if getInfo == nil && getPeerInfo == nil && getRawMemPool == nil && getMiningInfo == nil && getNetworkInfo == nil {
 			bitnodeStatus = &BitNodeStatus{
 				Live: false,
@@ -37,8 +34,6 @@ func GetBitNodeStatus(b a.BitNode) (bitnodeStatus *BitNodeStatus) {
 			}
 		}
 	}
-	//fmt.Println("bitnode", bitnode)
-
 	return
 }
 

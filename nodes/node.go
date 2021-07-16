@@ -2,23 +2,40 @@ package nodes
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/a"
 	"github.com/comhttp/jorm/cfg"
-	"github.com/comhttp/jorm/coins"
-	"path/filepath"
-
+	"github.com/comhttp/jorm/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
+	"path/filepath"
 )
 
 type BitNode struct {
 	IP   string `json:"ip"`
 	Port int64  `json:"p"`
+	Jrc  *utl.Endpoint
 }
+
+// BitNodes is array of bitnodes addresses
+type BitNodes []BitNode
 
 // BitNoded data
 type BitNoded struct {
 	Coin     string          `json:"coin"`
 	BitNodes []BitNodeStatus `json:"bitnodes"`
+}
+
+// Coin stores identifying information about coins in the database
+type NodeCoin struct {
+	Rank   int      `json:"r"`
+	Name   string   `json:"n"`
+	Ticker string   `json:"t"`
+	Slug   string   `json:"s"`
+	Algo   string   `json:"a"`
+	Nodes  BitNodes `json:"b"`
+}
+
+type NodeCoins struct {
+	N int        `json:"n"`
+	C []NodeCoin `json:"c"`
 }
 
 // NodeStatus stores current data for a node
@@ -59,41 +76,39 @@ type NodeInfo struct {
 	Live          bool    `json:"live"`
 }
 
-// GetBitNodes updates the data about all of the coins in the database
-func GetBitNodes(coins coins.Coins) {
+//// GetBitNodes updates the data about all of the coins in the database
+func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	var b []string
 	bns := make(map[string]BitNoded)
 	for _, coin := range coins.C {
 		var bn BitNoded
-		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin)) {
 
-			b = append(b, coin)
-			bitNodes := a.BitNodes{}
-			if err := cfg.CFG.Read("nodes", coin, &bitNodes); err != nil {
-				fmt.Println("Error", err)
-			}
-			for _, bitnode := range bitNodes {
-				bitNode := GetBitNodeStatus(bitnode)
-				nds := GetNodes(bitNode)
-				for _, n := range nds {
-					if n.IP[:3] == "10." {
-						n.IP = "212.62.35.158"
-					}
-					//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
-				}
-				if bitnode.IP[:3] == "10." {
-					bitnode.IP = "212.62.35.158"
-				}
-				//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
-				//
-				//fmt.Println("--------------------")
-				//fmt.Println("bitNodes", nds)
-				//fmt.Println("--------------------")
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
+			b = append(b, coin.Slug)
+			//bitNodes := BitNodes{}
+			//if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
+			//	fmt.Println("Error", err)
+			//}
+			for _, bitnode := range coin.Nodes {
+				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
+				j.Write("nodes", coin.Slug+"_"+bitnode.IP, bitnode.GetBitNodeStatus())
+				fmt.Println("GetBitNodeStatus: ", coin.Slug+"_"+bitnode.IP)
+				//	nds := GetNodes(bitNode)
+				//	for _, n := range nds {
+				//		if n.IP[:3] == "10." {
+				//			n.IP = "212.62.35.158"
+				//		}
+				//		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
+				//	}
+				//	if bitnode.IP[:3] == "10." {
+				//		bitnode.IP = "212.62.35.158"
+				//	}
+				//	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
 
-				//bn.Coin = coin
-				bn.BitNodes = append(bn.BitNodes, *bitNode)
+				//	//bn.Coin = coin
+				//	bn.BitNodes = append(bn.BitNodes, *bitNode)
 			}
-			bns[coin] = bn
+			bns[coin.Slug] = bn
 			//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "bitnodes", bn)
 
 			//data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))

@@ -2,16 +2,15 @@ package hnd
 
 import (
 	"fmt"
-	cfg2 "github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/coins"
+	"github.com/comhttp/jorm/nodes"
 	"github.com/gorilla/mux"
 	"net/http"
 	"regexp"
 	"strconv"
 
 	"encoding/json"
-	"github.com/comhttp/jorm/app/jorm/a"
-	"github.com/comhttp/jorm/coins"
-
 	//"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/tdewolff/minify"
@@ -19,8 +18,8 @@ import (
 )
 
 type home struct {
-	D []coin.Coin
-	C coin.Coins
+	D []coins.Coin
+	C coins.Coins
 }
 
 // HomeHandler handles a request for (?)
@@ -67,7 +66,7 @@ func AddNodeHandler(w http.ResponseWriter, r *http.Request) {
 	p := r.FormValue("port")
 	//c := utl.MakeSlug(r.FormValue("coin"))
 
-	var bitNodes a.BitNodes
+	var bitNodes nodes.BitNodes
 	//jdb.DB.Read(c, "bitnodes", &bitNodes)
 
 	port, err := strconv.ParseInt(p, 10, 64)
@@ -79,7 +78,7 @@ func AddNodeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ip", ip)
 	fmt.Println("port", port)
 
-	bitNode := a.BitNode{
+	bitNode := nodes.BitNode{
 		IP:   ip,
 		Port: port,
 	}
@@ -115,7 +114,7 @@ func ViewJSON() http.Handler {
 	m := minify.New()
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 
-	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg2.Path+cfg2.C.Out))))
+	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg.Path+cfg.C.Out))))
 }
 
 // NodeHandler handles a request for (?)
@@ -126,7 +125,7 @@ func ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//if err != nil {
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
-	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg2.Path+"/www/"+path)))).ServeHTTP(w, r)
+	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg.Path+"/www/"+path)))).ServeHTTP(w, r)
 	//} else {
 	//	index := map[uint64]string{}
 	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {

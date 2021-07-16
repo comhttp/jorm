@@ -2,6 +2,7 @@ package coins
 
 import (
 	"github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strings"
 )
@@ -33,8 +34,8 @@ func GetAllCoins(j *jdb.JDB) Coins {
 	utl.ErrorLog(err)
 	return c
 }
-func GetNodeCoins(j *jdb.JDB) NodeCoins {
-	c := NodeCoins{}
+func GetNodeCoins(j *jdb.JDB) nodes.NodeCoins {
+	c := nodes.NodeCoins{}
 	err := j.Read("info", "nodecoins", &c)
 	utl.ErrorLog(err)
 	return c

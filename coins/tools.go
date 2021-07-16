@@ -2,28 +2,28 @@ package coins
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/app/jorm/a"
 	"github.com/comhttp/jorm/cfg"
 	"github.com/comhttp/jorm/jdb"
+	"github.com/comhttp/jorm/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )
 
 func BitNodeCoins(j *jdb.JDB) {
 	fmt.Println("Start Process BitNodes Coins")
-	nodeCoins := NodeCoins{N: 0}
+	nodeCoins := nodes.NodeCoins{N: 0}
 	c := GetAllCoins(j)
 
 	for _, slug := range c.C {
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + slug)) {
 			coin := getCoin(j, slug)
 			fmt.Println("Bitnode Coin: ", coin.Name)
-			bitNodes := a.BitNodes{}
+			bitNodes := nodes.BitNodes{}
 			if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			nodeCoins.N++
-			nodeCoins.C = append(nodeCoins.C, NodeCoin{
+			nodeCoins.C = append(nodeCoins.C, nodes.NodeCoin{
 				Rank:   coin.Rank,
 				Name:   coin.Name,
 				Ticker: coin.Ticker,
