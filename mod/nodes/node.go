@@ -2,7 +2,7 @@ package nodes
 
 import (
 	"fmt"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/cfg"
 	jdb "github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
@@ -83,14 +83,14 @@ func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	for _, coin := range coins.C {
 		var bn BitNoded
 
-		if utl.FileExists(filepath.FromSlash(cfg2.Path + "nodes/" + coin.Slug)) {
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
 			//bitNodes := BitNodes{}
 			//if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
 			//	fmt.Println("Error", err)
 			//}
 			for _, bitnode := range coin.Nodes {
-				bitnode.Jrc = utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, bitnode.IP, bitnode.Port)
+				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
 
 				s := bitnode.GetBitNodeStatus()
 				//j.Write("nodes", coin.Slug+"_"+bitnode.IP, bitnode.GetBitNodeStatus())

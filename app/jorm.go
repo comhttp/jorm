@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/nodes"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	jdb2 "github.com/comhttp/jorm/pkg/jdb"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
@@ -34,7 +34,7 @@ type JORM struct {
 }
 
 func NewJORM() *JORM {
-	err := cfg2.CFG.Read("conf", "conf", &cfg2.C)
+	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 
 	//fmt.Println("Get ", cfg.C)
@@ -44,12 +44,12 @@ func NewJORM() *JORM {
 		//	HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
 		//	Cache:      autocert.DirCache(cfg.Path),
 		//},
-		JDB: jdb2.NewJDB(cfg2.C.JDBservers),
+		JDB: jdb2.NewJDB(cfg.C.JDBservers),
 	}
 	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
 		Handler:      j.WWWhandleR(),
-		Addr:         ":" + cfg2.C.Port["jorm"],
+		Addr:         ":" + cfg.C.Port["jorm"],
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

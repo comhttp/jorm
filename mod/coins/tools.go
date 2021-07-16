@@ -3,7 +3,7 @@ package coins
 import (
 	"fmt"
 	nodes2 "github.com/comhttp/jorm/mod/nodes"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	jdb2 "github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
@@ -15,11 +15,11 @@ func BitNodeCoins(j *jdb2.JDB) {
 	c := GetAllCoins(j)
 
 	for _, slug := range c.C {
-		if utl.FileExists(filepath.FromSlash(cfg2.Path + "nodes/" + slug)) {
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + slug)) {
 			coin := getCoin(j, slug)
 			fmt.Println("Bitnode Coin: ", coin.Name)
 			bitNodes := nodes2.BitNodes{}
-			if err := cfg2.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
+			if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			nodeCoins.N++

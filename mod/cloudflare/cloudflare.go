@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/comhttp/jorm/mod/coins"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	jdb2 "github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
@@ -16,9 +16,9 @@ func CloudFlare(j *jdb2.JDB) {
 	//fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
-	api, err := cf.NewWithAPIToken(cfg2.C.CF.CloudFlareAPItoken)
+	api, err := cf.NewWithAPIToken(cfg.C.CF.CloudFlareAPItoken)
 	utl.ErrorLog(err)
-	for _, tld := range cfg2.C.COMHTTP {
+	for _, tld := range cfg.C.COMHTTP {
 		go createDNS(j, api, ctx, "com-http."+tld)
 	}
 	//createDNS(j,api, ctx, "com-http.us")

@@ -3,12 +3,12 @@ package explorer
 import (
 	"fmt"
 	nodes2 "github.com/comhttp/jorm/mod/nodes"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func APIGetTx(rpc *nodes2.BitNode, txid string) (t interface{}) {
-	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
+	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")
 	}
@@ -79,7 +79,7 @@ func APIGetTx(rpc *nodes2.BitNode, txid string) (t interface{}) {
 //}
 //
 //func (rpc *nodes.BitNode) GetBlockTxAddr(blockheight int) interface{} {
-//	jrc := utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, rpc.IP, rpc.Port)
+//	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 //	if jrc == nil {
 //		fmt.Println("Error n status write")
 //	}

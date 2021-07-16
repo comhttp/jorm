@@ -3,7 +3,7 @@ package explorer
 import (
 	"fmt"
 	nodes2 "github.com/comhttp/jorm/mod/nodes"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 	jdb2 "github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
@@ -27,10 +27,10 @@ func (e *Explorer) ExploreCoins(c nodes2.NodeCoins) {
 	for _, coin := range c.C {
 		var bn nodes2.BitNoded
 		fmt.Println("Coin is BitNode:", coin.Name)
-		if utl.FileExists(filepath.FromSlash(cfg2.Path + "nodes/" + coin.Slug)) {
+		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
 			for _, bitnode := range coin.Nodes {
-				bitnode.Jrc = utl.NewClient(cfg2.C.RPC.Username, cfg2.C.RPC.Password, bitnode.IP, bitnode.Port)
+				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
 				//e.status(&bitnode)
 				go e.GetCoinBlockchain(&bitnode, coin.Slug)
 				fmt.Println("GetCoinBlockchain:", coin.Name)
@@ -72,7 +72,7 @@ func (e *Explorer) GetCoinBlockchain(b *nodes2.BitNode, c string) {
 			e.blocks(b, c)
 		}
 		e.j.Write("info", "explorer", e)
-		fmt.Println("ExplorerExplorerExplorerExplorer", cfg2.C.Out+"/info")
+		fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
 	}
 }
 

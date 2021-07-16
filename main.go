@@ -5,7 +5,7 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coins"
-	cfg2 "github.com/comhttp/jorm/pkg/cfg"
+	cfg "github.com/comhttp/jorm/pkg/cfg"
 
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
@@ -47,7 +47,7 @@ func main() {
 	//	}
 	//}()
 	//log.Fatal(srv.ListenAndServeTLS("./cfg/server.pem", "./cfg/server.key"))
-	fmt.Println("JORM is listening on port: ", cfg2.C.Port["jorm"])
+	fmt.Println("JORM is listening on port: ", cfg.C.Port["jorm"])
 	log.Fatal(j.WWW.ListenAndServe())
 	//log.Fatal(j.WS.ListenAndServeTLS("", ""))
 
