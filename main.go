@@ -5,6 +5,9 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coins"
+	csrc "github.com/comhttp/jorm/mod/coins/src"
+	"github.com/comhttp/jorm/mod/explorer"
+	"github.com/comhttp/jorm/mod/nodes"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 
 	//csrc "github.com/comhttp/jorm/coins/src"
@@ -18,17 +21,17 @@ func main() {
 	j := app.NewJORM()
 	//exchange.ReadAllExchanges()
 
-	//csrc.GetCoinSources(j.JDB)
+	csrc.GetCoinSources(j.JDB)
 
 	coins.ProcessCoins(j.JDB)
 
 	cloudflare.CloudFlare(j.JDB)
 
-	//coins.BitNodeCoins(j.JDB)
-	//j.NodeCoins = coins.GetNodeCoins(j.JDB)
-	//nodes.GetBitNodes(j.JDB, j.NodeCoins)
-	//e := explorer.GetExplorer(j.JDB)
-	//e.ExploreCoins(j.NodeCoins)
+	coins.BitNodeCoins(j.JDB)
+	j.NodeCoins = coins.GetNodeCoins(j.JDB)
+	nodes.GetBitNodes(j.JDB, j.NodeCoins)
+	e := explorer.GetExplorer(j.JDB)
+	e.ExploreCoins(j.NodeCoins)
 	//fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()
