@@ -141,6 +141,7 @@ func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
 }
+
 func GetNode(j *jdb.JDB, c, ip string) NodeInfo {
 	//node := make(map[string]interface{})
 	node := NodeInfo{}
