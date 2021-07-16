@@ -130,9 +130,12 @@ func (e *Explorer) GetNetworkInfo(c string) map[string]interface{} {
 	return network
 }
 
-func (e *Explorer) GetPeers(c string) []map[string]interface{} {
-	peers := new([]map[string]interface{})
+func (e *Explorer) GetPeers(c string) []map[string]string {
+	peers := new([]map[string]string)
 	err := e.j.Read("info", c+"_peers", &peers)
+
+	fmt.Println("peerspeerspeerspeerspeerspeers", peers)
+
 	utl.ErrorLog(err)
 	return *peers
 }
