@@ -91,7 +91,16 @@ func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 			//}
 			for _, bitnode := range coin.Nodes {
 				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
-				j.Write("nodes", coin.Slug+"_"+bitnode.IP, bitnode.GetBitNodeStatus())
+
+				s := bitnode.GetBitNodeStatus()
+				//j.Write("nodes", coin.Slug+"_"+bitnode.IP, bitnode.GetBitNodeStatus())
+
+				j.Write("info", coin.Slug+"_mempool", s.GetRawMemPool)
+				j.Write("info", coin.Slug+"_mining", s.GetInfo)
+				j.Write("info", coin.Slug+"_info", s.GetInfo)
+				j.Write("info", coin.Slug+"_network", s.GetNetworkInfo)
+				j.Write("info", coin.Slug+"_peers", s.GetPeerInfo)
+
 				fmt.Println("GetBitNodeStatus: ", coin.Slug+"_"+bitnode.IP)
 				//	nds := GetNodes(bitNode)
 				//	for _, n := range nds {

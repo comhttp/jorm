@@ -101,3 +101,38 @@ func (e *Explorer) GetAddr(c, id string) map[string]interface{} {
 	utl.ErrorLog(err)
 	return addr
 }
+
+func (e *Explorer) GetMemPool(c string) []string {
+	mempool := []string{}
+	err := e.j.Read("info", c+"_mempool", &mempool)
+	utl.ErrorLog(err)
+	return mempool
+}
+
+func (e *Explorer) GetMiningInfo(c string) map[string]interface{} {
+	mininginfo := make(map[string]interface{})
+	err := e.j.Read("info", c+"_mining", &mininginfo)
+	utl.ErrorLog(err)
+	return mininginfo
+}
+
+func (e *Explorer) GetInfo(c string) map[string]interface{} {
+	info := make(map[string]interface{})
+	err := e.j.Read("info", c+"_info", &info)
+	utl.ErrorLog(err)
+	return info
+}
+
+func (e *Explorer) GetNetworkInfo(c string) map[string]interface{} {
+	network := make(map[string]interface{})
+	err := e.j.Read("info", c+"_network", &network)
+	utl.ErrorLog(err)
+	return network
+}
+
+func (e *Explorer) GetPeers(c string) map[string]interface{} {
+	peers := make(map[string]interface{})
+	err := e.j.Read("info", c+"_peers", &peers)
+	utl.ErrorLog(err)
+	return peers
+}
