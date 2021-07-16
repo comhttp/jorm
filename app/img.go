@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	cfg2 "github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -37,7 +37,7 @@ func (o *JORM) img(r *mux.Router) {
 
 func (o *JORM) viewWebImg(w http.ResponseWriter, r *http.Request) {
 	url := strings.TrimSpace(r.URL.Query().Get("url"))
-	path := cfg2.Path + "/static/img"
+	path := cfg.Path + "/static/img"
 	_, err := os.Stat(path + "/" + url)
 	if err != nil {
 		fmt.Println(path + "/" + url)

@@ -1,7 +1,7 @@
 package app
 
 import (
-	cfg2 "github.com/comhttp/jorm/cfg"
+	"github.com/comhttp/jorm/pkg/cfg"
 
 	"html/template"
 	"io/ioutil"
@@ -61,7 +61,7 @@ var (
 )
 
 func readFileIfModified(lastMod time.Time) ([]byte, time.Time, error) {
-	filename := cfg2.Path + cfg2.C.Out + "/exchanges/poloniex"
+	filename := cfg.Path + cfg.C.Out + "/exchanges/poloniex"
 
 	fi, err := os.Stat(filename)
 	if err != nil {
