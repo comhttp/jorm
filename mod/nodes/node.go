@@ -145,7 +145,7 @@ func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 func GetNode(j *jdb.JDB, c, ip string) NodeInfo {
 	//node := make(map[string]interface{})
 	node := NodeInfo{}
-	err := j.Read("info", c+"_"+ip, &node)
+	err := j.Read("nodes", c+"_"+ip, &node)
 	utl.ErrorLog(err)
 	return node
 }
