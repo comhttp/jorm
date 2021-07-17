@@ -28,7 +28,7 @@ func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
 				GetRawMemPool:  getRawMemPool,
 				GetMiningInfo:  getMiningInfo,
 				GetNetworkInfo: getNetworkInfo,
-				GeoIP:          GetGeoIP(b.IP),
+				//GeoIP:          GetGeoIP(b.IP),
 			}
 		}
 	}
