@@ -2,12 +2,12 @@ package explorer
 
 import (
 	"fmt"
-	nodes2 "github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/mod/nodes"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func APIGetTx(rpc *nodes2.BitNode, txid string) (t interface{}) {
+func APIGetTx(rpc *nodes.BitNode, txid string) (t interface{}) {
 	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 	if jrc == nil {
 		fmt.Println("Error n status write")

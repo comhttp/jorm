@@ -32,8 +32,6 @@ func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 			for _, bitnode := range coin.Nodes {
 				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
 				//e.status(&bitnode)
-				fmt.Println("cfgcfgcfgcfg: ", cfg.C)
-
 				fmt.Println("Get Coin Blockchain:", coin.Name)
 				go e.GetCoinBlockchain(&bitnode, coin.Slug)
 				bn.Coin = coin.Slug
@@ -51,6 +49,7 @@ func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 	}
 	//et := mod.Cache{Data: e}
 	//jdb.JDB.Write(cfg.Web, "explorer", et)
+	e.j.Write("info", "explorer", e)
 }
 
 // GetExplorer returns the full set of information about a block
@@ -71,7 +70,6 @@ func (e *Explorer) GetCoinBlockchain(b *nodes.BitNode, c string) {
 		if blockCount >= e.Status[c].Blocks {
 			e.blocks(b, c)
 		}
-		e.j.Write("info", "explorer", e)
 		fmt.Println("ExplorerExplorerExplorerExplorer", cfg.C.Out+"/info")
 	}
 }

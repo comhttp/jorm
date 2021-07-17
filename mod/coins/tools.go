@@ -2,28 +2,28 @@ package coins
 
 import (
 	"fmt"
-	nodes2 "github.com/comhttp/jorm/mod/nodes"
-	cfg "github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )
 
-func BitNodeCoins(j *jdb.JDB) {
+func BitNodeCoins(c Coins, j *jdb.JDB) {
 	fmt.Println("Start Process BitNodes Coins")
-	nodeCoins := nodes2.NodeCoins{N: 0}
-	c := GetAllCoins(j)
+	nodeCoins := nodes.NodeCoins{N: 0}
+	//c := GetAllCoins(j)
 
 	for _, slug := range c.C {
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + slug)) {
 			coin := getCoin(j, slug)
 			fmt.Println("Bitnode Coin: ", coin.Name)
-			bitNodes := nodes2.BitNodes{}
+			bitNodes := nodes.BitNodes{}
 			if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
 				fmt.Println("Error", err)
 			}
 			nodeCoins.N++
-			nodeCoins.C = append(nodeCoins.C, nodes2.NodeCoin{
+			nodeCoins.C = append(nodeCoins.C, nodes.NodeCoin{
 				Rank:   coin.Rank,
 				Name:   coin.Name,
 				Ticker: coin.Ticker,
@@ -84,6 +84,8 @@ func ProcessCoins(j *jdb.JDB) {
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
+	BitNodeCoins(allCoins, j)
+
 	j.Write("info", "restcoins", restCoins)
 	j.Write("info", "algocoins", algoCoins)
 	j.Write("info", "wordscoins", coinsWords)

@@ -26,7 +26,6 @@ func main() {
 
 	//cloudflare.CloudFlare(j.JDB)
 
-	coins.BitNodeCoins(j.JDB)
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
 	nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	e := explorer.GetExplorer(j.JDB)

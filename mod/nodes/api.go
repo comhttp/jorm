@@ -5,10 +5,6 @@ import (
 )
 
 func (b *BitNode) APIGetRawMemPool() interface{} {
-	//jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
-	//if jrc == nil {
-	//	fmt.Println("Error n status write")
-	//}
 	bparams := []int{}
 	get, err := b.Jrc.MakeRequest("getrawmempool", bparams)
 	if err != nil {
@@ -18,10 +14,6 @@ func (b *BitNode) APIGetRawMemPool() interface{} {
 }
 
 func (b *BitNode) APIGetMiningInfo() interface{} {
-	//jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
-	//if jrc == nil {
-	//	fmt.Println("Error n status write")
-	//}
 	bparams := []int{}
 	get, err := b.Jrc.MakeRequest("getmininginfo", bparams)
 	if err != nil {
@@ -74,27 +66,3 @@ func (b *BitNode) APIGetAddNodeInfo(ip string) interface{} {
 	}
 	return get
 }
-
-// BitNodeSrc is a node's address
-//type BitNode struct {
-//	IP   string `json:"ip"`
-//	Port int64  `json:"p"`
-//	Jrc  *utl.Endpoint
-//}
-//
-//func RPCSRC(c string) (b *BitNode) {
-//	bitNodes := BitNodes{}
-//	if err := cfg.CFG.Read("nodes", c, &bitNodes); err != nil {
-//		fmt.Println("Errdor", err)
-//	}
-//	for _, bn := range bitNodes {
-//		b = &bn
-//		b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
-//		if b.Jrc != nil {
-//			fmt.Println("bitb:", b.IP)
-//			break
-//		}
-//	}
-//	fmt.Println("b:", b)
-//	return
-//}
