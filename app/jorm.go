@@ -4,8 +4,8 @@ import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/nodes"
-	cfg "github.com/comhttp/jorm/pkg/cfg"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/jdb"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -30,7 +30,7 @@ type JORM struct {
 	WS        *http.Server
 	TLSconfig *tls.Config
 	//CertManager autocert.Manager
-	JDB *jdb2.JDB
+	JDB *jdb.JDB
 }
 
 func NewJORM() *JORM {
@@ -44,7 +44,7 @@ func NewJORM() *JORM {
 		//	HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
 		//	Cache:      autocert.DirCache(cfg.Path),
 		//},
-		JDB: jdb2.NewJDB(cfg.C.JDBservers),
+		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}
 	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{

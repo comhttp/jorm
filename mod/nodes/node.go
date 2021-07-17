@@ -3,7 +3,7 @@ package nodes
 import (
 	"fmt"
 	"github.com/comhttp/jorm/pkg/cfg"
-	jdb "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )

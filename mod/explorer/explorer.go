@@ -2,9 +2,9 @@ package explorer
 
 import (
 	"fmt"
-	nodes2 "github.com/comhttp/jorm/mod/nodes"
-	cfg "github.com/comhttp/jorm/pkg/cfg"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 
 type Explorer struct {
 	Status map[string]*Blockchain `json:"status"`
-	j      *jdb2.JDB
+	j      *jdb.JDB
 }
 
 type Blockchain struct {
@@ -22,18 +22,20 @@ type Blockchain struct {
 }
 
 // GetExplorer updates the data from blockchain of a coin in the database
-func (e *Explorer) ExploreCoins(c nodes2.NodeCoins) {
+func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 	var b []string
 	for _, coin := range c.C {
-		var bn nodes2.BitNoded
+		var bn nodes.BitNoded
 		fmt.Println("Coin is BitNode:", coin.Name)
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
 			for _, bitnode := range coin.Nodes {
 				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
 				//e.status(&bitnode)
+				fmt.Println("cfgcfgcfgcfg: ", cfg.C)
+
+				fmt.Println("Get Coin Blockchain:", coin.Name)
 				go e.GetCoinBlockchain(&bitnode, coin.Slug)
-				fmt.Println("GetCoinBlockchain:", coin.Name)
 				bn.Coin = coin.Slug
 			}
 			//bns = append(bns, bn)
@@ -52,12 +54,10 @@ func (e *Explorer) ExploreCoins(c nodes2.NodeCoins) {
 }
 
 // GetExplorer returns the full set of information about a block
-func (e *Explorer) GetCoinBlockchain(b *nodes2.BitNode, c string) {
+func (e *Explorer) GetCoinBlockchain(b *nodes.BitNode, c string) {
 	if b.Jrc != nil {
 		blockCount := b.APIGetBlockCount()
 		fmt.Println("Block Count: ", blockCount)
-		fmt.Println("Be.Status: ", e.Status)
-
 		if e.Status == nil {
 			e.Status = make(map[string]*Blockchain)
 		}
@@ -76,13 +76,11 @@ func (e *Explorer) GetCoinBlockchain(b *nodes2.BitNode, c string) {
 	}
 }
 
-func (e *Explorer) blocks(b *nodes2.BitNode, c string) {
+func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 	for {
-		e.Status[c].Blocks++
 		blockRaw := b.APIGetBlockByHeight(e.Status[c].Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
-			//blocksIndex[e.Status[c].Blocks] = blockHash
 			e.j.Write(c, "block_"+strconv.Itoa(e.Status[c].Blocks), blockHash)
 			e.j.Write(c, "block_"+blockHash, blockRaw)
 			block := (blockRaw).(map[string]interface{})
@@ -92,15 +90,16 @@ func (e *Explorer) blocks(b *nodes2.BitNode, c string) {
 
 				}
 			}
-			//fmt.Println("Write " + c + " block: " + strconv.Itoa(e.Status[c].Blocks)+" - ", blockHash)
+			//			//fmt.Println("Write " + c + " block: " + strconv.Itoa(e.Status[c].Blocks)+" - ", blockHash)
 			e.j.Write("info", "explorer", e)
 		} else {
 			break
 		}
+		e.Status[c].Blocks++
 	}
 }
 
-func (e *Explorer) tx(rpc *nodes2.BitNode, c, txid string) {
+func (e *Explorer) tx(rpc *nodes.BitNode, c, txid string) {
 	txRaw := APIGetTx(rpc, txid)
 	e.Status[c].Txs++
 	e.j.Write(c, "tx_"+txid, txRaw)
@@ -123,7 +122,7 @@ func (e *Explorer) tx(rpc *nodes2.BitNode, c, txid string) {
 	return
 }
 
-func (e *Explorer) addr(j *jdb2.JDB, c, address string) {
+func (e *Explorer) addr(j *jdb.JDB, c, address string) {
 	//addressData := new(interface{})
 	//if err := jdb.JDB.Read(www, "explorer", &e); err != nil {
 	//	fmt.Println("Error", err)

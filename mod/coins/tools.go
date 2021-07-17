@@ -4,12 +4,12 @@ import (
 	"fmt"
 	nodes2 "github.com/comhttp/jorm/mod/nodes"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"path/filepath"
 )
 
-func BitNodeCoins(j *jdb2.JDB) {
+func BitNodeCoins(j *jdb.JDB) {
 	fmt.Println("Start Process BitNodes Coins")
 	nodeCoins := nodes2.NodeCoins{N: 0}
 	c := GetAllCoins(j)
@@ -32,13 +32,13 @@ func BitNodeCoins(j *jdb2.JDB) {
 				Nodes:  bitNodes,
 			})
 			coin.BitNode = true
-			j.Write("coins", "coins_"+slug, coin)
+			j.Write("coins", "coin_"+slug, coin)
 		}
 	}
 	j.Write("info", "nodecoins", nodeCoins)
 }
 
-func ProcessCoins(j *jdb2.JDB) {
+func ProcessCoins(j *jdb.JDB) {
 	fmt.Println("Start ProcessCoins")
 
 	usableCoins := Coins{N: 0}

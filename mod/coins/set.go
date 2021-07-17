@@ -2,14 +2,14 @@ package coins
 
 import (
 	"fmt"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strings"
 )
 
-func SetCoin(j *jdb2.JDB, src, slug string, get func(c *Coin)) {
+func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 	c := &Coin{}
-	err := j.Read("coins", "coins_"+slug, &c)
+	err := j.Read("coins", "coin_"+slug, &c)
 	if err != nil {
 		c.Slug = slug
 		fmt.Println("Insert Coin: ", slug)
@@ -18,7 +18,7 @@ func SetCoin(j *jdb2.JDB, src, slug string, get func(c *Coin)) {
 		}
 		get(c)
 		c.Checked[src] = true
-		j.Write("coins", "coins_"+slug, c)
+		j.Write("coins", "coin_"+slug, c)
 	} else {
 		utl.ErrorLog(err)
 		fmt.Println("Ima Coin: ", c.Name)
@@ -30,7 +30,7 @@ func SetCoin(j *jdb2.JDB, src, slug string, get func(c *Coin)) {
 			get(c)
 			c.Checked[src] = true
 		}
-		j.Write("coins", "coins_"+slug, c)
+		j.Write("coins", "coin_"+slug, c)
 	}
 	return
 }

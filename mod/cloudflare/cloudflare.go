@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 	"github.com/comhttp/jorm/mod/coins"
-	cfg "github.com/comhttp/jorm/pkg/cfg"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
 
 	cf "github.com/cloudflare/cloudflare-go"
 )
 
-func CloudFlare(j *jdb2.JDB) {
+func CloudFlare(j *jdb.JDB) {
 	//fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
@@ -25,7 +25,7 @@ func CloudFlare(j *jdb2.JDB) {
 	//delAllCNameDNS(api, ctx, "com-http.us")
 }
 
-func createDNS(j *jdb2.JDB, api *cf.API, ctx context.Context, domain string) {
+func createDNS(j *jdb.JDB, api *cf.API, ctx context.Context, domain string) {
 	c := coins.GetAlgoCoins(j)
 	// Fetch the zone ID
 	id, err := api.ZoneIDByName(domain) // Assuming example.com exists in your Cloudflare account already
@@ -72,7 +72,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 			Proxied: &t,
 		})
 		utl.ErrorLog(err)
-		fmt.Println("Created subdomain for:", slug+" "+domain)
+		fmt.Println("Created subdomain: ", slug+"."+domain)
 	}
 }
 

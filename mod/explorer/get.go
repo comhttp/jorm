@@ -2,13 +2,13 @@ package explorer
 
 import (
 	"fmt"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strconv"
 	"time"
 )
 
-func GetExplorer(j *jdb2.JDB) *Explorer {
+func GetExplorer(j *jdb.JDB) *Explorer {
 	e := Explorer{}
 	err := j.Read("info", "explorer", &e)
 	utl.ErrorLog(err)

@@ -3,15 +3,15 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	coins2 "github.com/comhttp/jorm/mod/coins"
-	jdb2 "github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/mod/coins"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func getCoinCodex(j *jdb2.JDB) {
+func getCoinCodex(j *jdb.JDB) {
 	fmt.Println("GetCoinCodexStart")
 	var coinsRaw []interface{}
 	respcs, err := http.Get("https://coincodex.com/apps/coincodex/cache/all_coins.json")
@@ -25,7 +25,7 @@ func getCoinCodex(j *jdb2.JDB) {
 			coinSrc := cSrc.(map[string]interface{})
 			if coinSrc["name"] != nil {
 				slug := utl.MakeSlug(coinSrc["name"].(string))
-				var coin coins2.Coin
+				var coin coins.Coin
 				if j.Read("coins", slug, &coin) != nil {
 					if coin.Checked == nil {
 						coin.Checked = make(map[string]bool)

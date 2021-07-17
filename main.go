@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/comhttp/jorm/app"
-	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
 	"github.com/comhttp/jorm/mod/explorer"
@@ -25,7 +24,7 @@ func main() {
 
 	coins.ProcessCoins(j.JDB)
 
-	cloudflare.CloudFlare(j.JDB)
+	//cloudflare.CloudFlare(j.JDB)
 
 	coins.BitNodeCoins(j.JDB)
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)

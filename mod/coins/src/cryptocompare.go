@@ -3,7 +3,7 @@ package csrc
 import (
 	"encoding/json"
 	"fmt"
-	coins2 "github.com/comhttp/jorm/mod/coins"
+	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
@@ -26,7 +26,7 @@ func getCryptoCompare(j *jdb.JDB) {
 					cs := coinSrc.(map[string]interface{})
 					if cs["CoinName"] != nil {
 						slug := utl.MakeSlug(cs["CoinName"].(string))
-						coins2.SetCoin(j, "cc", slug, getCryptoCompareCoin(slug, cs))
+						coins.SetCoin(j, "cc", slug, getCryptoCompareCoin(slug, cs))
 					}
 				}
 			}
@@ -35,8 +35,8 @@ func getCryptoCompare(j *jdb.JDB) {
 	fmt.Println("Get Crypto Compare Done")
 }
 
-func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *coins2.Coin) {
-	return func(c *coins2.Coin) {
+func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *coins.Coin) {
+	return func(c *coins.Coin) {
 		if coinSrc["ImageUrl"] != nil {
 			imgurl := fmt.Sprint(coinSrc["ImageUrl"].(string))
 			if imgurl != "<nil>" {
