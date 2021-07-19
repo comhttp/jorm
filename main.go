@@ -8,6 +8,7 @@ import (
 	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
+	"time"
 
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
@@ -30,23 +31,24 @@ func main() {
 	nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	e := explorer.GetExplorer(j.JDB)
 	e.ExploreCoins(j.NodeCoins)
-	//fmt.Println("nodessss: ", j.NodeCoins)
+	fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()
-	//ticker := time.NewTicker(999 * time.Second)
-	//quit := make(chan struct{})
-	//go func() {
-	//	for {
-	//		select {
-	//		case <-ticker.C:
-	//			j.Tickers()
-	//			fmt.Println("OKNO wooikos")
-	//		case <-quit:
-	//			ticker.Stop()
-	//			return
-	//		}
-	//	}
-	//}()
+	ticker := time.NewTicker(99 * time.Second)
+	quit := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				//j.Tickers()
+				e.ExploreCoins(j.NodeCoins)
+				fmt.Println("OKNO wooikos")
+			case <-quit:
+				ticker.Stop()
+				return
+			}
+		}
+	}()
 	//log.Fatal(srv.ListenAndServeTLS("./cfg/server.pem", "./cfg/server.key"))
 	fmt.Println("JORM is listening on port: ", cfg.C.Port["jorm"])
 	log.Fatal(j.WWW.ListenAndServe())
