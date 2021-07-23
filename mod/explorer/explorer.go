@@ -88,7 +88,8 @@ func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 
 				}
 			}
-			fmt.Println("Write "+c+" block: "+strconv.Itoa(e.Status[c].Blocks)+" - ", blockHash)
+			fmt.Println("Status :  :::"+c+" - - ", e.Status[c].Blocks)
+			//fmt.Println("Write "+c+" block: "+strconv.Itoa(e.Status[c].Blocks)+" - ", blockHash)
 			e.j.Write("info", "explorer", e)
 		} else {
 			break
