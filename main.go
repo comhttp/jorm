@@ -31,7 +31,7 @@ func main() {
 	nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	e := explorer.GetExplorer(j.JDB)
 	e.ExploreCoins(j.NodeCoins)
-	fmt.Println("nodessss: ", j.NodeCoins)
+	//fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()
 	ticker := time.NewTicker(99 * time.Second)
