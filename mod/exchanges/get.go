@@ -47,7 +47,7 @@ func getExchanges(j *jdb.JDB) []Exchange {
 	exs := make([]Exchange, len(exchanges))
 	for _, e := range exchanges {
 		ex := Exchange{}
-		err := j.Read("exchanges", e, &ex)
+		err := j.Read("exchanges", "ex_"+e, &ex)
 		utl.ErrorLog(err)
 		exs = append(exs, ex)
 	}
