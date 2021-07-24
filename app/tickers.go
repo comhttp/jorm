@@ -24,6 +24,7 @@ func (j *JORM) Tickers() {
 	//n.GetBitNodes(coins)
 	//go csrc.GetCoinSources()
 	go xsrc.GetExchangeSources(j.JDB)
+
 	csrc.GetCoinSources(j.JDB)
 
 	// dsrc.GetDataSources()

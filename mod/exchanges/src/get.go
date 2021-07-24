@@ -1,6 +1,7 @@
 package xsrc
 
 import (
+	"github.com/comhttp/jorm/mod/exchanges"
 	"github.com/comhttp/jorm/pkg/jdb"
 )
 
@@ -23,5 +24,6 @@ func GetExchangeSources(j *jdb.JDB) {
 	//go getIDAXExchange()
 	//go getKuCoinExchange()
 	//go getLBankExchange()
+	go exchanges.GetAllExchanges(j)
 	return
 }

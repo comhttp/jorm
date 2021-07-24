@@ -5,8 +5,8 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-// ReadAllExchanges reads in all of the data about all coins in the database
-func GetExchanges(j *jdb.JDB) {
+// ReadAllExchanges reads in all of the data about all exchanges in the database
+func GetAllExchanges(j *jdb.JDB) {
 	e := getExchanges(j)
 	baseExchanges := []BaseExchange{}
 	exchanges := []Exchange{}
@@ -35,7 +35,7 @@ func GetExchanges(j *jdb.JDB) {
 		"n": len(e),
 		"e": exchanges,
 	})
-	j.Write("exchanges", "exc", map[string]interface{}{
+	j.Write("exchanges", "base", map[string]interface{}{
 		"n": len(e),
 		"e": baseExchanges,
 	})
@@ -52,4 +52,18 @@ func getExchanges(j *jdb.JDB) []Exchange {
 		exs = append(exs, ex)
 	}
 	return exs
+}
+
+// GetExchanges reads in all of the data about all exchanges in the database
+func GetExchanges(j *jdb.JDB) {
+	exchanges := []Exchange{}
+	err := j.Read("exchanges", "exchanges", &exchanges)
+	utl.ErrorLog(err)
+}
+
+// GetBaseExchanges reads in all of the data about all exchanges in the database
+func GetBaseExchanges(j *jdb.JDB) {
+	baseExchanges := []BaseExchange{}
+	err := j.Read("exchanges", "base", &baseExchanges)
+	utl.ErrorLog(err)
 }

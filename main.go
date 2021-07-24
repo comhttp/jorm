@@ -19,7 +19,7 @@ import (
 
 func main() {
 	j := app.NewJORM()
-	exchanges.GetExchanges(j.JDB)
+	exchanges.GetAllExchanges(j.JDB)
 
 	csrc.GetCoinSources(j.JDB)
 
@@ -41,7 +41,6 @@ func main() {
 			select {
 			case <-ticker.C:
 				j.Tickers()
-				exchanges.GetExchanges(j.JDB)
 				fmt.Println("OKNO wooikos")
 			case <-quit:
 				ticker.Stop()
