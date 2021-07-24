@@ -114,6 +114,9 @@ func (e *Explorer) tx(rpc *nodes.BitNode, c, txid string) {
 	e.Status[c].Txs++
 	e.j.Write(c, "tx_"+txid, txRaw)
 	if txRaw != nil {
+
+		fmt.Println("txRawtxRawtxRawtxRaw   "+c, txRaw)
+
 		tx := (txRaw).(map[string]interface{})
 		if tx["vout"] != nil {
 			for _, nRaw := range tx["vout"].([]interface{}) {
