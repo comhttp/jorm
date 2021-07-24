@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-func GetExchange(src, slug string, get func(e *Exchange)) {
+func GetExchange(slug string) {
 	e := Exchange{}
 	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
 	if err != nil {

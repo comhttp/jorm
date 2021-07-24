@@ -36,7 +36,7 @@ func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
 }
 
 // GetNodes returns the peers connected to a
-func GetNodes(n *BitNodeStatus) (nodes []NodeInfo) {
+func GetNodes(n *BitNodeStatus) (nodes []Node) {
 	fmt.Println("GetNodes", n.IP)
 	switch p := n.GetPeerInfo.(type) {
 	case []interface{}:

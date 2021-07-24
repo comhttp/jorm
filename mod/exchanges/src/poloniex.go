@@ -35,5 +35,5 @@ func getPoloniexExchange(j *jdb.JDB) {
 		Country:     "",
 		Ticker:      t,
 	}
-	e.GetExchange(j)
+	e.SetExchange(j)
 }

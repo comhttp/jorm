@@ -6,14 +6,14 @@ import (
 
 // GetCoinSources updates the available coin information sources
 func GetExchangeSources(j *jdb.JDB) {
-	//go getPoloniexExchange(j)
+	go getPoloniexExchange(j)
 	//getDigiFinexExchange()
 	//getBitTrexExchange()
-	//go getBinanceExchange(j)
+	go getBinanceExchange(j)
 	//getHuobiExchange()
 	//getGateExchange()
 	//getGeminiExchange()
-	//go getDexTradeExchange(j)
+	go getDexTradeExchange(j)
 	//getBitZExchange()
 	//getLiquidExchange()
 	//go getCoinBeneExchange()

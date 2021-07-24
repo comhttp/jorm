@@ -10,16 +10,16 @@ import (
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"time"
 
+	"github.com/comhttp/jorm/mod/exchanges"
 	//csrc "github.com/comhttp/jorm/coins/src"
 	"log"
-	//"github.com/comhttp/jorm/app/jorm/exchange"
 	//"log"
 	//"time"
 )
 
 func main() {
 	j := app.NewJORM()
-	//exchange.ReadAllExchanges()
+	exchanges.GetExchanges(j.JDB)
 
 	csrc.GetCoinSources(j.JDB)
 
@@ -29,19 +29,19 @@ func main() {
 
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
 	nodes.GetBitNodes(j.JDB, j.NodeCoins)
-	e := explorer.GetExplorer(j.JDB)
-	e.ExploreCoins(j.NodeCoins)
+	j.Explorer = explorer.GetExplorer(j.JDB)
+	j.Explorer.ExploreCoins(j.NodeCoins)
 	//fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()
-	ticker := time.NewTicker(99 * time.Second)
+	ticker := time.NewTicker(23 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				//j.Tickers()
-				e.ExploreCoins(j.NodeCoins)
+				j.Tickers()
+				exchanges.GetExchanges(j.JDB)
 				fmt.Println("OKNO wooikos")
 			case <-quit:
 				ticker.Stop()

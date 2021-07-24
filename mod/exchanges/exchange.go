@@ -70,59 +70,6 @@ type MarketSrc struct {
 	Currencies map[string]Currency
 }
 
-// ReadAllExchanges reads in all of the data about all coins in the database
-func ReadAllExchanges() {
-	e := getExchanges()
-	baseExchanges := []BaseExchange{}
-	exchanges := []Exchange{}
-	//ex := make(map[string]map[string]map[string]float64)
-	for i := range e {
-		baseExchanges = append(baseExchanges, BaseExchange{
-			Name:   e[i].Name,
-			Slug:   e[i].Slug,
-			Volume: e[i].Volume,
-		})
-		//m := make(map[string]map[string]float64)
-		//for marketSymbol, market := range e[i].Markets {
-		//	c := make(map[string]float64)
-		//	for currencySymbol, currency := range market.Currencies {
-		//		c[currencySymbol] = currency.Volume
-		//	}
-		//	m[marketSymbol] = c
-		//}
-		exchanges = append(exchanges, Exchange{
-			Name:   e[i].Name,
-			Slug:   e[i].Slug,
-			Volume: e[i].Volume,
-		})
-	}
-	//jdb.JDB.Write(cfg.C.Out+"/info", "exchanges", map[string]interface{}{
-	//	"n": len(e),
-	//	"e": exchanges,
-	//})
-	//jdb.JDB.Write(cfg.C.Out+"/info", "exc", map[string]interface{}{
-	//	"n": len(e),
-	//	"e": baseExchanges,
-	//})
-}
-
-func getExchanges() []Exchange {
-	//data, err := jdb.JDB.ReadAll(cfg.C.Out + "/exchanges")
-	//utl.ErrorLog(err)
-	//exchanges := make([][]byte, len(data))
-	//for i := range data {
-	//	exchanges[i] = []byte(data[i])
-	//}
-	//ex := make([]Exchange, len(exchanges))
-	//for i := range exchanges {
-	//	if err := json.Unmarshal(exchanges[i], &ex[i]); err != nil {
-	//		fmt.Println("Error", err)
-	//	}
-	//}
-	//return ex
-	return nil
-}
-
 func GetSource(url string) interface{} {
 	var marketsRaw interface{}
 	res, err := http.Get(url)
@@ -146,10 +93,10 @@ func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 		}
 		e.Markets = append(e.Markets, mSrc)
 	}
-	j.Write("exchanges", e.Slug, e)
+	j.Write("exchanges", "ex_"+e.Slug, e)
 }
 
-func (es *ExchangeSrc) GetExchange(j *jdb.JDB) {
+func (es *ExchangeSrc) SetExchange(j *jdb.JDB) {
 	fmt.Println("Get " + es.Name + " Exchange Start")
 	var e Exchange
 	e.Name = es.Name

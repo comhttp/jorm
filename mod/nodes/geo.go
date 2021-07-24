@@ -34,7 +34,7 @@ type GeoResponse struct {
 	}
 }
 
-func GetGeoIP(ip string) (n NodeInfo) {
+func GetGeoIP(ip string) (n Node) {
 	//if jdb.JDB.Read(cfg.C.Out+"/geo", ip, &n) != nil {
 	if ip[:3] == "10." {
 		ip = "212.62.35.158"

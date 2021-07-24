@@ -3,6 +3,7 @@ package app
 import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/mod/coins"
+	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
@@ -25,6 +26,7 @@ const (
 type JORM struct {
 	Coins     coins.Coins
 	NodeCoins nodes.NodeCoins
+	Explorer  *explorer.Explorer
 	//Hosts         map[string]Host
 	WWW       *http.Server
 	WS        *http.Server

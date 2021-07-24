@@ -50,10 +50,10 @@ type BitNodeStatus struct {
 	GeoIP          interface{} `json:"geoip"`
 }
 
-type Nodes []NodeInfo
+type Nodes []Node
 
-// NodeInfo stores info retrieved via geoip about a node
-type NodeInfo struct {
+// Node stores info retrieved via geoip about a node
+type Node struct {
 	IP            string  `json:"ip"`
 	Port          int64   `json:"port"`
 	Host          string  `json:"host"`
@@ -79,46 +79,21 @@ type NodeInfo struct {
 //// GetBitNodes updates the data about all of the coins in the database
 func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	var b []string
-	bns := make(map[string]BitNoded)
+	bns := make(map[string]*BitNoded)
 	for _, coin := range coins.C {
-		var bn BitNoded
+		bn := &BitNoded{}
 
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
 			b = append(b, coin.Slug)
-			//bitNodes := BitNodes{}
-			//if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
-			//	fmt.Println("Error", err)
-			//}
+			bitNodes := BitNodes{}
+			err := j.Read("nodes", coin.Slug, &bitNodes)
+			utl.ErrorLog(err)
+
 			for _, bitnode := range coin.Nodes {
-				bitnode.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, bitnode.IP, bitnode.Port)
-
-				s := bitnode.GetBitNodeStatus()
-				//j.Write("nodes", coin.Slug+"_"+bitnode.IP, bitnode.GetBitNodeStatus())
-
-				j.Write("info", coin.Slug+"_mempool", s.GetRawMemPool)
-				j.Write("info", coin.Slug+"_mining", s.GetInfo)
-				j.Write("info", coin.Slug+"_info", s.GetInfo)
-				j.Write("info", coin.Slug+"_network", s.GetNetworkInfo)
-				j.Write("info", coin.Slug+"_peers", s.GetPeerInfo)
-
-				fmt.Println("GetBitNodeStatus: ", coin.Slug+"_"+bitnode.IP)
-				//	nds := GetNodes(bitNode)
-				//	for _, n := range nds {
-				//		if n.IP[:3] == "10." {
-				//			n.IP = "212.62.35.158"
-				//		}
-				//		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/nodes/"+coin), n.IP, n)
-				//	}
-				//	if bitnode.IP[:3] == "10." {
-				//		bitnode.IP = "212.62.35.158"
-				//	}
-				//	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/bitnodes/"+coin), bitnode.IP, bitNode)
-
-				//	//bn.Coin = coin
-				//	bn.BitNodes = append(bn.BitNodes, *bitNode)
+				bitnode.getNode(j, bn, coin.Slug)
 			}
 			bns[coin.Slug] = bn
-			//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "bitnodes", bn)
+			j.Write("nodes", coin.Slug+"_"+"bitnodes", bn)
 
 			//data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))
 			//utl.ErrorLog(err)
@@ -147,4 +122,29 @@ func GetNode(j *jdb.JDB, c, ip string) map[string]interface{} {
 	err := j.Read("nodes", c+"_"+ip, &node)
 	utl.ErrorLog(err)
 	return node
+}
+
+func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, c string) {
+	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
+	s := b.GetBitNodeStatus()
+	j.Write("nodes", c+"_"+b.IP, s)
+
+	j.Write("info", c+"_mempool", s.GetRawMemPool)
+	j.Write("info", c+"_mining", s.GetInfo)
+	j.Write("info", c+"_info", s.GetInfo)
+	j.Write("info", c+"_network", s.GetNetworkInfo)
+	j.Write("info", c+"_peers", s.GetPeerInfo)
+
+	fmt.Println("GetBitNodeStatus: ", c+"_"+b.IP)
+	nds := GetNodes(s)
+	for _, n := range nds {
+		j.Write("nodes", c+"_"+n.IP, n)
+		fmt.Println("Node: ", c+"_"+n.IP)
+
+	}
+
+	bn.Coin = c
+	bn.BitNodes = append(bn.BitNodes, *s)
+	j.Write("nodes", c+"_"+b.IP, s)
+	return
 }
