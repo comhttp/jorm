@@ -48,7 +48,7 @@ func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]inter
 		blocks = append(blocks, e.GetBlockShort(c, strconv.Itoa(ibh)))
 		ibh--
 	}
-	sort.Slice(blocks, func(i, j int) bool {
+	sort.SliceStable(blocks, func(i, j int) bool {
 		return blocks[i]["height"].(int) < blocks[j]["height"].(int)
 	})
 	return blocks
