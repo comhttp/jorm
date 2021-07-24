@@ -5,6 +5,7 @@ import (
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -47,6 +48,9 @@ func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]inter
 		blocks = append(blocks, e.GetBlockShort(c, strconv.Itoa(ibh)))
 		ibh--
 	}
+	sort.Slice(blocks, func(i, j int) bool {
+		return blocks[i]["height"].(int) < blocks[j]["height"].(int)
+	})
 	return blocks
 }
 func (e *Explorer) GetBlockShort(c, blockhash string) map[string]interface{} {
