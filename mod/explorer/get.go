@@ -2,6 +2,7 @@ package explorer
 
 import (
 	"fmt"
+	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"strconv"
@@ -9,9 +10,16 @@ import (
 )
 
 func GetExplorer(j *jdb.JDB) *Explorer {
-	e := Explorer{}
-	err := j.Read("info", "explorer", &e)
-	utl.ErrorLog(err)
+	n := coins.GetNodeCoins(j)
+	e := Explorer{
+		Status: map[string]*Blockchain{},
+	}
+	for _, node := range n.C {
+		s := Blockchain{}
+		err := j.Read(node.Slug, "status", &s)
+		utl.ErrorLog(err)
+		e.Status[node.Slug] = &s
+	}
 	e.j = j
 	return &e
 }

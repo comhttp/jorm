@@ -24,11 +24,12 @@ type Blockchain struct {
 // GetExplorer updates the data from blockchain of a coin in the database
 func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 	var b []string
-	ex := Explorer{}
-	err := e.j.Read("info", "explorer", &ex)
-	utl.ErrorLog(err)
-	e.Status = ex.Status
 	for _, coin := range c.C {
+		status := Blockchain{}
+		err := e.j.Read(coin.Slug, "status", &status)
+		utl.ErrorLog(err)
+		e.Status[coin.Slug] = &status
+
 		var bn nodes.BitNoded
 		fmt.Println("Coin is BitNode:", coin.Name)
 		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
@@ -82,7 +83,6 @@ func (e *Explorer) GetCoinBlockchain(b *nodes.BitNode, c string) {
 
 func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 	for {
-		e.Status[c].Blocks++
 		blockRaw := b.APIGetBlockByHeight(e.Status[c].Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
@@ -95,15 +95,15 @@ func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 
 				}
 			}
+			bl := blockRaw.(map[string]interface{})
+			e.Status[c].Blocks = int(bl["height"].(float64))
+
 			//fmt.Println("Write "+c+" block: "+strconv.Itoa(e.Status[c].Blocks)+" - ", blockHash)
-			e.j.Write("info", "explorer", e)
+			e.j.Write(c, "status", e.Status[c])
 		} else {
 			break
 		}
-		bl := blockRaw.(map[string]interface{})
-
-		e.Status[c].Blocks = int(bl["height"].(float64))
-
+		e.Status[c].Blocks++
 		fmt.Println("StatusBlocks   "+c, e.Status[c].Blocks)
 
 	}
@@ -114,9 +114,7 @@ func (e *Explorer) tx(rpc *nodes.BitNode, c, txid string) {
 	e.Status[c].Txs++
 	e.j.Write(c, "tx_"+txid, txRaw)
 	if txRaw != nil {
-
-		fmt.Println("txRawtxRawtxRawtxRaw   "+c, txRaw)
-
+		//fmt.Println("txRawtxRawtxRawtxRaw   "+c, txRaw)
 		tx := (txRaw).(map[string]interface{})
 		if tx["vout"] != nil {
 			for _, nRaw := range tx["vout"].([]interface{}) {
