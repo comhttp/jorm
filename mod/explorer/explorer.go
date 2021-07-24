@@ -24,6 +24,10 @@ type Blockchain struct {
 // GetExplorer updates the data from blockchain of a coin in the database
 func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 	var b []string
+	ex := Explorer{}
+	err := e.j.Read("info", "explorer", &ex)
+	utl.ErrorLog(err)
+	e.Status = ex.Status
 	for _, coin := range c.C {
 		var bn nodes.BitNoded
 		fmt.Println("Coin is BitNode:", coin.Name)
@@ -49,7 +53,7 @@ func (e *Explorer) ExploreCoins(c nodes.NodeCoins) {
 	}
 	//et := mod.Cache{Data: e}
 	//jdb.JDB.Write(cfg.Web, "explorer", et)
-	e.j.Write("info", "explorer", e)
+	//e.j.Write("info", "explorer", e)
 }
 
 // GetExplorer returns the full set of information about a block
@@ -78,6 +82,7 @@ func (e *Explorer) GetCoinBlockchain(b *nodes.BitNode, c string) {
 
 func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 	for {
+		e.Status[c].Blocks++
 		blockRaw := b.APIGetBlockByHeight(e.Status[c].Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
@@ -95,7 +100,12 @@ func (e *Explorer) blocks(b *nodes.BitNode, c string) {
 		} else {
 			break
 		}
-		e.Status[c].Blocks++
+		bl := blockRaw.(map[string]interface{})
+
+		e.Status[c].Blocks = int(bl["height"].(float64))
+
+		fmt.Println("StatusBlocks   "+c, e.Status[c].Blocks)
+
 	}
 }
 
