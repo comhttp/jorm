@@ -16,7 +16,7 @@ func (j *JORM) Tickers() {
 	//coins := coin.Coins{}
 	go nodes.GetBitNodes(j.JDB, j.NodeCoins)
 
-	go j.Explorer.ExploreCoins(j.NodeCoins)
+	//go j.Explorer.ExploreCoins(j.NodeCoins)
 
 	fmt.Println("Cron is wooikos")
 	//go explorer.GetExplorer(coins)
