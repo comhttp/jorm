@@ -6,9 +6,9 @@ import (
 
 // GetCoinSources updates the available coin information sources
 func GetCoinSources(j *jdb.JDB) {
-	getCryptoCompare(j)
-	// getCoinCodex()
-	//go getCoinGecko()
+	go getCryptoCompare(j)
+	go getCoinCodex(j)
+	go getCoinGecko(j)
 
 	return
 }

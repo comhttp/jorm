@@ -26,7 +26,7 @@ func getCoinCodex(j *jdb.JDB) {
 			if coinSrc["name"] != nil {
 				slug := utl.MakeSlug(coinSrc["name"].(string))
 				var coin coins.Coin
-				if j.Read("coins", slug, &coin) != nil {
+				if j.Read("coins", "coin_"+slug, &coin) != nil {
 					if coin.Checked == nil {
 						coin.Checked = make(map[string]bool)
 						if !coin.Checked["cx"] {
@@ -55,12 +55,12 @@ func getCoinCodex(j *jdb.JDB) {
 							if coinDetails["ico_price"] != nil {
 								coin.Ico = true
 								// jdb.WriteCoinData(slug, "ico", coinDetails.ICO)
-								fmt.Println("Insert ICO Coin: ", coinDetails["ico_price"])
+								//fmt.Println("Insert ICO Coin: ", coinDetails["ico_price"])
 							}
 							coin.Checked["cx"] = true
 							//coin.SetLogo("https://coincodex.com/en/resources/images/admin/coins/" + slug + ".png")
 							//coin.Logo = true
-							j.Write("coins", slug, coin)
+							j.Write("coins", "coin_"+slug, coin)
 						}
 					}
 				}
