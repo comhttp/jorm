@@ -54,7 +54,7 @@ func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]inter
 	return blocks
 }
 func (e *Explorer) GetBlockShort(c, blockhash string) map[string]interface{} {
-	b := e.GetBlock(c, blockhash)
+	b := GetBlock(e.j, c, blockhash)
 	block := make(map[string]interface{})
 	if b["bits"] != nil {
 		block["bits"] = b["bits"].(string)
