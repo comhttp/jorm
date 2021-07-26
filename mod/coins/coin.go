@@ -1,6 +1,7 @@
 package coins
 
 import (
+	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"time"
 )
@@ -42,6 +43,7 @@ type Coin struct {
 	WhitePaper           string            `json:"whitepaper"`
 	isLogo               bool              `json:"islogo" form:"islogo"`
 	Logo                 utl.Images        `json:"logo" form:"logo"`
+	Nodes                nodes.BitNodes    `json:"bitnode"`
 }
 
 type Coins struct {

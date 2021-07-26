@@ -1,27 +1,27 @@
 package explorer
 
-import (
-	"fmt"
-	"github.com/comhttp/jorm/mod/nodes"
-	cfg "github.com/comhttp/jorm/pkg/cfg"
-	"github.com/comhttp/jorm/pkg/utl"
-)
-
-func APIGetTx(rpc *nodes.BitNode, txid string) (t interface{}) {
-	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
-	if jrc == nil {
-		fmt.Println("Error n status write")
-	}
-	verbose := int(1)
-	var grtx []interface{}
-	grtx = append(grtx, txid)
-	grtx = append(grtx, verbose)
-	t, err := jrc.MakeRequest("getrawtransaction", grtx)
-	if err != nil {
-		fmt.Println("Jorm Node Get Tx Error", err)
-	}
-	return
-}
+//import (
+//	"fmt"
+//	"github.com/comhttp/jorm/mod/nodes"
+//	cfg "github.com/comhttp/jorm/pkg/cfg"
+//	"github.com/comhttp/jorm/pkg/utl"
+//)
+//
+//func APIGetTx(rpc *nodes.BitNode, txid string) (t interface{}) {
+//	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
+//	if jrc == nil {
+//		fmt.Println("Error n status write")
+//	}
+//	verbose := int(1)
+//	var grtx []interface{}
+//	grtx = append(grtx, txid)
+//	grtx = append(grtx, verbose)
+//	t, err := jrc.MakeRequest("getrawtransaction", grtx)
+//	if err != nil {
+//		fmt.Println("Jorm Node Get Tx Error", err)
+//	}
+//	return
+//}
 
 //
 //	//t := rawt.(map[string]interface{})

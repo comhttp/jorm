@@ -25,7 +25,7 @@ func GetExplorer(j *jdb.JDB) *Explorer {
 	return &e
 }
 
-func (e *Explorer) GetBlock(c, id string) map[string]interface{} {
+func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
 	blockHash := ""
 	block := make(map[string]interface{})
 	_, err := strconv.Atoi(id)
@@ -33,9 +33,9 @@ func (e *Explorer) GetBlock(c, id string) map[string]interface{} {
 		blockHash = id
 	} else {
 		blockHash = ""
-		err = e.j.Read(c, "block_"+id, &blockHash)
+		err = j.Read(c, "block_"+id, &blockHash)
 	}
-	err = e.j.Read(c, "block_"+blockHash, &block)
+	err = j.Read(c, "block_"+blockHash, &block)
 	utl.ErrorLog(err)
 	return block
 }
@@ -89,50 +89,50 @@ func (e *Explorer) GetBlockShort(c, blockhash string) map[string]interface{} {
 	return block
 }
 
-func (e *Explorer) GetTx(c, id string) map[string]interface{} {
+func GetTx(j *jdb.JDB, c, id string) map[string]interface{} {
 	tx := make(map[string]interface{})
-	err := e.j.Read(c, "tx_"+id, &tx)
+	err := j.Read(c, "tx_"+id, &tx)
 	utl.ErrorLog(err)
 	return tx
 }
-func (e *Explorer) GetAddr(c, id string) map[string]interface{} {
+func GetAddr(j *jdb.JDB, c, id string) map[string]interface{} {
 	addr := make(map[string]interface{})
-	err := e.j.Read(c, "addr_"+id, &addr)
+	err := j.Read(c, "addr_"+id, &addr)
 	utl.ErrorLog(err)
 	return addr
 }
 
-func (e *Explorer) GetMemPool(c string) []string {
+func GetMemPool(j *jdb.JDB, c string) []string {
 	mempool := []string{}
-	err := e.j.Read("info", c+"_mempool", &mempool)
+	err := j.Read("info", c+"_mempool", &mempool)
 	utl.ErrorLog(err)
 	return mempool
 }
 
-func (e *Explorer) GetMiningInfo(c string) map[string]interface{} {
+func GetMiningInfo(j *jdb.JDB, c string) map[string]interface{} {
 	mininginfo := make(map[string]interface{})
-	err := e.j.Read("info", c+"_mining", &mininginfo)
+	err := j.Read("info", c+"_mining", &mininginfo)
 	utl.ErrorLog(err)
 	return mininginfo
 }
 
-func (e *Explorer) GetInfo(c string) map[string]interface{} {
+func GetInfo(j *jdb.JDB, c string) map[string]interface{} {
 	info := make(map[string]interface{})
-	err := e.j.Read("info", c+"_info", &info)
+	err := j.Read("info", c+"_info", &info)
 	utl.ErrorLog(err)
 	return info
 }
 
-func (e *Explorer) GetNetworkInfo(c string) map[string]interface{} {
+func GetNetworkInfo(j *jdb.JDB, c string) map[string]interface{} {
 	network := make(map[string]interface{})
-	err := e.j.Read("info", c+"_network", &network)
+	err := j.Read("info", c+"_network", &network)
 	utl.ErrorLog(err)
 	return network
 }
 
-func (e *Explorer) GetPeers(c string) []interface{} {
+func GetPeers(j *jdb.JDB, c string) []interface{} {
 	peers := new([]interface{})
-	err := e.j.Read("info", c+"_peers", &peers)
+	err := j.Read("info", c+"_peers", &peers)
 	utl.ErrorLog(err)
 	return *peers
 }
