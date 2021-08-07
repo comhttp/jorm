@@ -6,7 +6,6 @@ import (
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
 	"github.com/comhttp/jorm/mod/explorer"
-	"github.com/comhttp/jorm/mod/nodes"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"time"
 
@@ -28,9 +27,9 @@ func main() {
 	//cloudflare.CloudFlare(j.JDB)
 
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
-	nodes.GetBitNodes(j.JDB, j.NodeCoins)
+	//nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	j.Explorer = explorer.GetExplorer(j.JDB)
-	j.Explorer.ExploreCoins(j.NodeCoins)
+	//j.Explorer.ExploreCoins(j.NodeCoins)
 	//fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()

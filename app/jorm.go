@@ -4,9 +4,9 @@ import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/explorer"
-	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/node/nodes"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
 	"github.com/comhttp/jorm/pkg/utl"

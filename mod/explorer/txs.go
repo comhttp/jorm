@@ -2,7 +2,7 @@ package explorer
 
 //import (
 //	"fmt"
-//	"github.com/comhttp/jorm/mod/nodes"
+//	"github.com/comhttp/node/nodes"
 //	cfg "github.com/comhttp/jorm/pkg/cfg"
 //	"github.com/comhttp/jorm/pkg/utl"
 //)

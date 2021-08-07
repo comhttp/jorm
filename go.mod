@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/cloudflare/cloudflare-go v0.19.0
 	github.com/comhttp/jdbc v0.0.0-20210617223700-b69aee42434e
+	github.com/comhttp/node v0.0.0-20210807123238-ed1c04f09b51 // indirect
 	github.com/disintegration/imaging v1.6.2
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
