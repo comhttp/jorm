@@ -1,4 +1,4 @@
-package explorer
+package explorers
 
 import (
 	"fmt"
@@ -10,18 +10,28 @@ import (
 	"time"
 )
 
+type Explorer struct {
+	Status map[string]*BlockchainStatus `json:"status"`
+}
+
+type BlockchainStatus struct {
+	Blocks    int `json:"blocks"`
+	Txs       int `json:"txs"`
+	Addresses int `json:"addresses"`
+}
+
 func GetExplorer(j *jdb.JDB) *Explorer {
 	n := coins.GetNodeCoins(j)
 	e := Explorer{
-		Status: map[string]*Blockchain{},
+		Status: map[string]*BlockchainStatus{},
 	}
 	for _, node := range n.C {
-		s := Blockchain{}
+		s := BlockchainStatus{}
 		err := j.Read(node.Slug, "status", &s)
 		utl.ErrorLog(err)
 		e.Status[node.Slug] = &s
 	}
-	e.j = j
+	//e.j = j
 	return &e
 }
 
@@ -39,13 +49,13 @@ func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
 	utl.ErrorLog(err)
 	return block
 }
-func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]interface{}) {
+func (e *Explorer) GetBlocks(j *jdb.JDB, c string, per, page int) (blocks []map[string]interface{}) {
 	blockCount := e.Status[c].Blocks
 	fmt.Println("blockCount", blockCount)
 	startBlock := blockCount - per*page
 	minusBlockStart := int(startBlock + per)
 	for ibh := minusBlockStart; ibh >= startBlock; {
-		blocks = append(blocks, e.GetBlockShort(c, strconv.Itoa(ibh)))
+		blocks = append(blocks, GetBlockShort(j, c, strconv.Itoa(ibh)))
 		ibh--
 	}
 	sort.SliceStable(blocks, func(i, j int) bool {
@@ -53,8 +63,8 @@ func (e *Explorer) GetBlocks(c string, per, page int) (blocks []map[string]inter
 	})
 	return blocks
 }
-func (e *Explorer) GetBlockShort(c, blockhash string) map[string]interface{} {
-	b := GetBlock(e.j, c, blockhash)
+func GetBlockShort(j *jdb.JDB, coin, blockhash string) map[string]interface{} {
+	b := GetBlock(j, coin, blockhash)
 	block := make(map[string]interface{})
 	if b["bits"] != nil {
 		block["bits"] = b["bits"].(string)

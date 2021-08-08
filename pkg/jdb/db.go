@@ -6,54 +6,25 @@ import (
 	"sync"
 
 	"github.com/comhttp/jdbc"
-	"github.com/jcelliott/lumber"
 )
 
 //var JDB, _ = NewJDB(cfg.Path, nil)
 
 type (
-
-	// Logger is a generic logger interface
-	Logger interface {
-		Fatal(string, ...interface{})
-		Error(string, ...interface{})
-		Warn(string, ...interface{})
-		Info(string, ...interface{})
-		Debug(string, ...interface{})
-		Trace(string, ...interface{})
-	}
-	// Driver is what is used to interact with the scribble database. It runs
-	// transactions, and provides log output
 	JDB struct {
 		col     string
 		mutex   sync.Mutex
 		mutexes map[string]*sync.Mutex
-		path    string // the directory where scribble will create the database
-		log     Logger // the logger scribble will log to
+		path    string
 		clients map[string]*jdbc.Client
 	}
 )
 
-// Options uses for specification of working golang-scribble
-type Options struct {
-	Logger // the logger scribble will use (configurable)
-}
-
 // New creates a new scribble database at the desired directory location, and
 // returns a *Driver to then use for interacting with the database
 func NewJDB(jbds map[string]string) *JDB {
-	//jbds := []string{"main", "coins", "exchanges"}
-	// a new javazac database, providing the directory where it will be writing to,
-	// and a qualified logger if desired
-	// create default options
-	opts := Options{}
-	// if no logger is provided, create a default
-	if opts.Logger == nil {
-		opts.Logger = lumber.NewConsoleLogger(lumber.INFO)
-	}
 	j := JDB{
 		mutexes: make(map[string]*sync.Mutex),
-		log:     opts.Logger,
 		clients: make(map[string]*jdbc.Client),
 	}
 	for js, url := range jbds {

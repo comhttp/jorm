@@ -5,7 +5,7 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
-	"github.com/comhttp/jorm/mod/explorer"
+	"github.com/comhttp/jorm/mod/explorers"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"time"
 
@@ -28,7 +28,7 @@ func main() {
 
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
 	//nodes.GetBitNodes(j.JDB, j.NodeCoins)
-	j.Explorer = explorer.GetExplorer(j.JDB)
+	j.Explorer = explorers.GetExplorer(j.JDB)
 	//j.Explorer.ExploreCoins(j.NodeCoins)
 	//fmt.Println("nodessss: ", j.NodeCoins)
 
@@ -57,3 +57,9 @@ func main() {
 	// log.Fatal(http.ListenAndServe(":"+port, handlers.CORS()(r)))
 
 }
+
+//jdbs -bind 192.168.192.99:14477 -dbdir jdbinfo -loglevel info &
+//jdbs -bind 192.168.192.99:14488 -dbdir jdbcoins -loglevel info &
+//jdbs -bind 192.168.192.99:14489 -dbdir jdbnodes -loglevel info &
+//jdbs -bind 192.168.192.99:14499 -dbdir jdbexchanges -loglevel info &
+//jdbs -bind 192.168.192.99:15502 -dbdir jdbparallelcoin -loglevel info &
