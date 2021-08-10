@@ -2,7 +2,6 @@ package explorers
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"sort"
@@ -20,19 +19,11 @@ type BlockchainStatus struct {
 	Addresses int `json:"addresses"`
 }
 
-func GetExplorer(j *jdb.JDB) *Explorer {
-	n := coins.GetNodeCoins(j)
-	e := &Explorer{
-		Status: map[string]*BlockchainStatus{},
-	}
-	for _, node := range n.C {
-		s := BlockchainStatus{}
-		err := j.Read(node.Slug, "status", &s)
-		utl.ErrorLog(err)
-		e.Status[node.Slug] = &s
-	}
-	//e.j = j
-	return e
+func GetExplorer(j *jdb.JDB, coin string) *BlockchainStatus {
+	s := &BlockchainStatus{}
+	err := j.Read(coin, "status", &s)
+	utl.ErrorLog(err)
+	return s
 }
 
 func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
