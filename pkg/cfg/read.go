@@ -3,7 +3,6 @@ package cfg
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -252,13 +251,13 @@ func (j *jdb) getOrCreateMutex(collection string) *sync.Mutex {
 	return m
 }
 
-// ReadCoins reads in all coin data in and converts to bytes for unmarshalling
-func ReadData(path string) [][]byte {
-	data, err := CFG.ReadAll(path)
-	utl.ErrorLog(err)
-	b := make([][]byte, len(data))
-	for i := range data {
-		b[i] = []byte(data[i])
-	}
-	return b
-}
+//// ReadCoins reads in all coin data in and converts to bytes for unmarshalling
+//func ReadData(path string) [][]byte {
+//	data, err := CFG.ReadAll(path)
+//	utl.ErrorLog(err)
+//	b := make([][]byte, len(data))
+//	for i := range data {
+//		b[i] = []byte(data[i])
+//	}
+//	return b
+//}

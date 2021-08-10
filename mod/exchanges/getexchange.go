@@ -1,39 +1,35 @@
 package exchanges
 
 import (
-	"fmt"
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
-	"os"
-	"path/filepath"
 )
 
 func GetExchange(slug string) {
-	e := Exchange{}
-	_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
-	if err != nil {
-		e.Slug = slug
-		fmt.Println("Insert Exchange: ", slug)
-		//if c.Checked == nil {
-		//	c.Checked = make(map[string]bool)
-		//}
-		//get(&e)
-		//e.Checked[src] = true
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
-	} else {
-		//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
-		utl.ErrorLog(err)
-		fmt.Println("Ima Coin: ", e.Name)
-		//if c.Checked == nil {
-		//	c.Checked = make(map[string]bool)
-		//}
-		//if !c.Checked[src] {
-		//	fmt.Println("Check Coin: ", c.Name)
-		//	get(&c)
-		//	c.Checked[src] = true
-		//}
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
-	}
+	//e := Exchange{}
+	//_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
+	//if err != nil {
+	//	e.Slug = slug
+	//	fmt.Println("Insert Exchange: ", slug)
+	//	//if c.Checked == nil {
+	//	//	c.Checked = make(map[string]bool)
+	//	//}
+	//	//get(&e)
+	//	//e.Checked[src] = true
+	//	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
+	//} else {
+	//	//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
+	//	utl.ErrorLog(err)
+	//	fmt.Println("Ima Coin: ", e.Name)
+	//	//if c.Checked == nil {
+	//	//	c.Checked = make(map[string]bool)
+	//	//}
+	//	//if !c.Checked[src] {
+	//	//	fmt.Println("Check Coin: ", c.Name)
+	//	//	get(&c)
+	//	//	c.Checked[src] = true
+	//	//}
+	//	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
+	//}
 	return
 }
 

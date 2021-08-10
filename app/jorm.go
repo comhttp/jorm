@@ -50,6 +50,7 @@ type (
 )
 
 func NewJORM() *JORM {
+
 	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 	bitNodesCfg, err := cfg.CFG.ReadAll("nodes")

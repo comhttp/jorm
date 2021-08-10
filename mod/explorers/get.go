@@ -40,17 +40,20 @@ func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
 	utl.ErrorLog(err)
 	return block
 }
-func (e *Explorer) GetBlocks(j *jdb.JDB, c string, per, page int) (blocks []map[string]interface{}) {
-	blockCount := e.Status[c].Blocks
+func (e *Explorer) GetBlocks(j *jdb.JDB, coin string, per, page int) (blocks []map[string]interface{}) {
+	s := &BlockchainStatus{}
+	err := j.Read(coin, "status", &s)
+	utl.ErrorLog(err)
+	blockCount := s.Blocks
 	fmt.Println("blockCount", blockCount)
 	startBlock := blockCount - per*page
 	minusBlockStart := int(startBlock + per)
 	for ibh := minusBlockStart; ibh >= startBlock; {
-		blocks = append(blocks, GetBlockShort(j, c, strconv.Itoa(ibh)))
+		blocks = append(blocks, GetBlockShort(j, coin, strconv.Itoa(ibh)))
 		ibh--
 	}
 	sort.SliceStable(blocks, func(i, j int) bool {
-		return blocks[i]["height"].(int) < blocks[j]["height"].(int)
+		return int(blocks[i]["height"].(int64)) < int(blocks[j]["height"].(int64))
 	})
 	return blocks
 }

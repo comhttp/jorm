@@ -368,8 +368,8 @@ github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb
 github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg65j358z/aeFdxmN0P9QXhEzd20vsDc=
 github.com/sensepost/gowitness v0.0.0-20210520072216-0685be62ecf9/go.mod h1:5WUaP9HrKRQIDlLaCO6z+QFjNQ1/VYF82HYriBUtpUo=
 github.com/sensepost/gowitness v0.0.0-20210528113048-96df49e00361/go.mod h1:5WUaP9HrKRQIDlLaCO6z+QFjNQ1/VYF82HYriBUtpUo=
-github.com/sensepost/gowitness v0.0.0-20210807065225-ff1241d986d8 h1:8WTJXlpJPiKimYWbgjRdJwXf7J8Zl2IRsaar8JE/hRI=
-github.com/sensepost/gowitness v0.0.0-20210807065225-ff1241d986d8/go.mod h1:CRCeUg+wbfjxaoDlWZYoE70+TfDrQ8k5Y6CP3paYWf4=
+github.com/sensepost/gowitness v0.0.0-20210807140749-38b57db38ae5 h1:evFaPlIS5IG/8ZipBM/J9HIiz/h26KSsed5gIzMyGCM=
+github.com/sensepost/gowitness v0.0.0-20210807140749-38b57db38ae5/go.mod h1:z79C3SypXfr4mKqY+rvnSNRIrgvDssNglD+suIqjw9c=
 github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749/go.mod h1:ZY1cvUeJuFPAdZ/B6v7RHavJWZn2YPVFQ1OSXhCGOkg=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/shurcooL/vfsgen v0.0.0-20200824052919-0d455de96546/go.mod h1:TrYk7fJVaAttu97ZZKrO9UbRa8izdowaMIZcxYMbVaw=
@@ -406,8 +406,11 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
+github.com/tdewolff/minify v2.3.6+incompatible h1:2hw5/9ZvxhWLvBUnHE06gElGYz+Jv9R4Eys0XUzItYo=
 github.com/tdewolff/minify v2.3.6+incompatible/go.mod h1:9Ov578KJUmAWpS6NeZwRZyT56Uf6o3Mcz9CEsg8USYs=
+github.com/tdewolff/parse v2.3.4+incompatible h1:x05/cnGwIMf4ceLuDMBOdQ1qGniMoxpP46ghf0Qzh38=
 github.com/tdewolff/parse v2.3.4+incompatible/go.mod h1:8oBwCsVmUkgHO8M5iCzSIDtpzXOT0WXX9cWhz+bIzJQ=
+github.com/tdewolff/test v1.0.6 h1:76mzYJQ83Op284kMT+63iCNCI7NEERsIN8dLM+RiKr4=
 github.com/tdewolff/test v1.0.6/go.mod h1:6DAvZliBAAnD7rhVgwaM7DE5/d9NMOAJ09SqYqeK4QE=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/tomsteele/go-nmap v0.0.0-20191202052157-3507e0b03523/go.mod h1:J5FsBj9uaXAn5G+CX8c9g+FkLwG2UAHqaxCGunmD1Hc=
