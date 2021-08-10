@@ -5,7 +5,6 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
-	"github.com/comhttp/jorm/mod/explorers"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"time"
 
@@ -28,12 +27,12 @@ func main() {
 
 	j.NodeCoins = coins.GetNodeCoins(j.JDB)
 	//nodes.GetBitNodes(j.JDB, j.NodeCoins)
-	j.Explorer = explorers.GetExplorer(j.JDB)
+	//j.Explorer = explorers.GetExplorer(j.JDB)
 	//j.Explorer.ExploreCoins(j.NodeCoins)
 	//fmt.Println("nodessss: ", j.NodeCoins)
 
 	//go j.Tickers()
-	ticker := time.NewTicker(23 * time.Second)
+	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
