@@ -25,7 +25,7 @@ func NewENSO() *ENSO {
 	e := &ENSO{
 		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}
-	//e.Explorer = explorers.GetExplorer(e.JDB)
+	e.Explorer = explorers.GetExplorers(e.JDB)
 	e.WWW = &http.Server{
 		Handler:      handler(e),
 		Addr:         ":" + cfg.C.Port["enso"],

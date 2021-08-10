@@ -19,6 +19,20 @@ type BlockchainStatus struct {
 	Addresses int `json:"addresses"`
 }
 
+func GetExplorers(j *jdb.JDB) *Explorer {
+	e := &Explorer{
+		Status: make(map[string]*BlockchainStatus),
+	}
+	coins := []string{"parallelcoin"}
+	for _, coin := range coins {
+		s := &BlockchainStatus{}
+		err := j.Read(coin, "status", &s)
+		utl.ErrorLog(err)
+		e.Status[coin] = s
+	}
+	return e
+}
+
 func GetExplorer(j *jdb.JDB, coin string) *BlockchainStatus {
 	s := &BlockchainStatus{}
 	err := j.Read(coin, "status", &s)
