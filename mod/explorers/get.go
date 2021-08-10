@@ -22,7 +22,7 @@ type BlockchainStatus struct {
 
 func GetExplorer(j *jdb.JDB) *Explorer {
 	n := coins.GetNodeCoins(j)
-	e := Explorer{
+	e := &Explorer{
 		Status: map[string]*BlockchainStatus{},
 	}
 	for _, node := range n.C {
@@ -32,7 +32,7 @@ func GetExplorer(j *jdb.JDB) *Explorer {
 		e.Status[node.Slug] = &s
 	}
 	//e.j = j
-	return &e
+	return e
 }
 
 func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
