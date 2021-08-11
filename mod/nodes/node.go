@@ -80,6 +80,7 @@ type Node struct {
 func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
 	var b []string
 	bns := make(map[string]*BitNoded)
+	fmt.Println("coinscoinscoinscoinscoins", coins)
 	for _, coin := range coins.C {
 		bn := &BitNoded{}
 

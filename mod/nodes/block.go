@@ -44,3 +44,15 @@ func (b *BitNode) APIGetBlockByHeight(blockheight int) (block interface{}) {
 	}
 	return block
 }
+
+func (b *BitNode) APIGetTx(txid string) (t interface{}) {
+	verbose := int(1)
+	var grtx []interface{}
+	grtx = append(grtx, txid)
+	grtx = append(grtx, verbose)
+	t, err := b.Jrc.MakeRequest("getrawtransaction", grtx)
+	if err != nil {
+		fmt.Println("Jorm Node Get Tx Error", err)
+	}
+	return
+}

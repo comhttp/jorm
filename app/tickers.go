@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	xsrc "github.com/comhttp/jorm/mod/exchanges/src"
 	//"github.com/comhttp/jorm/app/jorm/coin"
 	//xsrc "github.com/comhttp/jorm/app/jorm/exchange/src"
 	//"github.com/comhttp/jorm/app/jorm/n"
@@ -21,7 +20,7 @@ func (j *JORM) Tickers() {
 	//go explorer.GetExplorer(coins)
 	//n.GetBitNodes(coins)
 	//go csrc.GetCoinSources()
-	go xsrc.GetExchangeSources(j.JDB)
+	//go xsrc.GetExchangeSources(j.JDB)
 
 	// dsrc.GetDataSources()
 }

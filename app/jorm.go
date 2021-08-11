@@ -4,9 +4,9 @@ import (
 	"crypto/tls"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/explorers"
+	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
-	"github.com/comhttp/node/nodes"
 	"github.com/jcelliott/lumber"
 
 	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
@@ -50,7 +50,6 @@ type (
 )
 
 func NewJORM() *JORM {
-
 	err := cfg.CFG.Read("conf", "conf", &cfg.C)
 	utl.ErrorLog(err)
 	bitNodesCfg, err := cfg.CFG.ReadAll("nodes")
