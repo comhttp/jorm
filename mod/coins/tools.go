@@ -2,37 +2,35 @@ package coins
 
 import (
 	"fmt"
-	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 )
 
-func BitNodeCoins(c nodes.NodeCoins, j *jdb.JDB) {
-	fmt.Println("Start Process BitNodes Coins")
-	nodeCoins := nodes.NodeCoins{N: 0}
-	//c := GetAllCoins(j)
-
-	for _, nodeCoin := range c.C {
-		coin := getCoin(j, nodeCoin.Slug)
-		fmt.Println("Bitnode Coin: ", coin.Name)
-		bitNodes := nodes.BitNodes{}
-		if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
-			fmt.Println("Error", err)
-		}
-		nodeCoins.N++
-		nodeCoins.C = append(nodeCoins.C, nodes.NodeCoin{
-			Rank:   coin.Rank,
-			Name:   coin.Name,
-			Ticker: coin.Ticker,
-			Slug:   coin.Slug,
-			Algo:   coin.Algo,
-			Nodes:  bitNodes,
-		})
-		coin.BitNode = true
-		j.Write("coins", "coin_"+coin.Slug, coin)
-	}
-	j.Write("info", "nodecoins", nodeCoins)
-}
+//func BitNodeCoins(c nodes.NodeCoins, j *jdb.JDB) {
+//	fmt.Println("Start Process BitNodes Coins")
+//	nodeCoins := nodes.NodeCoins{N: 0}
+//	//c := GetAllCoins(j)
+//
+//	for _, nodeCoin := range c.C {
+//		coin := getCoin(j, nodeCoin.Slug)
+//		fmt.Println("Bitnode Coin: ", coin.Name)
+//		bitNodes := nodes.BitNodes{}
+//		if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
+//			fmt.Println("Error", err)
+//		}
+//		nodeCoins.N++
+//		nodeCoins.C = append(nodeCoins.C, nodes.NodeCoin{
+//			Rank:   coin.Rank,
+//			Name:   coin.Name,
+//			Ticker: coin.Ticker,
+//			Slug:   coin.Slug,
+//			Algo:   coin.Algo,
+//			Nodes:  bitNodes,
+//		})
+//		coin.BitNode = true
+//		j.Write("coins", "coin_"+coin.Slug, coin)
+//	}
+//	j.Write("info", "nodecoins", nodeCoins)
+//}
 
 func ProcessCoins(j *jdb.JDB) {
 	fmt.Println("Start ProcessCoins")

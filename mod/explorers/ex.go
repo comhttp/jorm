@@ -22,8 +22,6 @@ type JORMexplorer struct {
 
 func NewJORMexplorer(coin string) *JORMexplorer {
 	//log.SetLevel(parseLogLevel(loglevel))
-	err := cfg.CFG.Read("conf", "conf", &cfg.C)
-	utl.ErrorLog(err)
 	bitNodes := nodes.BitNodes{}
 	if err := cfg.CFG.Read("nodes", coin, &bitNodes); err != nil {
 		fmt.Println("Error", err)
@@ -33,7 +31,7 @@ func NewJORMexplorer(coin string) *JORMexplorer {
 		BitNodes: bitNodes,
 		JDB:      jdb.NewJDB(cfg.C.JDBservers),
 	}
-	err = e.JDB.Read(coin, "status", &e.status)
+	err := e.JDB.Read(coin, "status", &e.status)
 	if e.status == nil {
 		e.status = &BlockchainStatus{
 			Blocks:    0,

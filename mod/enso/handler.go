@@ -114,12 +114,12 @@ func (e *ENSO) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
 
 // CoinsHandler handles a request for coin data
 func (e *ENSO) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
-	out, err := json.Marshal(coins.GetNodeCoins(e.JDB))
-	if err != nil {
-		fmt.Println("Error encoding JSON")
-		return
-	}
-	w.Write([]byte(out))
+	//out, err := json.Marshal(coins.GetNodeCoins(e.JDB))
+	//if err != nil {
+	//	fmt.Println("Error encoding JSON")
+	//	return
+	//}
+	//w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data

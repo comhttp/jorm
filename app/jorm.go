@@ -35,7 +35,7 @@ type (
 	}
 	JORM struct {
 		Coins     coins.Coins
-		NodeCoins nodes.NodeCoins
+		NodeCoins []string
 		Explorer  *explorers.Explorer
 		//Hosts         map[string]Host
 		WWW       *http.Server
@@ -50,19 +50,10 @@ type (
 )
 
 func NewJORM() *JORM {
-	err := cfg.CFG.Read("conf", "conf", &cfg.C)
-	utl.ErrorLog(err)
 	bitNodesCfg, err := cfg.CFG.ReadAll("nodes")
 	utl.ErrorLog(err)
 	bitNodes := make(map[string]nodes.BitNodes)
 
-	for _, coin := range bitNodesCfg {
-		coinBitNodes := nodes.BitNodes{}
-		err := cfg.CFG.Read("nodes", coin, &coinBitNodes)
-		utl.ErrorLog(err)
-		bitNodes[coin] = coinBitNodes
-	}
-	//fmt.Println("Get ", cfg.C)
 	j := &JORM{
 		//CertManager: autocert.Manager{
 		//	Prompt:     autocert.AcceptTOS,
@@ -74,6 +65,16 @@ func NewJORM() *JORM {
 		JDB:        jdb.NewJDB(cfg.C.JDBservers),
 		Log:        lumber.NewConsoleLogger(lumber.INFO),
 	}
+
+	for _, coin := range bitNodesCfg {
+		j.NodeCoins = append(j.NodeCoins, coin)
+		coinBitNodes := nodes.BitNodes{}
+		err := cfg.CFG.Read("nodes", coin, &coinBitNodes)
+		utl.ErrorLog(err)
+		bitNodes[coin] = coinBitNodes
+	}
+	//fmt.Println("Get ", cfg.C)
+
 	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
 		Handler:      j.WWWhandleR(),

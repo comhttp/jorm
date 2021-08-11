@@ -20,8 +20,6 @@ type ENSO struct {
 }
 
 func NewENSO() *ENSO {
-	err := cfg.CFG.Read("conf", "conf", &cfg.C)
-	utl.ErrorLog(err)
 	e := &ENSO{
 		JDB: jdb.NewJDB(cfg.C.JDBservers),
 	}

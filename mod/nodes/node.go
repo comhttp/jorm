@@ -5,7 +5,6 @@ import (
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"path/filepath"
 )
 
 type BitNode struct {
@@ -23,20 +22,20 @@ type BitNoded struct {
 	BitNodes []BitNodeStatus `json:"bitnodes"`
 }
 
-// Coin stores identifying information about coins in the database
-type NodeCoin struct {
-	Rank   int      `json:"r"`
-	Name   string   `json:"n"`
-	Ticker string   `json:"t"`
-	Slug   string   `json:"s"`
-	Algo   string   `json:"a"`
-	Nodes  BitNodes `json:"b"`
-}
+//// Coin stores identifying information about coins in the database
+//type NodeCoin struct {
+//	Rank   int      `json:"r"`
+//	Name   string   `json:"n"`
+//	Ticker string   `json:"t"`
+//	Slug   string   `json:"s"`
+//	Algo   string   `json:"a"`
+//	Nodes  BitNodes `json:"b"`
+//}
 
-type NodeCoins struct {
-	N int        `json:"n"`
-	C []NodeCoin `json:"c"`
-}
+//type NodeCoins struct {
+//	N int        `json:"n"`
+//	C []NodeCoin `json:"c"`
+//}
 
 // NodeStatus stores current data for a node
 type BitNodeStatus struct {
@@ -77,43 +76,21 @@ type Node struct {
 }
 
 //// GetBitNodes updates the data about all of the coins in the database
-func GetBitNodes(j *jdb.JDB, coins NodeCoins) {
+func GetBitNodes(j *jdb.JDB, bitNodeCoins []string) {
 	var b []string
 	bns := make(map[string]*BitNoded)
-	fmt.Println("coinscoinscoinscoinscoins", coins)
-	for _, coin := range coins.C {
+	//fmt.Println("bitNodeCoinsbitNodeCoinsbitNodeCoinsbitNodeCoins", bitNodeCoins)
+	for _, coin := range bitNodeCoins {
 		bn := &BitNoded{}
+		b = append(b, coin)
+		//c := coins.GetCoin(j, coin)
 
-		if utl.FileExists(filepath.FromSlash(cfg.Path + "nodes/" + coin.Slug)) {
-			b = append(b, coin.Slug)
-			bitNodes := BitNodes{}
-			err := j.Read("nodes", coin.Slug, &bitNodes)
-			utl.ErrorLog(err)
-
-			for _, bitnode := range coin.Nodes {
-				bitnode.getNode(j, bn, coin.Slug)
-			}
-			bns[coin.Slug] = bn
-			j.Write("nodes", coin.Slug+"_"+"bitnodes", bn)
-
-			//data, err := jdb.JDB.ReadAll(filepath.FromSlash(cfg.C.Out + "/nodes/" + coin))
-			//utl.ErrorLog(err)
-			//nodes := make([][]byte, len(data))
-			//for i := range data {
-			//	nodes[i] = []byte(data[i])
-			//}
-
-			//ns := make(Nodes, len(nodes))
-			//
-			//for i := range nodes {
-			//	if err := json.Unmarshal(nodes[i], &ns[i]); err != nil {
-			//		fmt.Println("Error", err)
-			//	}
-			//}
-			//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info/nodes/"+coin), "nodes", ns)
-		}
+		//for _, bitnode := range c.Nodes {
+		//	bitnode.getNode(j, bn, coin)
+		//}
+		bns[coin] = bn
+		j.Write("nodes", coin+"_"+"bitnodes", bn)
 	}
-
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnoded", b)
 	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/info"), "bitnodestat", bns)
 }
