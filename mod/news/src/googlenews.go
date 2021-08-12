@@ -82,5 +82,5 @@ func getGoogleNewsRss() {
 	for i, item := range rss.Channel.Item {
 		fmt.Printf("%v. item title: %v\n", i, item.Title)
 	}
-	fmt.Println("sssssssssssssssssssssasas", resp)
+	log.Println("sssssssssssssssssssssasas", resp)
 }

@@ -1,9 +1,9 @@
 package nodes
 
 import (
-	"fmt"
 	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
+	"log"
 )
 
 // GetBitNodeStatus returns the full set of information about a node
@@ -37,7 +37,7 @@ func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
 
 // GetNodes returns the peers connected to a
 func GetNodes(n *BitNodeStatus) (nodes []Node) {
-	fmt.Println("GetNodes", n.IP)
+	log.Println("GetNodes", n.IP)
 	switch p := n.GetPeerInfo.(type) {
 	case []interface{}:
 		for _, nodeRaw := range p {

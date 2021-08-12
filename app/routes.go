@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (o *JORM) jorm(r *mux.Router) {
+func (j *JORM) jorm(r *mux.Router) {
 	////////////////
 	// jorm
 	////////////////

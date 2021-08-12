@@ -13,11 +13,11 @@ import (
 )
 
 func CloudFlare(j *jdb.JDB) {
-	//fmt.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
+	//log.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
 	api, err := cf.NewWithAPIToken(cfg.C.CF.CloudFlareAPItoken)
-	utl.ErrorLog(err)
+	log.Println(err)
 	for _, tld := range cfg.C.COMHTTP {
 		go createDNS(j, api, ctx, "com-http."+tld)
 	}
@@ -54,7 +54,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 	var exist bool
 	for _, reg := range registrated {
 		if slug+"."+domain == reg {
-			fmt.Println("Ima:", slug+"."+domain)
+			log.Println("Ima:", slug+"."+domain)
 			exist = true
 		} else {
 			exist = false
@@ -62,7 +62,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 	}
 	if !exist {
 		id, err := api.ZoneIDByName(domain)
-		utl.ErrorLog(err)
+		log.Println(err)
 		t := true
 		_, err = api.CreateDNSRecord(ctx, id, cf.DNSRecord{
 			Type:    "CNAME",
@@ -71,8 +71,8 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 			TTL:     1,
 			Proxied: &t,
 		})
-		utl.ErrorLog(err)
-		fmt.Println("Created subdomain: ", slug+"."+domain)
+		log.Println(err)
+		log.Println("Created subdomain: ", slug+"."+domain)
 	}
 }
 
@@ -96,6 +96,6 @@ func delAllCNameDNS(api *cf.API, ctx context.Context, domain string) {
 
 func delDNS(api *cf.API, ctx context.Context, zoneId, id string) {
 	err := api.DeleteDNSRecord(ctx, zoneId, id)
-	utl.ErrorLog(err)
-	fmt.Println("DeleteDNSRecord rrrrr:", id)
+	log.Println(err)
+	log.Println("DeleteDNSRecord rrrrr:", id)
 }

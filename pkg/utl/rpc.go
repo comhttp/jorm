@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -35,9 +36,9 @@ func (c *Endpoint) MakeRequest(method string, params interface{}) (interface{}, 
 
 	j, err := json.Marshal(args)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
-	//	fmt.Println("Blooblockblockblockblockooradb", args)
+	//	log.Println("Blooblockblockblockblockooradb", args)
 
 	req.Body = ioutil.NopCloser(strings.NewReader(string(j)))
 	req.ContentLength = int64(len(string(j)))
@@ -82,7 +83,7 @@ func NewClient(user string, password string, host string, port int64) *Endpoint 
 
 // 	ca, err := x509.ParseCertificate(cert.Certificate[1])
 // 	if err != nil {
-// 		fmt.Println(err)
+// 		log.Println(err)
 // 	}
 
 // 	certPool := x509.NewCertPool()

@@ -43,7 +43,7 @@ package xsrc
 //}
 //
 //func getCoinBeneExchange() {
-//	fmt.Println("GetCoinBeneExchangeStart")
+//	log.Println("GetCoinBeneExchangeStart")
 //	exchangeRaw := CoinBeneExchange{}
 //	tickersRaw := CoinBeneExchangeTickers{}
 //
@@ -96,6 +96,6 @@ package xsrc
 //	exchange.Markets = marketsSlice
 //	//jdb.WriteExchange(slug, exchange)
 //
-//	fmt.Println("GetCoinBeneExchangeDone")
+//	log.Println("GetCoinBeneExchangeDone")
 //
 //}

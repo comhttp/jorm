@@ -1,7 +1,7 @@
 package xsrc
 
 func getHuobiExchange() {
-	//fmt.Println("Get Huobi Exchange Start")
+	//log.Println("Get Huobi Exchange Start")
 	//exchangeRaw := make(map[string]interface{})
 	//
 	//slug := "huobi"
@@ -72,6 +72,6 @@ func getHuobiExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	fmt.Println("Get Huobi Exchange Done")
+	//	log.Println("Get Huobi Exchange Done")
 	//}
 }

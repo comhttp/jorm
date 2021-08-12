@@ -12,7 +12,7 @@ import (
 )
 
 func getBinanceExchange(j *jdb.JDB) {
-	fmt.Println("Get Binance Exchange Start")
+	log.Println("Get Binance Exchange Start")
 	t := exchanges.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
@@ -37,7 +37,7 @@ func getBinanceExchange(j *jdb.JDB) {
 
 	//exchangeRaw := make(map[string]interface{})
 	//resps, err := http.Get("https://api.binance.com/api/v3/exchangeInfo")
-	//utl.ErrorLog(err)
+	//log.Println(err)
 	//defer resps.Body.Close()
 	//mapBodyS, err := ioutil.ReadAll(resps.Body)
 	//json.Unmarshal(mapBodyS, &exchangeRaw)
@@ -46,7 +46,7 @@ func getBinanceExchange(j *jdb.JDB) {
 
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.binance.com/api/v3/ticker/24hr")
-	utl.ErrorLog(err)
+	log.Println(err)
 	defer respsTickers.Body.Close()
 	mapBodyTickers, err := ioutil.ReadAll(respsTickers.Body)
 	json.Unmarshal(mapBodyTickers, &exchangeTickersRaw)
@@ -84,7 +84,7 @@ func getBinanceExchange(j *jdb.JDB) {
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 			ex.WriteExchange(j, e)
-			fmt.Println("Get Binance Exchange Done")
+			log.Println("Get Binance Exchange Done")
 		}
 	}
 }

@@ -7,15 +7,16 @@ import (
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
 
 func getCoinGecko(j *jdb.JDB) {
-	fmt.Println("GetCoinGeckoStart")
+	log.Println("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")
-	utl.ErrorLog(err)
+	log.Println(err)
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)
 	if mapBody != nil {
@@ -29,18 +30,18 @@ func getCoinGecko(j *jdb.JDB) {
 			}
 		}
 	}
-	fmt.Println("GetCoinGeckoDone")
+	log.Println("GetCoinGeckoDone")
 }
 
 func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins.Coin) {
 	return func(c *coins.Coin) {
 		c.SetName(coinSrc["name"])
 		c.SetTicker(coinSrc["symbol"])
-		fmt.Println("Checked1:", c.Checked)
+		log.Println("Checked1:", c.Checked)
 		c.Slug = slug
 		coinDetails := make(map[string]interface{})
 		respc, err := http.Get("https://api.coingecko.com/api/v3/coins/" + coinSrc["id"].(string) + "?tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")
-		utl.ErrorLog(err)
+		log.Println(err)
 		defer respc.Body.Close()
 		mapBody, err := ioutil.ReadAll(respc.Body)
 		if mapBody != nil {
@@ -72,10 +73,10 @@ func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins
 			//insertFloat(coinDetails["block_time_in_minutes"].(float64), c.BlockTime)
 		}
 
-		//fmt.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-		//fmt.Println("Ubo:", c.Name)
-		fmt.Println("Checked1:", c.Checked)
-		fmt.Println("Checked2:", c.Checked)
+		//log.Println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+		//log.Println("Ubo:", c.Name)
+		log.Println("Checked1:", c.Checked)
+		log.Println("Checked2:", c.Checked)
 		time.Sleep(99 * time.Millisecond)
 	}
 }

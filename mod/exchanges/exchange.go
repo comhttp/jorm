@@ -74,7 +74,7 @@ func GetSource(url string) interface{} {
 	var marketsRaw interface{}
 	res, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		log.Println("Error: ", err)
 	}
 	defer res.Body.Close()
 	mapBody, err := ioutil.ReadAll(res.Body)
@@ -97,7 +97,7 @@ func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 }
 
 func (es *ExchangeSrc) SetExchange(j *jdb.JDB) {
-	fmt.Println("Get " + es.Name + " Exchange Start")
+	log.Println("Get " + es.Name + " Exchange Start")
 	var e Exchange
 	e.Name = es.Name
 	e.Slug = es.Slug
@@ -125,8 +125,8 @@ func (es *ExchangeSrc) SetExchange(j *jdb.JDB) {
 				marketSrc[es.Ticker.Vol])
 		}
 		e.WriteExchange(j, *es)
-		fmt.Println("Get " + e.Name + " Exchange Done")
+		log.Println("Get " + e.Name + " Exchange Done")
 	} else {
-		fmt.Println("Get " + e.Name + " Exchange Fail")
+		log.Println("Get " + e.Name + " Exchange Fail")
 	}
 }

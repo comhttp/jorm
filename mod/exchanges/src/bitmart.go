@@ -37,7 +37,7 @@ package xsrc
 //}
 //
 //func getBitMartExchange() {
-//	fmt.Println("GetBitMartExchangeStart")
+//	log.Println("GetBitMartExchangeStart")
 //	exchangeRaw := []BitMartExchange{}
 //	tickersRaw := []BitMartExchangeTickers{}
 //
@@ -92,6 +92,6 @@ package xsrc
 //	exchange.Markets = marketsSlice
 //	//jdb.WriteExchange(slug, exchange)
 //
-//	fmt.Println("GetBitMartExchangeDone")
+//	log.Println("GetBitMartExchangeDone")
 //
 //}

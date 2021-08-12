@@ -1,21 +1,21 @@
 package coins
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"log"
 )
 
 //func BitNodeCoins(c nodes.NodeCoins, j *jdb.JDB) {
-//	fmt.Println("Start Process BitNodes Coins")
+//	log.Println("Start Process BitNodes Coins")
 //	nodeCoins := nodes.NodeCoins{N: 0}
 //	//c := GetAllCoins(j)
 //
 //	for _, nodeCoin := range c.C {
 //		coin := getCoin(j, nodeCoin.Slug)
-//		fmt.Println("Bitnode Coin: ", coin.Name)
+//		log.Println("Bitnode Coin: ", coin.Name)
 //		bitNodes := nodes.BitNodes{}
 //		if err := cfg.CFG.Read("nodes", coin.Slug, &bitNodes); err != nil {
-//			fmt.Println("Error", err)
+//			log.Println("Error", err)
 //		}
 //		nodeCoins.N++
 //		nodeCoins.C = append(nodeCoins.C, nodes.NodeCoin{
@@ -33,7 +33,7 @@ import (
 //}
 
 func ProcessCoins(j *jdb.JDB) {
-	fmt.Println("Start ProcessCoins")
+	log.Println("Start ProcessCoins")
 
 	usableCoins := Coins{N: 0}
 	algoCoins := AlgoCoins{N: 0}

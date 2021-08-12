@@ -1,14 +1,14 @@
 package xsrc
 
 func getGateExchange() {
-	//fmt.Println("Get Gate Exchange Start")
+	//log.Println("Get Gate Exchange Start")
 	//marketsRaw := make(map[string]interface{})
 	//slug := "gate"
 	//var e exchange.Exchange
 	//e.Name = "Gate"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://data.gateapi.io/api2/1/tickers")
-	//utl.ErrorLog(err)
+	//log.Println(err)
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)
 	//if mapBody != nil {
@@ -34,8 +34,8 @@ func getGateExchange() {
 	//			mSrc["vol"])
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	fmt.Println("Get Gate Exchange Done")
+	//	log.Println("Get Gate Exchange Done")
 	//} else {
-	//	fmt.Println("Get Gate Exchange Fail")
+	//	log.Println("Get Gate Exchange Fail")
 	//}
 }

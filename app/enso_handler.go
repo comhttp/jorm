@@ -1,4 +1,4 @@
-package enso
+package app
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/tdewolff/minify"
 	mjson "github.com/tdewolff/minify/json"
+	"log"
 	"net/http"
 	"regexp"
 )
@@ -26,7 +27,7 @@ type home struct {
 //		if utl.FileExists(cfg.Path + "/jorm/" + coin.Slug + "/info/bitnodes") {
 //			bitnoded = append(bitnoded, coin)
 //		}
-//		//fmt.Println("coin", coin)
+//		//log.Println("coin", coin)
 //	}
 //	data := home{
 //		D: bitnoded,
@@ -36,120 +37,121 @@ type home struct {
 //}
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) CoinHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) CoinHandler(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(coins.GetCoin(e.JDB, v["coin"]))
+	out, err := json.Marshal(coins.GetCoin(j.JDB, v["coin"]))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) CoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) CoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetCoins(e.JDB))
+	out, err := json.Marshal(coins.GetCoins(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) restCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) restCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetRestCoins(e.JDB))
+	out, err := json.Marshal(coins.GetRestCoins(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) algoCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) algoCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetAlgoCoins(e.JDB))
+	out, err := json.Marshal(coins.GetAlgoCoins(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) coinsWordsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) coinsWordsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetCoinsWords(e.JDB))
+	out, err := json.Marshal(coins.GetCoinsWords(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) usableCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) usableCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetUsableCoins(e.JDB))
+	out, err := json.Marshal(coins.GetUsableCoins(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
-	out, err := json.Marshal(coins.GetAllCoins(e.JDB))
+	out, err := json.Marshal(coins.GetAllCoins(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
-	//out, err := json.Marshal(coins.GetNodeCoins(e.JDB))
-	//if err != nil {
-	//	fmt.Println("Error encoding JSON")
-	//	return
-	//}
-	//w.Write([]byte(out))
+func (j *JORM) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("sssssssss", j.NodeCoins)
+	out, err := json.Marshal(j.NodeCoins)
+	if err != nil {
+		log.Println("Error encoding JSON")
+		return
+	}
+	w.Write([]byte(out))
 }
 
 // CoinsHandler handles a request for coin data
-func (e *ENSO) coinsBinHandler(w http.ResponseWriter, r *http.Request) {
-	out, err := json.Marshal(coins.GetCoinsBin(e.JDB))
+func (j *JORM) coinsBinHandler(w http.ResponseWriter, r *http.Request) {
+	out, err := json.Marshal(coins.GetCoinsBin(j.JDB))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // CoinNodesHandler handles a request for (?)
-func (e *ENSO) CoinNodesHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) CoinNodesHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
 // NodeHandler handles a request for (?)
-func (e *ENSO) nodeHandler(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) nodeHandler(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(nodes.GetNode(e.JDB, v["coin"], v["nodeip"]))
+	out, err := json.Marshal(nodes.GetNode(j.JDB, v["coin"], v["nodeip"]))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
 // NodeHandler handles a request for (?)
-func (e *ENSO) ViewJSON() http.Handler {
+func (j *JORM) ViewJSON() http.Handler {
 	m := minify.New()
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 
@@ -157,7 +159,7 @@ func (e *ENSO) ViewJSON() http.Handler {
 }
 
 // NodeHandler handles a request for (?)
-func (e *ENSO) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	m := minify.New()
 	//height, err := strconv.ParseUint(v["file"], 10, 64)
@@ -168,13 +170,13 @@ func (e *ENSO) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//} else {
 	//	index := map[uint64]string{}
 	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {
-	//	fmt.Println("Error", err)
+	//	log.Println("Error", err)
 	//}
 
-	//fmt.Println("index[height]", index[height])
+	//log.Println("index[height]", index[height])
 	//out := map[string]interface{}{}
 	//if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
-	//	fmt.Println("Error", err)
+	//	log.Println("Error", err)
 	//}
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	//json.NewEncoder(w).Encode(out)

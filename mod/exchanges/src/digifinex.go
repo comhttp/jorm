@@ -1,14 +1,14 @@
 package xsrc
 
 func getDigiFinexExchange() {
-	//fmt.Println("Get DigiFinex Exchange Start")
+	//log.Println("Get DigiFinex Exchange Start")
 	//marketsRaw := make(map[string]interface{})
 	//slug := "digifinex"
 	//var e exchange.Exchange
 	//e.Name = "DigiFinex"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://openapi.digifinex.com/v3/ticker")
-	//utl.ErrorLog(err)
+	//log.Println(err)
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)
 	//if mapBody != nil {
@@ -37,9 +37,9 @@ func getDigiFinexExchange() {
 	//			}
 	//		}
 	//		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//		fmt.Println("Get DigiFinex Exchange Done")
+	//		log.Println("Get DigiFinex Exchange Done")
 	//	}
 	//} else {
-	//	fmt.Println("Get Gate Exchange Fail")
+	//	log.Println("Get Gate Exchange Fail")
 	//}
 }

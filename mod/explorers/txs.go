@@ -10,7 +10,7 @@ package explorers
 //func APIGetTx(rpc *nodes.BitNode, txid string) (t interface{}) {
 //	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 //	if jrc == nil {
-//		fmt.Println("Error n status write")
+//		log.Println("Error n status write")
 //	}
 //	verbose := int(1)
 //	var grtx []interface{}
@@ -18,7 +18,7 @@ package explorers
 //	grtx = append(grtx, verbose)
 //	t, err := jrc.MakeRequest("getrawtransaction", grtx)
 //	if err != nil {
-//		fmt.Println("Jorm Node Get Tx Error", err)
+//		log.Println("Jorm Node Get Tx Error", err)
 //	}
 //	return
 //}
@@ -81,12 +81,12 @@ package explorers
 //func (rpc *nodes.BitNode) GetBlockTxAddr(blockheight int) interface{} {
 //	jrc := utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, rpc.IP, rpc.Port)
 //	if jrc == nil {
-//		fmt.Println("Error n status write")
+//		log.Println("Error n status write")
 //	}
 //	bparams := []int{blockheight}
 //	blockHash, err := jrc.MakeRequest("getblockhash", bparams)
 //	if err != nil {
-//		fmt.Println("Jorm Node Get Block Tx Addr Error", err)
+//		log.Println("Jorm Node Get Block Tx Addr Error", err)
 //	}
 //	var block interface{}
 //	var txs []interface{}
@@ -107,7 +107,7 @@ package explorers
 //		grtx = append(grtx, verbose)
 //		rtx, err := jrc.MakeRequest("getrawtransaction", grtx)
 //		if err != nil {
-//			fmt.Println("Jorm Node Get Block Tx Addr Tx Error", err)
+//			log.Println("Jorm Node Get Block Tx Addr Tx Error", err)
 //		}
 //		txs = append(txs, rtx)
 //

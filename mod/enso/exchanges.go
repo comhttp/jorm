@@ -5,7 +5,7 @@ package enso
 //	//v := mux.Vars(r)
 //	//out, err := json.Marshal(e.Explorer.Status[v["coin"]])
 //	//if err != nil {
-//	//	fmt.Println("Error encoding JSON")
+//	//	log.Println("Error encoding JSON")
 //	//	return
 //	//}
 //	w.Write([]byte(out))
@@ -15,7 +15,7 @@ package enso
 //	//v := mux.Vars(r)
 //	//out, err := json.Marshal(e.Explorer.Status[v["coin"]])
 //	//if err != nil {
-//	//	fmt.Println("Error encoding JSON")
+//	//	log.Println("Error encoding JSON")
 //	//	return
 //	//}
 //	w.Write([]byte(out))

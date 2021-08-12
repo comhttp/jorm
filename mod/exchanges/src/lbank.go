@@ -25,7 +25,7 @@ package xsrc
 //}
 //
 //func getLBankExchange() {
-//	fmt.Println("GetLBankExchangeStart")
+//	log.Println("GetLBankExchangeStart")
 //	marketsRaw := LBankExchange{}
 //	slug := "lbank"
 //	var exchange x.Exchange
@@ -66,6 +66,6 @@ package xsrc
 //	exchange.Markets = marketsSlice
 //	//jdb.WriteExchange(slug, exchange)
 //
-//	fmt.Println("GetLBankExchangeDone")
+//	log.Println("GetLBankExchangeDone")
 //
 //}

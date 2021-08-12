@@ -26,7 +26,7 @@ package xsrc
 //}
 //
 //func getIDAXExchange() {
-//	fmt.Println("GetIDAXExchangeStart")
+//	log.Println("GetIDAXExchangeStart")
 //	marketsRaw := IDAXExchange{}
 //	slug := "idax"
 //	var exchange x.Exchange
@@ -67,6 +67,6 @@ package xsrc
 //	exchange.Markets = marketsSlice
 //	//jdb.WriteExchange(slug, exchange)
 //
-//	fmt.Println("GetIDAXExchangeDone")
+//	log.Println("GetIDAXExchangeDone")
 //
 //}

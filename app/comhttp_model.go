@@ -1,7 +1,6 @@
-package comhttp
+package app
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"log"
 	"os"
@@ -21,8 +20,8 @@ type COMHTTP struct {
 }
 
 func parseTemplates(base string, t *template.Template) *template.Template {
-	fmt.Println("cfg.Pathcfg.Pathcfg.Pathssssssssssss", cfg.Path)
-	fmt.Println("ssssssssssss", cfg.Path+"tpl/"+base)
+	log.Println("cfg.Pathcfg.Pathcfg.Pathssssssssssss", cfg.Path)
+	log.Println("ssssssssssss", cfg.Path+"tpl/"+base)
 	err := filepath.Walk(cfg.Path+"tpl/"+base, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(path, ".gohtml") {
 			_, err = t.ParseFiles(path)

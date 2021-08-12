@@ -1,9 +1,9 @@
 package app
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -40,12 +40,12 @@ func (o *JORM) viewWebImg(w http.ResponseWriter, r *http.Request) {
 	path := cfg.Path + "/static/img"
 	_, err := os.Stat(path + "/" + url)
 	if err != nil {
-		fmt.Println(path + "/" + url)
-		fmt.Println("nema")
+		log.Println(path + "/" + url)
+		log.Println("nema")
 		exec.Command("gowitness single --destination " + path + " -o " + url + ".png https://" + url)
 	} else {
-		fmt.Println(path)
-		fmt.Println("ima")
+		log.Println(path)
+		log.Println("ima")
 	}
 	http.ServeFile(w, r, path+"/"+url)
 }

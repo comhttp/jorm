@@ -10,14 +10,14 @@ import (
 )
 
 func getBitZExchange() {
-	fmt.Println("Get BitZ Exchange Start")
+	log.Println("Get BitZ Exchange Start")
 	marketsRaw := make(map[string]interface{})
 	slug := "bitz"
 	var e exchanges.Exchange
 	e.Name = "BitZ"
 	e.Slug = slug
 	respcs, err := http.Get("https://apiv2.bitz.com/Market/tickerall")
-	utl.ErrorLog(err)
+	log.Println(err)
 
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)
@@ -46,6 +46,6 @@ func getBitZExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	fmt.Println("Get BitZ Exchange Done")
+	//	log.Println("Get BitZ Exchange Done")
 	//}
 }

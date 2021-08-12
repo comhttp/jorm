@@ -1,10 +1,10 @@
-package comhttp
+package app
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"text/template"
 )
@@ -46,7 +46,7 @@ func (d *Data) section(section string) {
 	return
 }
 
-func Handlers() http.Handler {
+func (j *JORM) COMHTTPhandlers() http.Handler {
 	r := mux.NewRouter()
 	d := newData("com-http")
 	tld := r.Host("com-http.{tld}").Subrouter()
@@ -72,17 +72,17 @@ func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
 		d.App = mux.Vars(r)["app"]
 		d.Page = mux.Vars(r)["page"]
 
-		fmt.Println(":::::::::::::::::.TLD:::::::::::::::::. ", d.TLD)
-		fmt.Println(":::::::::::::::::.Slug:::::::::::::::::. ", d.Slug)
-		fmt.Println(":::::::::::::::::.App:::::::::::::::::. ", d.App)
-		fmt.Println(":::::::::::::::::.Page:::::::::::::::::. ", d.Page)
+		log.Println(":::::::::::::::::.TLD:::::::::::::::::. ", d.TLD)
+		log.Println(":::::::::::::::::.Slug:::::::::::::::::. ", d.Slug)
+		log.Println(":::::::::::::::::.App:::::::::::::::::. ", d.App)
+		log.Println(":::::::::::::::::.Page:::::::::::::::::. ", d.Page)
 
 		d.Base = "amp"
 		d.Bg = "parallelcoin"
 		d.Path = "rts/tld/" + d.TLD
 		d.ProtoURL = "https://" + d.Our + "."
 		d.Title = "Beyond blockchain - " + d.TLD
-		fmt.Println("10000000000000000000000000000")
+		log.Println("10000000000000000000000000000")
 
 		if d.Page != "" {
 			d.ID = d.Page
@@ -122,24 +122,24 @@ func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				d.Section = "coin"
-				fmt.Println("2222222222222222222222222indexindex22222")
+				log.Println("2222222222222222222222222indexindex22222")
 			}
-			fmt.Println("111111111111111111111111111")
+			log.Println("111111111111111111111111111")
 		}
 
-		fmt.Println("ffffffffffffffffffffff")
+		log.Println("ffffffffffffffffffffff")
 
 		funcMap := template.FuncMap{
 			"truncate": utl.Truncate,
 		}
-		fmt.Println("Top level domain keyword 1:  ", d.TLD)
-		fmt.Println("App 1: ", d.App)
-		fmt.Println("Slug 1: ", d.Slug)
-		fmt.Println("Page 1: ", d.Page)
-		fmt.Println("Path 1: ", d.Path)
-		fmt.Println("Base 1: ", d.Base)
+		log.Println("Top level domain keyword 1:  ", d.TLD)
+		log.Println("App 1: ", d.App)
+		log.Println("Slug 1: ", d.Slug)
+		log.Println("Page 1: ", d.Page)
+		log.Println("Path 1: ", d.Path)
+		log.Println("Base 1: ", d.Base)
 		template.Must(parseFiles(d.Base, d.Path+"/"+d.Page+".gohtml")).Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
-		fmt.Println("d.Base", d.Base)
-		fmt.Println("dadadad", d.Path+"/"+d.Page+".gohtml")
+		log.Println("d.Base", d.Base)
+		log.Println("dadadad", d.Path+"/"+d.Page+".gohtml")
 	}
 }

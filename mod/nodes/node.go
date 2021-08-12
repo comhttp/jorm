@@ -1,10 +1,10 @@
 package nodes
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
+	"log"
 )
 
 type BitNode struct {
@@ -79,7 +79,7 @@ type Node struct {
 func GetBitNodes(j *jdb.JDB, bitNodeCoins []string) {
 	var b []string
 	bns := make(map[string]*BitNoded)
-	//fmt.Println("bitNodeCoinsbitNodeCoinsbitNodeCoinsbitNodeCoins", bitNodeCoins)
+	//log.Println("bitNodeCoinsbitNodeCoinsbitNodeCoinsbitNodeCoins", bitNodeCoins)
 	for _, coin := range bitNodeCoins {
 		bn := &BitNoded{}
 		b = append(b, coin)
@@ -98,7 +98,7 @@ func GetBitNodes(j *jdb.JDB, bitNodeCoins []string) {
 func GetNode(j *jdb.JDB, c, ip string) map[string]interface{} {
 	node := make(map[string]interface{})
 	err := j.Read("nodes", c+"_"+ip, &node)
-	utl.ErrorLog(err)
+	log.Println(err)
 	return node
 }
 
@@ -113,11 +113,11 @@ func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, c string) {
 	j.Write("info", c+"_network", s.GetNetworkInfo)
 	j.Write("info", c+"_peers", s.GetPeerInfo)
 
-	fmt.Println("GetBitNodeStatus: ", c+"_"+b.IP)
+	log.Println("GetBitNodeStatus: ", c+"_"+b.IP)
 	nds := GetNodes(s)
 	for _, n := range nds {
 		j.Write("nodes", c+"_"+n.IP, n)
-		fmt.Println("Node: ", c+"_"+n.IP)
+		log.Println("Node: ", c+"_"+n.IP)
 
 	}
 

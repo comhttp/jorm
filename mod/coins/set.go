@@ -1,9 +1,9 @@
 package coins
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
+	"log"
 	"strings"
 )
 
@@ -12,7 +12,7 @@ func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 	err := j.Read("coins", "coin_"+slug, &c)
 	if err != nil {
 		c.Slug = slug
-		fmt.Println("Insert Coin: ", slug)
+		log.Println("Insert Coin: ", slug)
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
@@ -20,13 +20,13 @@ func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 		c.Checked[src] = true
 		j.Write("coins", "coin_"+slug, c)
 	} else {
-		utl.ErrorLog(err)
-		//fmt.Println("Ima Coin: ", c.Name)
+		log.Println(err)
+		//log.Println("Ima Coin: ", c.Name)
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
 		if !c.Checked[src] {
-			fmt.Println("Check Coin: ", c.Name)
+			log.Println("Check Coin: ", c.Name)
 			get(c)
 			c.Checked[src] = true
 		}

@@ -8,9 +8,8 @@ import (
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/jcelliott/lumber"
+	"log"
 
-	//csrc "github.com/comhttp/jorm/app/jorm/c/src"
-	"github.com/comhttp/jorm/pkg/utl"
 	"net/http"
 	"time"
 )
@@ -51,9 +50,8 @@ type (
 
 func NewJORM() *JORM {
 	bitNodesCfg, err := cfg.CFG.ReadAll("nodes")
-	utl.ErrorLog(err)
+	log.Println(err)
 	bitNodes := make(map[string]nodes.BitNodes)
-
 	j := &JORM{
 		//CertManager: autocert.Manager{
 		//	Prompt:     autocert.AcceptTOS,
@@ -66,19 +64,18 @@ func NewJORM() *JORM {
 		Log:        lumber.NewConsoleLogger(lumber.INFO),
 	}
 
-	for _, coin := range bitNodesCfg {
+	for coin, _ := range bitNodesCfg {
 		j.NodeCoins = append(j.NodeCoins, coin)
 		coinBitNodes := nodes.BitNodes{}
 		err := cfg.CFG.Read("nodes", coin, &coinBitNodes)
-		utl.ErrorLog(err)
+		log.Println(err)
 		bitNodes[coin] = coinBitNodes
 	}
-	//fmt.Println("Get ", cfg.C)
+	//log.Println("Get ", cfg.C)
+	j.Explorer = explorers.GetExplorers(j.JDB)
 
 	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
-		Handler:      j.WWWhandleR(),
-		Addr:         ":" + cfg.C.Port["jorm"],
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

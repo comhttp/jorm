@@ -1,12 +1,11 @@
 package utl
 
 import (
-	"fmt"
+	"log"
 )
 
 func ErrorLog(err error) {
 	if err != nil {
-		fmt.Println("Error", err)
+		log.Println("Error", err)
 	}
 }
-

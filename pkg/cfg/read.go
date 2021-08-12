@@ -152,7 +152,7 @@ func (j *jdb) Read(collection, resource string, v interface{}) error {
 
 // ReadAll records from a collection; this is returned as a slice of strings because
 // there is no way of knowing what type the record is.
-func (j *jdb) ReadAll(collection string) ([]string, error) {
+func (j *jdb) ReadAll(collection string) (map[string]interface{}, error) {
 
 	// ensure there is a collection to read
 	if collection == "" {
@@ -172,7 +172,7 @@ func (j *jdb) ReadAll(collection string) ([]string, error) {
 	files, _ := ioutil.ReadDir(dir)
 
 	// the files read from the database
-	var records []string
+	records := make(map[string]interface{})
 
 	// iterate over each of the files, attempting to read the file. If successful
 	// append the files to the collection of read files
@@ -182,9 +182,8 @@ func (j *jdb) ReadAll(collection string) ([]string, error) {
 			if err != nil {
 				return nil, err
 			}
-
 			// append read file
-			records = append(records, string(b))
+			records[file.Name()] = b
 		}
 	}
 
@@ -254,7 +253,7 @@ func (j *jdb) getOrCreateMutex(collection string) *sync.Mutex {
 //// ReadCoins reads in all coin data in and converts to bytes for unmarshalling
 //func ReadData(path string) [][]byte {
 //	data, err := CFG.ReadAll(path)
-//	utl.ErrorLog(err)
+//	log.Println(err)
 //	b := make([][]byte, len(data))
 //	for i := range data {
 //		b[i] = []byte(data[i])

@@ -28,7 +28,7 @@ func getDexTradeExchange(j *jdb.JDB) {
 	//e.GetExchange()
 	//var ex exchange.Exchange
 
-	fmt.Println("Get " + e.Name + " Exchange Start")
+	log.Println("Get " + e.Name + " Exchange Start")
 	var ex exchanges.Exchange
 	ex.Name = e.Name
 	ex.Slug = e.Slug
@@ -50,7 +50,7 @@ func getDexTradeExchange(j *jdb.JDB) {
 						tickerRaw := exchanges.GetSource("https://api.dex-trade.com/v1/public/ticker?pair=" + m["pair"].(string)).(map[string]interface{})
 						if tickerRaw["data"] != nil {
 							ticker := tickerRaw["data"].(map[string]interface{})
-							//fmt.Println("Get ticker",ticker)
+							//log.Println("Get ticker",ticker)
 							e.SetCurrencyMarket(
 								q.(string),
 								m["base"].(string),
@@ -66,9 +66,9 @@ func getDexTradeExchange(j *jdb.JDB) {
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 			ex.WriteExchange(j, e)
-			fmt.Println("Get Dex Trade Exchange Done")
+			log.Println("Get Dex Trade Exchange Done")
 		}
 	} else {
-		fmt.Println("Get Gate Exchange Fail")
+		log.Println("Get Gate Exchange Fail")
 	}
 }

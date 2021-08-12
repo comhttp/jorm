@@ -85,11 +85,11 @@ type AlgoCoin struct {
 //func LoadLogo(slug, size string) image.Image {
 //	// Load logo image from database
 //	logos := make(map[string]interface{})
-//	fmt.Println("slug", slug)
+//	log.Println("slug", slug)
 //	err := jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/data/"+slug), "logo", logos)
 //	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(logos[size].(string)))
 //	logo, _, err := image.Decode(reader)
-//	utl.ErrorLog(err)
+//	log.Println(err)
 //	return logo
 //}
 //
@@ -97,7 +97,7 @@ type AlgoCoin struct {
 //	// Load coin data from database
 //	info := Coin{}
 //	err := jdb.JDB.Read(filepath.FromSlash("data/"+slug), "info", info)
-//	utl.ErrorLog(err)
+//	log.Println(err)
 //	//jsonString, _ := json.Marshal(info)
 //
 //	// convert json to struct

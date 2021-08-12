@@ -1,11 +1,9 @@
 package explorers
 
 import (
-	"fmt"
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
-	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/sirupsen/logrus"
 )
 
@@ -24,7 +22,7 @@ func NewJORMexplorer(coin string) *JORMexplorer {
 	//log.SetLevel(parseLogLevel(loglevel))
 	bitNodes := nodes.BitNodes{}
 	if err := cfg.CFG.Read("nodes", coin, &bitNodes); err != nil {
-		fmt.Println("Error", err)
+		log.Println("Error", err)
 	}
 	e := &JORMexplorer{
 		Coin:     coin,
@@ -39,7 +37,7 @@ func NewJORMexplorer(coin string) *JORMexplorer {
 			Addresses: 0,
 		}
 	}
-	utl.ErrorLog(err)
+	log.Println(err)
 	return e
 }
 

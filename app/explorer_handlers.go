@@ -1,61 +1,61 @@
-package enso
+package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/comhttp/jorm/mod/explorers"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"strconv"
 )
 
-func (e *ENSO) ViewStatus(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewStatus(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(e.Explorer.Status[v["coin"]])
+	out, err := json.Marshal(j.Explorer.Status[v["coin"]])
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
-func (e *ENSO) ViewBlocks(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewBlocks(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	per, _ := strconv.Atoi(v["per"])
 	page, _ := strconv.Atoi(v["page"])
-	ex := explorers.GetExplorer(e.JDB, v["coin"])
+	ex := explorers.GetExplorer(j.JDB, v["coin"])
 	lastblock := ex.Blocks - 1
-	fmt.Println("lastblocklastblocklastblock", lastblock)
+	log.Println("lastblocklastblocklastblock", lastblock)
 
 	lb := map[string]interface{}{
 		"currentPage": page,
 		"pageCount":   lastblock / per,
-		"blocks":      e.Explorer.GetBlocks(e.JDB, v["coin"], per, page),
+		"blocks":      j.Explorer.GetBlocks(j.JDB, v["coin"], per, page),
 		"lastBlock":   lastblock,
 	}
 
 	out, err := json.Marshal(lb)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
-func (e *ENSO) LastBlock(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) LastBlock(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(e.Explorer.Status[v["coin"]].Blocks)
+	out, err := json.Marshal(j.Explorer.Status[v["coin"]].Blocks)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
-func (e *ENSO) ViewBlock(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewBlock(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(explorers.GetBlock(e.JDB, v["coin"], v["id"]))
+	out, err := json.Marshal(explorers.GetBlock(j.JDB, v["coin"], v["id"]))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
@@ -69,7 +69,7 @@ func (e *ENSO) ViewBlock(w http.ResponseWriter, r *http.Request) {
 //	block := a.RPCSRC(v["coin"]).GetBlockByHeight(bhi)
 //	out, err := json.Marshal(block)
 //	if err != nil {
-//		fmt.Println("Error encoding JSON")
+//		log.Println("Error encoding JSON")
 //		return
 //	}
 //	w.Write([]byte(out))
@@ -83,65 +83,65 @@ func (e *ENSO) ViewBlock(w http.ResponseWriter, r *http.Request) {
 //	http.Redirect(w, r, "/b/"+v["coin"]+"/block/"+h, 301)
 //}
 
-func (e *ENSO) ViewTx(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewTx(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(explorers.GetTx(e.JDB, v["coin"], v["txid"]))
+	out, err := json.Marshal(explorers.GetTx(j.JDB, v["coin"], v["txid"]))
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
-func (e *ENSO) ViewAddr(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewAddr(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	var block interface{}
-	block = explorers.GetBlock(e.JDB, v["coin"], v["id"])
+	block = explorers.GetBlock(j.JDB, v["coin"], v["id"])
 	out, err := json.Marshal(block)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
 
-func (e *ENSO) ViewRawMemPool(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewRawMemPool(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	rawMemPool := explorers.GetMemPool(e.JDB, v["coin"])
+	rawMemPool := explorers.GetMemPool(j.JDB, v["coin"])
 	out, err := json.Marshal(rawMemPool)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
-func (e *ENSO) ViewMiningInfo(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewMiningInfo(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	miningInfo := explorers.GetMiningInfo(e.JDB, v["coin"])
+	miningInfo := explorers.GetMiningInfo(j.JDB, v["coin"])
 
 	out, err := json.Marshal(miningInfo)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
-func (e *ENSO) ViewInfo(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewInfo(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	info := explorers.GetInfo(e.JDB, v["coin"])
+	info := explorers.GetInfo(j.JDB, v["coin"])
 	out, err := json.Marshal(info)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))
 }
-func (e *ENSO) ViewPeers(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) ViewPeers(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	peers := explorers.GetPeers(e.JDB, v["coin"])
+	peers := explorers.GetPeers(j.JDB, v["coin"])
 	out, err := json.Marshal(peers)
 	if err != nil {
-		fmt.Println("Error encoding JSON")
+		log.Println("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))

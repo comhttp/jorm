@@ -1,14 +1,14 @@
 package xsrc
 
 func getLiquidExchange() {
-	//fmt.Println("Get Liquid Exchange Start")
+	//log.Println("Get Liquid Exchange Start")
 	//marketsRaw := []interface{}{}
 	//slug := "liquid"
 	//var e exchange.Exchange
 	//e.Name = "Liquid"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://api.liquid.com/products")
-	//utl.ErrorLog(err)
+	//log.Println(err)
 	//
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)
@@ -36,6 +36,6 @@ func getLiquidExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	fmt.Println("Get Liquid Exchange Done")
+	//	log.Println("Get Liquid Exchange Done")
 	//}
 }

@@ -92,11 +92,11 @@ func (e *JORMexplorer) addr(c, address string) {
 
 //func (e *explorer.Explorer) status(n *nodes.BitNode) {
 //
-//	fmt.Println("Mempool: ", n.GetRawMemPool())
-//	fmt.Println("MiningInfo: ", n.GetMiningInfo())
-//	fmt.Println("NetworkInfo: ", n.GetNetworkInfo())
-//	fmt.Println("Info: ", n.GetInfo())
-//	fmt.Println("PeerInfo: ", n.GetPeerInfo())
+//	log.Println("Mempool: ", n.GetRawMemPool())
+//	log.Println("MiningInfo: ", n.GetMiningInfo())
+//	log.Println("NetworkInfo: ", n.GetNetworkInfo())
+//	log.Println("Info: ", n.GetInfo())
+//	log.Println("PeerInfo: ", n.GetPeerInfo())
 //
 //
 //	//n.addNode(ip string)

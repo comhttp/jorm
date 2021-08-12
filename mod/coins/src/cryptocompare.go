@@ -7,18 +7,19 @@ import (
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func getCryptoCompare(j *jdb.JDB) {
-	fmt.Println("Get Crypto Compare Start")
+	log.Println("Get Crypto Compare Start")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
-	utl.ErrorLog(err)
+	log.Println(err)
 	defer respcs.Body.Close()
 	if respcs != nil {
 		coinsRaw := make(map[string]interface{})
 		mapBody, err := ioutil.ReadAll(respcs.Body)
-		utl.ErrorLog(err)
+		log.Println(err)
 		json.Unmarshal(mapBody, &coinsRaw)
 		if coinsRaw["Data"] != nil {
 			for _, coinSrc := range coinsRaw["Data"].(map[string]interface{}) {
@@ -32,7 +33,7 @@ func getCryptoCompare(j *jdb.JDB) {
 			}
 		}
 	}
-	fmt.Println("Get Crypto Compare Done")
+	log.Println("Get Crypto Compare Done")
 }
 
 func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *coins.Coin) {
