@@ -6,14 +6,16 @@ import (
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
+	"github.com/comhttp/jorm/mod/comhttp"
 	"github.com/comhttp/jorm/mod/enso"
 	"github.com/comhttp/jorm/mod/explorers"
 	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/mod/our"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"time"
 )
 
@@ -83,6 +85,9 @@ func main() {
 	//	ReadTimeout:  15 * time.Second,
 	//}
 	switch *service {
+	case "rev":
+		fmt.Println("reverse proxy")
+		reverseProxySRV()
 	case "jorm":
 		fmt.Println("jorm")
 		jormSRV()
@@ -91,7 +96,10 @@ func main() {
 		ensoSRV()
 	case "our":
 		fmt.Println("our")
-		ourSRV()
+	//ourSRV()
+	case "comhttp":
+		fmt.Println("comhttp")
+		comhttpSRV()
 	case "explorer":
 		fmt.Println("explorer " + *coin)
 		explorerSRV(*port, *coin)
@@ -163,12 +171,22 @@ func ensoSRV() {
 
 func ourSRV() {
 	srv := &http.Server{
-		Handler:      our.Handlers(),
+		Handler:      comhttp.Handlers(),
 		Addr:         ":" + cfg.C.Port["our"],
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 	fmt.Println("Listening on port: ", cfg.C.Port["our"])
+	log.Fatal(srv.ListenAndServe())
+}
+func comhttpSRV() {
+	srv := &http.Server{
+		Handler:      comhttp.Handlers(),
+		Addr:         ":" + cfg.C.Port["comhttp"],
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	fmt.Println("Listening on port: ", cfg.C.Port["comhttp"])
 	log.Fatal(srv.ListenAndServe())
 }
 
@@ -195,6 +213,51 @@ func explorerSRV(port, coin string) {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
+var (
+	hostTarget = map[string]string{
+		"okno.rs":                    "http://localhost:4433",
+		"parallelcoin.info":          "http://localhost:4433",
+		"explorer.parallelcoin.info": "http://localhost:4433",
+		"jorm.okno.rs":               "http://localhost:14411",
+		"our.okno.rs":                "http://localhost:14422",
+		"enso.okno.rs":               "http://localhost:14433",
+	}
+)
+
+type baseHandle struct{}
+
+func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	host := r.Host
+
+	if target, ok := hostTarget[host]; ok {
+		reverseproxy(w, r, target)
+	} else {
+		reverseproxy(w, r, host)
+	}
+	w.Write([]byte("403: Host forbidden " + host))
+}
+
+func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
+	remoteUrl, err := url.Parse(target)
+	if err != nil {
+		log.Println("target parse fail:", err)
+		return
+	}
+
+	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
+	proxy.ServeHTTP(w, r)
+	return
+}
+
+func reverseProxySRV() {
+	h := &baseHandle{}
+	http.Handle("/", h)
+	server := &http.Server{
+		Addr:    ":80",
+		Handler: h,
+	}
+	log.Fatal(server.ListenAndServe())
+}
 func status(w http.ResponseWriter, r *http.Request) {
 	// Handles top-level page.
 	fmt.Fprintf(w, "You are on the status home page")

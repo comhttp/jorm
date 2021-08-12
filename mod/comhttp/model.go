@@ -1,4 +1,4 @@
-package our
+package comhttp
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"text/template"
 )
 
-type Page struct {
+type COMHTTP struct {
 	ID       string
 	TLD      string
 	Slug     string
