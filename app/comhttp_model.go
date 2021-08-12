@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/utl"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,12 +11,11 @@ import (
 )
 
 type COMHTTP struct {
-	ID       string
-	TLD      string
-	Slug     string
-	Titile   string
-	ProtoURL string
-
+	ID        string
+	TLD       string
+	Slug      string
+	Titile    string
+	ProtoURL  string
 	BodyClass string
 }
 
@@ -26,7 +26,7 @@ func parseTemplates(base string, t *template.Template) *template.Template {
 		if strings.Contains(path, ".gohtml") {
 			_, err = t.ParseFiles(path)
 			if err != nil {
-				log.Println(err)
+				utl.ErrorLog(err)
 			}
 		}
 

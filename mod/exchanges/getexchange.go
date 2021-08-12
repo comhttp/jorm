@@ -18,7 +18,7 @@ func GetExchange(slug string) {
 	//	//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, e)
 	//} else {
 	//	//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
-	//	log.Println(err)
+	//	utl.ErrorLog(err)
 	//	log.Println("Ima Coin: ", e.Name)
 	//	//if c.Checked == nil {
 	//	//	c.Checked = make(map[string]bool)

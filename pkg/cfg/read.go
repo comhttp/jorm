@@ -235,25 +235,21 @@ func stat(path string) (fi os.FileInfo, err error) {
 // getOrCreateMutex creates a new collection specific mutex any time a collection
 // is being modfied to avoid unsafe operations
 func (j *jdb) getOrCreateMutex(collection string) *sync.Mutex {
-
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
-
 	m, ok := j.mutexes[collection]
-
 	// if the mutex doesn't exist make it
 	if !ok {
 		m = &sync.Mutex{}
 		j.mutexes[collection] = m
 	}
-
 	return m
 }
 
 //// ReadCoins reads in all coin data in and converts to bytes for unmarshalling
 //func ReadData(path string) [][]byte {
 //	data, err := CFG.ReadAll(path)
-//	log.Println(err)
+//	utl.ErrorLog(err)
 //	b := make([][]byte, len(data))
 //	for i := range data {
 //		b[i] = []byte(data[i])

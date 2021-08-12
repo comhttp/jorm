@@ -9,7 +9,6 @@ func GetCoinSources(j *jdb.JDB) {
 	go getCryptoCompare(j)
 	go getCoinCodex(j)
 	go getCoinGecko(j)
-
 	return
 }
 

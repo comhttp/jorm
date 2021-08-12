@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
@@ -115,7 +114,6 @@ func (j *JORM) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
 
 // CoinsHandler handles a request for coin data
 func (j *JORM) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("sssssssss", j.NodeCoins)
 	out, err := json.Marshal(j.NodeCoins)
 	if err != nil {
 		log.Println("Error encoding JSON")

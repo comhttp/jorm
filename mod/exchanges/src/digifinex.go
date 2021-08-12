@@ -8,7 +8,7 @@ func getDigiFinexExchange() {
 	//e.Name = "DigiFinex"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://openapi.digifinex.com/v3/ticker")
-	//log.Println(err)
+	//utl.ErrorLog(err)
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)
 	//if mapBody != nil {

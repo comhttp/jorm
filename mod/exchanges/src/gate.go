@@ -8,7 +8,7 @@ func getGateExchange() {
 	//e.Name = "Gate"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://data.gateapi.io/api2/1/tickers")
-	//log.Println(err)
+	//utl.ErrorLog(err)
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)
 	//if mapBody != nil {

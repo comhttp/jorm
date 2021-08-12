@@ -43,12 +43,12 @@ func GetAllExchanges(j *jdb.JDB) {
 
 func getExchanges(j *jdb.JDB) []Exchange {
 	exchanges, err := j.ReadAll("exchanges", "ex_")
-	log.Println(err)
+	utl.ErrorLog(err)
 	exs := make([]Exchange, len(exchanges))
 	for _, e := range exchanges {
 		ex := Exchange{}
 		err := j.Read("exchanges", "ex_"+e, &ex)
-		log.Println(err)
+		utl.ErrorLog(err)
 		exs = append(exs, ex)
 	}
 	return exs
@@ -58,12 +58,12 @@ func getExchanges(j *jdb.JDB) []Exchange {
 func GetExchanges(j *jdb.JDB) {
 	exchanges := []Exchange{}
 	err := j.Read("exchanges", "exchanges", &exchanges)
-	log.Println(err)
+	utl.ErrorLog(err)
 }
 
 // GetBaseExchanges reads in all of the data about all exchanges in the database
 func GetBaseExchanges(j *jdb.JDB) {
 	baseExchanges := []BaseExchange{}
 	err := j.Read("exchanges", "base", &baseExchanges)
-	log.Println(err)
+	utl.ErrorLog(err)
 }

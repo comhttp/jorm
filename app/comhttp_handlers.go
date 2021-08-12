@@ -71,19 +71,11 @@ func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
 		d.Slug = mux.Vars(r)["slug"]
 		d.App = mux.Vars(r)["app"]
 		d.Page = mux.Vars(r)["page"]
-
-		log.Println(":::::::::::::::::.TLD:::::::::::::::::. ", d.TLD)
-		log.Println(":::::::::::::::::.Slug:::::::::::::::::. ", d.Slug)
-		log.Println(":::::::::::::::::.App:::::::::::::::::. ", d.App)
-		log.Println(":::::::::::::::::.Page:::::::::::::::::. ", d.Page)
-
 		d.Base = "amp"
 		d.Bg = "parallelcoin"
 		d.Path = "rts/tld/" + d.TLD
 		d.ProtoURL = "https://" + d.Our + "."
 		d.Title = "Beyond blockchain - " + d.TLD
-		log.Println("10000000000000000000000000000")
-
 		if d.Page != "" {
 			d.ID = d.Page
 			d.Page = d.App
@@ -122,13 +114,8 @@ func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				d.Section = "coin"
-				log.Println("2222222222222222222222222indexindex22222")
 			}
-			log.Println("111111111111111111111111111")
 		}
-
-		log.Println("ffffffffffffffffffffff")
-
 		funcMap := template.FuncMap{
 			"truncate": utl.Truncate,
 		}

@@ -7,9 +7,8 @@ import (
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/jcelliott/lumber"
-	"log"
-
 	"net/http"
 	"time"
 )
@@ -50,7 +49,7 @@ type (
 
 func NewJORM() *JORM {
 	bitNodesCfg, err := cfg.CFG.ReadAll("nodes")
-	log.Println(err)
+	utl.ErrorLog(err)
 	bitNodes := make(map[string]nodes.BitNodes)
 	j := &JORM{
 		//CertManager: autocert.Manager{
@@ -68,9 +67,10 @@ func NewJORM() *JORM {
 		j.NodeCoins = append(j.NodeCoins, coin)
 		coinBitNodes := nodes.BitNodes{}
 		err := cfg.CFG.Read("nodes", coin, &coinBitNodes)
-		log.Println(err)
+		utl.ErrorLog(err)
 		bitNodes[coin] = coinBitNodes
 	}
+
 	//log.Println("Get ", cfg.C)
 	j.Explorer = explorers.GetExplorers(j.JDB)
 

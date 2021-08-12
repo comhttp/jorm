@@ -16,9 +16,9 @@ var (
 	}
 )
 
-type baseHandle struct{}
+type BaseHandle struct{}
 
-func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *BaseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	host := r.Host
 	log.Println("target hosthosthost fail:", host)
 
@@ -42,15 +42,16 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	return
 }
 
-func (j *JORM) ReverseProxySRV() {
-	h := &baseHandle{}
-	http.Handle("/", h)
-	server := &http.Server{
-		Addr:    ":80",
-		Handler: h,
-	}
-	log.Fatal(server.ListenAndServe())
-}
+//
+//func (j *JORM) ReverseProxySRV() {
+//	h := &BaseHandle{}
+//	http.Handle("/", h)
+//	server := &http.Server{
+//		Addr:    ":80",
+//		Handler: h,
+//	}
+//	log.Fatal(server.ListenAndServe())
+//}
 func status(w http.ResponseWriter, r *http.Request) {
 	// Handles top-level page.
 	fmt.Fprintf(w, "You are on the status home page")

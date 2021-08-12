@@ -4,6 +4,7 @@ import (
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/sirupsen/logrus"
 )
 
@@ -37,7 +38,7 @@ func NewJORMexplorer(coin string) *JORMexplorer {
 			Addresses: 0,
 		}
 	}
-	log.Println(err)
+	utl.ErrorLog(err)
 	return e
 }
 

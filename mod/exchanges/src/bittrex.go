@@ -17,14 +17,14 @@ func getBitTrexExchange() {
 	e.Name = "Bit Trex"
 	e.Slug = slug
 	resps, err := http.Get("https://api.bittrex.com/v3/markets")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer resps.Body.Close()
 	mapBodyS, err := ioutil.ReadAll(resps.Body)
 	json.Unmarshal(mapBodyS, &exchangeRaw)
 
 	var exchangeSummariesRaw []map[string]interface{}
 	respsSummaries, err := http.Get("https://api.bittrex.com/v3/markets/summaries")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer respsSummaries.Body.Close()
 	mapBodySummaries, err := ioutil.ReadAll(respsSummaries.Body)
 	json.Unmarshal(mapBodySummaries, &exchangeSummariesRaw)
@@ -36,7 +36,7 @@ func getBitTrexExchange() {
 	}
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.bittrex.com/v3/markets/tickers")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer respsTickers.Body.Close()
 	mapBodyTickers, err := ioutil.ReadAll(respsTickers.Body)
 	json.Unmarshal(mapBodyTickers, &exchangeTickersRaw)

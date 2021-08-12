@@ -4,7 +4,9 @@ import (
 	"flag"
 	"github.com/comhttp/jorm/app"
 	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/sirupsen/logrus"
+	"net/http"
 )
 
 var log = logrus.New()
@@ -41,18 +43,21 @@ func main() {
 	cfg.Path = *path
 	log.SetLevel(parseLogLevel(*loglevel))
 	err := cfg.CFG.Read("conf", "conf", &cfg.C)
-	log.Println(err)
+	utl.ErrorLog(err)
 
 	j := app.NewJORM()
 
 	switch *service {
 	case "proxy":
 		log.Println("reverse proxy")
-		j.ReverseProxySRV()
+		h := &app.BaseHandle{}
+		http.Handle("/", h)
+		j.WWW.Handler = h
+		j.WWW.Addr = ":" + cfg.C.Port["proxy"]
 	case "jorm":
 		log.Println("jorm")
 		j.JormSRV()
-		j.WWW.Handler = j.WWWhandleR()
+		j.WWW.Handler = j.JORMhandlers()
 		j.WWW.Addr = ":" + cfg.C.Port["jorm"]
 	case "enso":
 		log.Println("enso")
@@ -65,6 +70,10 @@ func main() {
 		log.Println("comhttp")
 		j.WWW.Handler = j.COMHTTPhandlers()
 		j.WWW.Addr = ":" + cfg.C.Port["comhttp"]
+	case "admin":
+		log.Println("admin")
+		j.WWW.Handler = j.ADMINhandlers()
+		j.WWW.Addr = ":" + cfg.C.Port["admin"]
 	case "explorer":
 		log.Println("explorer " + *coin)
 		j.ExplorerSRV(*port, *coin)

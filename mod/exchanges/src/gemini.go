@@ -8,7 +8,7 @@ func getGeminiExchange() {
 	//e.Name = "Gemini"
 	//e.Slug = slug
 	//resps, err := http.Get("https://api.gemini.com/v1/symbols")
-	//log.Println(err)
+	//utl.ErrorLog(err)
 	//defer resps.Body.Close()
 	//mapBodyS, err := ioutil.ReadAll(resps.Body)
 	//if mapBodyS != nil {
@@ -18,7 +18,7 @@ func getGeminiExchange() {
 	//		for _, symbol := range symbolsRaw {
 	//			detailsRaw := make(map[string]interface{})
 	//			respDetails, err := http.Get("https://api.gemini.com/v1/symbols/details/" + symbol)
-	//			log.Println(err)
+	//			utl.ErrorLog(err)
 	//			defer respDetails.Body.Close()
 	//			mapBodyDetails, err := ioutil.ReadAll(respDetails.Body)
 	//			if mapBodyDetails != nil {
@@ -33,14 +33,14 @@ func getGeminiExchange() {
 	//				}
 	//				tickerRaw := make(map[string]interface{})
 	//				respTicker, err := http.Get("https://api.gemini.com/v2/ticker/" + symbol)
-	//				log.Println(err)
+	//				utl.ErrorLog(err)
 	//				defer respTicker.Body.Close()
 	//				mapBodyTicker, err := ioutil.ReadAll(respTicker.Body)
 	//				if mapBodyTicker != nil {
 	//					json.Unmarshal(mapBodyTicker, &tickerRaw)
 	//					tickerVolRaw := make(map[string]interface{})
 	//					respVolTicker, err := http.Get("https://api.gemini.com/v1/pubticker/" + symbol)
-	//					log.Println(err)
+	//					utl.ErrorLog(err)
 	//					defer respVolTicker.Body.Close()
 	//					mapBodyVolTicker, err := ioutil.ReadAll(respVolTicker.Body)
 	//					if mapBodyVolTicker != nil {

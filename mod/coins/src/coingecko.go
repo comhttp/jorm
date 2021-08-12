@@ -16,7 +16,7 @@ func getCoinGecko(j *jdb.JDB) {
 	log.Println("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)
 	if mapBody != nil {
@@ -41,7 +41,7 @@ func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coins
 		c.Slug = slug
 		coinDetails := make(map[string]interface{})
 		respc, err := http.Get("https://api.coingecko.com/api/v3/coins/" + coinSrc["id"].(string) + "?tickers=false&market_data=false&community_data=true&developer_data=false&sparkline=false")
-		log.Println(err)
+		utl.ErrorLog(err)
 		defer respc.Body.Close()
 		mapBody, err := ioutil.ReadAll(respc.Body)
 		if mapBody != nil {

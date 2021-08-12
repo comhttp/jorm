@@ -8,7 +8,7 @@ import (
 )
 
 type PageData struct {
-	Title string
+	Title    string
 	Site     string
 	HostSlug string
 	Slug     string
@@ -16,7 +16,7 @@ type PageData struct {
 	Template string
 }
 
-func (o *JORM) WWWhandleR() http.Handler {
+func (o *JORM) JORMhandlers() http.Handler {
 	r := mux.NewRouter()
 
 	//o.img(r)

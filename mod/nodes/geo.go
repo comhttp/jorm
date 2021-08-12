@@ -2,8 +2,8 @@ package nodes
 
 import (
 	"encoding/json"
+	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -42,18 +42,18 @@ func GetGeoIP(ip string) (n Node) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://tools.keycdn.com/geo.json?host="+ip, nil)
 	if err != nil {
-		log.Println(err)
+		utl.ErrorLog(err)
 	}
 	if req != nil {
 		req.Header.Set("User-Agent", "keycdn-tools:https://com-http.us")
 		resp, err := client.Do(req)
 		if err != nil {
-			log.Println(err)
+			utl.ErrorLog(err)
 		}
 		defer resp.Body.Close()
 		mapBody, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			log.Println(err)
+			utl.ErrorLog(err)
 		}
 		var g GeoResponse
 		err = json.Unmarshal(mapBody, &g)

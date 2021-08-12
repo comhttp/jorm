@@ -2,6 +2,7 @@ package explorers
 
 import (
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
 	"sort"
 	"strconv"
 	"time"
@@ -25,7 +26,7 @@ func GetExplorers(j *jdb.JDB) *Explorer {
 	for _, coin := range coins {
 		s := &BlockchainStatus{}
 		err := j.Read(coin, "status", &s)
-		log.Println(err)
+		utl.ErrorLog(err)
 		e.Status[coin] = s
 	}
 	return e
@@ -34,7 +35,7 @@ func GetExplorers(j *jdb.JDB) *Explorer {
 func GetExplorer(j *jdb.JDB, coin string) *BlockchainStatus {
 	s := &BlockchainStatus{}
 	err := j.Read(coin, "status", &s)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return s
 }
 
@@ -49,13 +50,13 @@ func GetBlock(j *jdb.JDB, c, id string) map[string]interface{} {
 		err = j.Read(c, "block_"+id, &blockHash)
 	}
 	err = j.Read(c, "block_"+blockHash, &block)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return block
 }
 func (e *Explorer) GetBlocks(j *jdb.JDB, coin string, per, page int) (blocks []map[string]interface{}) {
 	s := &BlockchainStatus{}
 	err := j.Read(coin, "status", &s)
-	log.Println(err)
+	utl.ErrorLog(err)
 	blockCount := s.Blocks
 	log.Println("blockCount", blockCount)
 	startBlock := blockCount - per*page
@@ -108,47 +109,47 @@ func GetBlockShort(j *jdb.JDB, coin, blockhash string) map[string]interface{} {
 func GetTx(j *jdb.JDB, c, id string) map[string]interface{} {
 	tx := make(map[string]interface{})
 	err := j.Read(c, "tx_"+id, &tx)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return tx
 }
 func GetAddr(j *jdb.JDB, c, id string) map[string]interface{} {
 	addr := make(map[string]interface{})
 	err := j.Read(c, "addr_"+id, &addr)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return addr
 }
 
 func GetMemPool(j *jdb.JDB, c string) []string {
 	mempool := []string{}
 	err := j.Read("info", c+"_mempool", &mempool)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return mempool
 }
 
 func GetMiningInfo(j *jdb.JDB, c string) map[string]interface{} {
 	mininginfo := make(map[string]interface{})
 	err := j.Read("info", c+"_mining", &mininginfo)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return mininginfo
 }
 
 func GetInfo(j *jdb.JDB, c string) map[string]interface{} {
 	info := make(map[string]interface{})
 	err := j.Read("info", c+"_info", &info)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return info
 }
 
 func GetNetworkInfo(j *jdb.JDB, c string) map[string]interface{} {
 	network := make(map[string]interface{})
 	err := j.Read("info", c+"_network", &network)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return network
 }
 
 func GetPeers(j *jdb.JDB, c string) []interface{} {
 	peers := new([]interface{})
 	err := j.Read("info", c+"_peers", &peers)
-	log.Println(err)
+	utl.ErrorLog(err)
 	return *peers
 }

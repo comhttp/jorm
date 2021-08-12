@@ -20,7 +20,7 @@ func SetCoin(j *jdb.JDB, src, slug string, get func(c *Coin)) {
 		c.Checked[src] = true
 		j.Write("coins", "coin_"+slug, c)
 	} else {
-		log.Println(err)
+		utl.ErrorLog(err)
 		//log.Println("Ima Coin: ", c.Name)
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)

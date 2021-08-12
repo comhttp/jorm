@@ -8,7 +8,7 @@ func getLiquidExchange() {
 	//e.Name = "Liquid"
 	//e.Slug = slug
 	//respcs, err := http.Get("https://api.liquid.com/products")
-	//log.Println(err)
+	//utl.ErrorLog(err)
 	//
 	//defer respcs.Body.Close()
 	//mapBody, err := ioutil.ReadAll(respcs.Body)

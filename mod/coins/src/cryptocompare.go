@@ -14,12 +14,12 @@ import (
 func getCryptoCompare(j *jdb.JDB) {
 	log.Println("Get Crypto Compare Start")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer respcs.Body.Close()
 	if respcs != nil {
 		coinsRaw := make(map[string]interface{})
 		mapBody, err := ioutil.ReadAll(respcs.Body)
-		log.Println(err)
+		utl.ErrorLog(err)
 		json.Unmarshal(mapBody, &coinsRaw)
 		if coinsRaw["Data"] != nil {
 			for _, coinSrc := range coinsRaw["Data"].(map[string]interface{}) {

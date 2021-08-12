@@ -2,7 +2,6 @@ package cloudflare
 
 import (
 	"context"
-	"fmt"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
@@ -17,7 +16,7 @@ func CloudFlare(j *jdb.JDB) {
 	ctx := context.Background()
 	// Construct a new API object
 	api, err := cf.NewWithAPIToken(cfg.C.CF.CloudFlareAPItoken)
-	log.Println(err)
+	utl.ErrorLog(err)
 	for _, tld := range cfg.C.COMHTTP {
 		go createDNS(j, api, ctx, "com-http."+tld)
 	}
@@ -62,7 +61,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 	}
 	if !exist {
 		id, err := api.ZoneIDByName(domain)
-		log.Println(err)
+		utl.ErrorLog(err)
 		t := true
 		_, err = api.CreateDNSRecord(ctx, id, cf.DNSRecord{
 			Type:    "CNAME",
@@ -71,7 +70,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 			TTL:     1,
 			Proxied: &t,
 		})
-		log.Println(err)
+		utl.ErrorLog(err)
 		log.Println("Created subdomain: ", slug+"."+domain)
 	}
 }
@@ -96,6 +95,6 @@ func delAllCNameDNS(api *cf.API, ctx context.Context, domain string) {
 
 func delDNS(api *cf.API, ctx context.Context, zoneId, id string) {
 	err := api.DeleteDNSRecord(ctx, zoneId, id)
-	log.Println(err)
+	utl.ErrorLog(err)
 	log.Println("DeleteDNSRecord rrrrr:", id)
 }

@@ -35,10 +35,10 @@ func getCoinCodex(j *jdb.JDB) {
 							//coin.Slug = slug
 							coinDetails := make(map[string]interface{})
 							respcCoin, err := http.Get("https://coincodex.com/api/coincodex/get_coin/" + coin.Ticker)
-							log.Println(err)
+							utl.ErrorLog(err)
 							defer respcCoin.Body.Close()
 							mapBodyCoin, err := ioutil.ReadAll(respcCoin.Body)
-							log.Println(err)
+							utl.ErrorLog(err)
 							json.Unmarshal(mapBodyCoin, &coinDetails)
 
 							if coinDetails["description"] != nil {

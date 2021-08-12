@@ -17,7 +17,7 @@ func getBitZExchange() {
 	e.Name = "BitZ"
 	e.Slug = slug
 	respcs, err := http.Get("https://apiv2.bitz.com/Market/tickerall")
-	log.Println(err)
+	utl.ErrorLog(err)
 
 	defer respcs.Body.Close()
 	mapBody, err := ioutil.ReadAll(respcs.Body)

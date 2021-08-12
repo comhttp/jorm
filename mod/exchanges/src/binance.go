@@ -37,7 +37,7 @@ func getBinanceExchange(j *jdb.JDB) {
 
 	//exchangeRaw := make(map[string]interface{})
 	//resps, err := http.Get("https://api.binance.com/api/v3/exchangeInfo")
-	//log.Println(err)
+	//utl.ErrorLog(err)
 	//defer resps.Body.Close()
 	//mapBodyS, err := ioutil.ReadAll(resps.Body)
 	//json.Unmarshal(mapBodyS, &exchangeRaw)
@@ -46,7 +46,7 @@ func getBinanceExchange(j *jdb.JDB) {
 
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.binance.com/api/v3/ticker/24hr")
-	log.Println(err)
+	utl.ErrorLog(err)
 	defer respsTickers.Body.Close()
 	mapBodyTickers, err := ioutil.ReadAll(respsTickers.Body)
 	json.Unmarshal(mapBodyTickers, &exchangeTickersRaw)

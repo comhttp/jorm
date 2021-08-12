@@ -12,7 +12,7 @@ import (
 
 func (j *JORM) JormSRV() {
 	//exchanges.GetAllExchanges(j.JDB)
-	csrc.GetCoinSources(j.JDB)
+	go csrc.GetCoinSources(j.JDB)
 	coins.ProcessCoins(j.JDB)
 	//coins.BitNodeCoins(j.NodeCoins, j.JDB)
 	//cloudflare.CloudFlare(j.JDB)
