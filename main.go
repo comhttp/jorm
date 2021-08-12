@@ -85,7 +85,7 @@ func main() {
 	//	ReadTimeout:  15 * time.Second,
 	//}
 	switch *service {
-	case "rev":
+	case "proxy":
 		fmt.Println("reverse proxy")
 		reverseProxySRV()
 	case "jorm":
@@ -268,3 +268,7 @@ func status(w http.ResponseWriter, r *http.Request) {
 //jdbs -bind 192.168.192.99:14489 -dbdir jdbnodes -loglevel info &
 //jdbs -bind 192.168.192.99:14499 -dbdir jdbexchanges -loglevel info &
 //jdbs -bind 192.168.192.99:15502 -dbdir jdbparallelcoin -loglevel info &
+
+//systemctl restart jdbparallelcoin && systemctl restart jdbcoins && systemctl restart jdbnodes && systemctl restart jdbexchanges && systemctl restart jdbinfo && systemctl restart jorm && systemctl restart enso && systemctl restart comhttp && systemctl restart our && systemctl restart reverseproxy
+
+//systemctl stop jdbparallelcoin && systemctl stop jdbcoins && systemctl stop jdbnodes && systemctl stop jdbexchanges && systemctl stop jdbinfo && systemctl stop jorm && systemctl stop enso && systemctl stop our && systemctl stop reverseproxy
