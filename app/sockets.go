@@ -1,7 +1,7 @@
 package app
 
+import "C"
 import (
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 
 	"html/template"
@@ -60,9 +60,8 @@ var (
 	}
 )
 
-func readFileIfModified(lastMod time.Time) ([]byte, time.Time, error) {
-	filename := cfg.Path + cfg.C.Out + "/exchanges/poloniex"
-
+func readFileIfModified(path string, lastMod time.Time) ([]byte, time.Time, error) {
+	filename := path + "/exchanges/poloniex"
 	fi, err := os.Stat(filename)
 	if err != nil {
 		return nil, lastMod, err
@@ -105,7 +104,7 @@ func writer(ws *websocket.Conn, lastMod time.Time) {
 			var p []byte
 			var err error
 
-			p, lastMod, err = readFileIfModified(lastMod)
+			p, lastMod, err = readFileIfModified("sssssssssssssssssssssssssssssssssssssSSS  path", lastMod)
 
 			if err != nil {
 				if s := err.Error(); s != lastError {
@@ -160,7 +159,7 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	p, lastMod, err := readFileIfModified(time.Time{})
+	p, lastMod, err := readFileIfModified("111111111111111111111111path", time.Time{})
 	if err != nil {
 		p = []byte(err.Error())
 		lastMod = time.Unix(0, 0)

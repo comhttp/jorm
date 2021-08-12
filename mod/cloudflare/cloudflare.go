@@ -11,13 +11,13 @@ import (
 	cf "github.com/cloudflare/cloudflare-go"
 )
 
-func CloudFlare(j *jdb.JDB) {
+func CloudFlare(c cfg.Config, j *jdb.JDB) {
 	//log.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
-	api, err := cf.NewWithAPIToken(cfg.C.CF.CloudFlareAPItoken)
+	api, err := cf.NewWithAPIToken(c.CF.CloudFlareAPItoken)
 	utl.ErrorLog(err)
-	for _, tld := range cfg.C.COMHTTP {
+	for _, tld := range c.COMHTTP {
 		go createDNS(j, api, ctx, "com-http."+tld)
 	}
 	//createDNS(j,api, ctx, "com-http.us")

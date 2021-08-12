@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -35,9 +34,9 @@ func (o *JORM) img(r *mux.Router) {
 	//a.Headers("Access-Control-Allow-Origin", "*")
 }
 
-func (o *JORM) viewWebImg(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) viewWebImg(w http.ResponseWriter, r *http.Request) {
 	url := strings.TrimSpace(r.URL.Query().Get("url"))
-	path := cfg.Path + "/static/img"
+	path := j.config.Path + "/static/img"
 	_, err := os.Stat(path + "/" + url)
 	if err != nil {
 		log.Println(path + "/" + url)

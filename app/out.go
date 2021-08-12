@@ -1,5 +1,19 @@
 package app
 
+import (
+	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"net/http"
+)
+
+func (j *JORM) OURhandlers() http.Handler {
+	r := mux.NewRouter()
+	//s := r.Host("enso.okno.rs").Subrouter()
+	r.StrictSlash(true)
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+}
+
 //
 //import (
 //	"github.com/comhttp/jorm/app/cfg"

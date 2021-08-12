@@ -1,7 +1,6 @@
 package nodes
 
 import (
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
@@ -102,27 +101,27 @@ func GetNode(j *jdb.JDB, c, ip string) map[string]interface{} {
 	return node
 }
 
-func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, c string) {
-	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
-	s := b.GetBitNodeStatus()
-	j.Write("nodes", c+"_"+b.IP, s)
+func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, username, password, coin string) {
+	b.Jrc = utl.NewClient(username, password, b.IP, b.Port)
+	s := b.GetBitNodeStatus(username, password)
+	j.Write("nodes", coin+"_"+b.IP, s)
 
-	j.Write("info", c+"_mempool", s.GetRawMemPool)
-	j.Write("info", c+"_mining", s.GetInfo)
-	j.Write("info", c+"_info", s.GetInfo)
-	j.Write("info", c+"_network", s.GetNetworkInfo)
-	j.Write("info", c+"_peers", s.GetPeerInfo)
+	j.Write("info", coin+"_mempool", s.GetRawMemPool)
+	j.Write("info", coin+"_mining", s.GetInfo)
+	j.Write("info", coin+"_info", s.GetInfo)
+	j.Write("info", coin+"_network", s.GetNetworkInfo)
+	j.Write("info", coin+"_peers", s.GetPeerInfo)
 
-	log.Println("GetBitNodeStatus: ", c+"_"+b.IP)
+	log.Println("GetBitNodeStatus: ", coin+"_"+b.IP)
 	nds := GetNodes(s)
 	for _, n := range nds {
-		j.Write("nodes", c+"_"+n.IP, n)
-		log.Println("Node: ", c+"_"+n.IP)
+		j.Write("nodes", coin+"_"+n.IP, n)
+		log.Println("Node: ", coin+"_"+n.IP)
 
 	}
 
-	bn.Coin = c
+	bn.Coin = coin
 	bn.BitNodes = append(bn.BitNodes, *s)
-	j.Write("nodes", c+"_"+b.IP, s)
+	j.Write("nodes", coin+"_"+b.IP, s)
 	return
 }

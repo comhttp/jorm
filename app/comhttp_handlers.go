@@ -48,25 +48,25 @@ func (d *Data) section(section string) {
 
 func (j *JORM) COMHTTPhandlers() http.Handler {
 	r := mux.NewRouter()
-	d := newData("com-http")
 	tld := r.Host("com-http.{tld}").Subrouter()
-	tld.HandleFunc("/", d.appHandler())
-	tld.HandleFunc("/{app}", d.appHandler())
-	tld.HandleFunc("/{app}/{page}", d.appHandler())
+	tld.HandleFunc("/", j.appHandler())
+	tld.HandleFunc("/{app}", j.appHandler())
+	tld.HandleFunc("/{app}/{page}", j.appHandler())
 	tld.Headers("Access-Control-Allow-Origin", "*")
 	tld.StrictSlash(true)
 	sub := r.Host("{slug}.com-http.{tld}").Subrouter()
-	sub.HandleFunc("/", d.appHandler())
-	sub.HandleFunc("/{app}", d.appHandler())
-	sub.HandleFunc("/{app}/{page}", d.appHandler())
+	sub.HandleFunc("/", j.appHandler())
+	sub.HandleFunc("/{app}", j.appHandler())
+	sub.HandleFunc("/{app}/{page}", j.appHandler())
 	sub.StrictSlash(true)
 	sub.Headers("Access-Control-Allow-Origin", "*")
 	sub.Headers("Content-Type", "application/json")
 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 }
 
-func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
+func (j *JORM) appHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		d := newData("com-http")
 		d.TLD = mux.Vars(r)["tld"]
 		d.Slug = mux.Vars(r)["slug"]
 		d.App = mux.Vars(r)["app"]
@@ -125,7 +125,7 @@ func (d *Data) appHandler() func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Page 1: ", d.Page)
 		log.Println("Path 1: ", d.Path)
 		log.Println("Base 1: ", d.Base)
-		template.Must(parseFiles(d.Base, d.Path+"/"+d.Page+".gohtml")).Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
+		template.Must(j.parseFiles(d.Base, d.Path+"/"+d.Page+".gohtml")).Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
 		log.Println("d.Base", d.Base)
 		log.Println("dadadad", d.Path+"/"+d.Page+".gohtml")
 	}

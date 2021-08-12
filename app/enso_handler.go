@@ -1,10 +1,10 @@
 package app
 
+import "C"
 import (
 	"encoding/json"
 	"github.com/comhttp/jorm/mod/coins"
 	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/gorilla/mux"
 	"github.com/tdewolff/minify"
 	mjson "github.com/tdewolff/minify/json"
@@ -153,7 +153,7 @@ func (j *JORM) ViewJSON() http.Handler {
 	m := minify.New()
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 
-	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(cfg.Path+cfg.C.Out))))
+	return http.StripPrefix("/j", m.Middleware(http.FileServer(http.Dir(j.config.Path))))
 }
 
 // NodeHandler handles a request for (?)
@@ -164,7 +164,7 @@ func (j *JORM) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//if err != nil {
 	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
-	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(cfg.Path+"/www/"+path)))).ServeHTTP(w, r)
+	http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(j.config.Path+"/www/"+path)))).ServeHTTP(w, r)
 	//} else {
 	//	index := map[uint64]string{}
 	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {

@@ -1,9 +1,9 @@
 package app
 
+import "C"
 import (
 	"github.com/comhttp/jorm/mod/coins"
 	csrc "github.com/comhttp/jorm/mod/coins/src"
-	"github.com/comhttp/jorm/mod/explorers"
 	"github.com/comhttp/jorm/mod/nodes"
 	"log"
 	"net/http"
@@ -15,7 +15,7 @@ func (j *JORM) JormSRV() {
 	go csrc.GetCoinSources(j.JDB)
 	coins.ProcessCoins(j.JDB)
 	//coins.BitNodeCoins(j.NodeCoins, j.JDB)
-	//cloudflare.CloudFlare(j.JDB)
+	//cloudflare.CloudFlare(j.config, j.JDB)
 	//j.NodeCoins = coins.GetNodeCoins(j.JDB)
 	nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	//j.Explorer = explorers.GetExplorer(j.JDB)
@@ -43,8 +43,7 @@ func (j *JORM) JormSRV() {
 
 }
 
-func (j *JORM) ExplorerSRV(port, coin string) {
-	e := explorers.NewJORMexplorer(coin)
+func (j *JORM) ExplorerSRV(coin string) {
 	log.Println("coincoincoincoincoin", coin)
 	http.HandleFunc("/", status)
 
@@ -54,14 +53,14 @@ func (j *JORM) ExplorerSRV(port, coin string) {
 		for {
 			select {
 			case <-ticker.C:
-				explorers.ExploreCoin(e, coin)
+				j.ExploreCoin(j.config.RPC.Username, j.config.RPC.Password, coin)
 			case <-quit:
 				ticker.Stop()
 				return
 			}
 		}
 	}()
-	log.Println("JORM explorer is listening: ", port)
+	//log.Println("JORM explorer is listening: ", port)
 	// Start HTTP server
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	//log.Fatal(http.ListenAndServe(":"+port, nil))
 }

@@ -19,8 +19,8 @@ func (j *JORM) ADMINhandlers() http.Handler {
 	//f.HandleFunc("/addnode", h.AddNodeHandler).Methods("POST")
 
 	c := s.PathPrefix("/coins").Subrouter()
-	c.HandleFunc("/", j.CoinsHandler).Methods("GET")
-	c.HandleFunc("/{coin}", j.CoinHandler).Methods("GET")
+	c.HandleFunc("/", j.ADMINCoinsHandler).Methods("GET")
+	c.HandleFunc("/{coin}", j.ADMINCoinHandler).Methods("GET")
 
 	//a.HandleFunc("/", o.goodBye).Methods("GET")
 	//f.Headers("Access-Control-Allow-Origin", "*")

@@ -1,14 +1,13 @@
 package nodes
 
 import (
-	cfg "github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
 )
 
 // GetBitNodeStatus returns the full set of information about a node
-func (b *BitNode) GetBitNodeStatus() (bitnodeStatus *BitNodeStatus) {
-	b.Jrc = utl.NewClient(cfg.C.RPC.Username, cfg.C.RPC.Password, b.IP, b.Port)
+func (b *BitNode) GetBitNodeStatus(username, password string) (bitnodeStatus *BitNodeStatus) {
+	b.Jrc = utl.NewClient(username, password, b.IP, b.Port)
 	if b.Jrc != nil {
 		getInfo := b.APIGetInfo()
 		getPeerInfo := b.APIGetPeerInfo()

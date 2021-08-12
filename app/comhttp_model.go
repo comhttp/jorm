@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/utl"
 	"log"
 	"os"
@@ -17,12 +16,13 @@ type COMHTTP struct {
 	Titile    string
 	ProtoURL  string
 	BodyClass string
+	DATA      *Data
 }
 
-func parseTemplates(base string, t *template.Template) *template.Template {
-	log.Println("cfg.Pathcfg.Pathcfg.Pathssssssssssss", cfg.Path)
-	log.Println("ssssssssssss", cfg.Path+"tpl/"+base)
-	err := filepath.Walk(cfg.Path+"tpl/"+base, func(path string, info os.FileInfo, err error) error {
+func (j *JORM) parseTemplates(base string, t *template.Template) *template.Template {
+	log.Println("cfg.Pathcfg.Pathcfg.Pathssssssssssss", j.config.Path)
+	log.Println("ssssssssssss", j.config.Path+"tpl/"+base)
+	err := filepath.Walk(j.config.Path+"tpl/"+base, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(path, ".gohtml") {
 			_, err = t.ParseFiles(path)
 			if err != nil {
@@ -39,7 +39,7 @@ func parseTemplates(base string, t *template.Template) *template.Template {
 	return t
 }
 
-func parseFiles(base, tpl string) (*template.Template, error) {
+func (j *JORM) parseFiles(base, tpl string) (*template.Template, error) {
 	t := new(template.Template)
-	return parseTemplates(base, t).ParseFiles(cfg.Path + "tpl/" + tpl)
+	return j.parseTemplates(base, t).ParseFiles(j.config.Path + "tpl/" + tpl)
 }

@@ -16,9 +16,9 @@ var (
 	}
 )
 
-type BaseHandle struct{}
+type baseHandle struct{}
 
-func (h *BaseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	host := r.Host
 	log.Println("target hosthosthost fail:", host)
 
