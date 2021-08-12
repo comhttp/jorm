@@ -221,6 +221,7 @@ var (
 		"jorm.okno.rs":               "http://localhost:14411",
 		"our.okno.rs":                "http://localhost:14422",
 		"enso.okno.rs":               "http://localhost:14433",
+		"com-http.us":                "http://localhost:14444",
 	}
 )
 
@@ -228,11 +229,12 @@ type baseHandle struct{}
 
 func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	host := r.Host
+	log.Println("target hosthosthost fail:", host)
 
 	if target, ok := hostTarget[host]; ok {
 		reverseproxy(w, r, target)
 	} else {
-		reverseproxy(w, r, host)
+		reverseproxy(w, r, "http://localhost:14444")
 	}
 	w.Write([]byte("403: Host forbidden " + host))
 }
