@@ -6,13 +6,14 @@ import (
 	"github.com/comhttp/jorm/mod/exchanges"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
 func getBinanceExchange(j *jdb.JDB) {
-	log.Println("Get Binance Exchange Start")
+	fmt.Println("Get Binance Exchange Start")
 	t := exchanges.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",

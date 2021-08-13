@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/mod/exchanges"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"log"
 )
 
 func getDexTradeExchange(j *jdb.JDB) {
@@ -28,7 +29,7 @@ func getDexTradeExchange(j *jdb.JDB) {
 	//e.GetExchange()
 	//var ex exchange.Exchange
 
-	log.Println("Get " + e.Name + " Exchange Start")
+	fmt.Println("Get " + e.Name + " Exchange Start")
 	var ex exchanges.Exchange
 	ex.Name = e.Name
 	ex.Slug = e.Slug

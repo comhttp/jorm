@@ -4,8 +4,8 @@ package cfg
 type Config struct {
 	COMHTTP    []string
 	Port       map[string]string
-	Out        string
 	Path       string
+	Out        string
 	RPC        RPClogin
 	CF         CloudFlare
 	ApiKeys    map[string]string
