@@ -1,7 +1,7 @@
 package xsrc
 
 func getLiquidExchange() {
-	//log.Println("Get Liquid Exchange Start")
+	//log.Print("Get Liquid Exchange Start")
 	//marketsRaw := []interface{}{}
 	//slug := "liquid"
 	//var e exchange.Exchange
@@ -36,6 +36,6 @@ func getLiquidExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	log.Println("Get Liquid Exchange Done")
+	//	log.Print("Get Liquid Exchange Done")
 	//}
 }

@@ -1,0 +1,48 @@
+{{define "css"}}
+    {{ template "coincss" .}}
+{{end}}
+{{define "main"}}
+    {{ template "bg" .}}
+    {{ template "header" .}}
+    <div class="container mx-auto mb-8 px-4 px-0 flex flex-col flex-1 content main-wrap">
+        <div class="flex flex-col py-12"> {{ template "name" .}}</div>
+        <div class="grid grid-cols-6 gap-5">
+            <div class="col-span-5 grid grid-cols-3 gap-5">
+                <div class="col-span-3 flex flex-col pnlbg ">
+                    <h3 class="pnlhd pnlh"><i class="fas fa-network-wired mr-2"></i>{{ .Slug }} World Map</h3>
+                    <amp-iframe title="All coins"
+                                layout="flex-item"
+                                sandbox="allow-scripts allow-same-origin allow-popups"
+                                frameborder="0"
+                                src="https://{{ .Slug }}.com-http.net/worldmap"
+                                class="pnl">
+                        {{ template "placeholder" .}}
+                    </amp-iframe>
+                </div>
+                <div class="col-span-1 flex flex-col pnlbg ">
+                    <h3 class="pnlhd pnlh"><i class="fas fa-network-wired mr-2"></i>{{ .Slug }} Nodes Globally</h3>
+                    <amp-iframe title="All coins"
+                                layout="flex-item"
+                                sandbox="allow-scripts allow-same-origin allow-popups"
+                                frameborder="0"
+                                src="https://{{ .Slug }}.com-http.net/globe"
+                                class="pnl">
+                        {{ template "placeholder" .}}
+                    </amp-iframe>
+                </div>
+                <div class="col-span-1 flex flex-col pnlbg ">
+                    <h3 class="pnlhd pnlh"><i class="fas fa-network-wired mr-2"></i>{{ .Slug }} Basics</h3>
+
+                </div>
+                <div class="col-span-1 flex flex-col pnlbg ">
+                    <h3 class="pnlhd pnlh"><i class="fas fa-network-wired mr-2"></i>{{ .Slug }} Basics</h3>
+
+
+                </div>
+            </div>
+            <div class="col-span-1 flex flex-col">
+                {{ template "coinbuttons" .}}
+            </div>
+        </div>
+    </div>
+    {{ template "footer" .}}{{end}}

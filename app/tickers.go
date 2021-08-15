@@ -1,7 +1,7 @@
 package app
 
 import (
-	"log"
+	"github.com/rs/zerolog/log"
 	//"github.com/comhttp/jorm/app/jorm/coin"
 	//xsrc "github.com/comhttp/jorm/app/jorm/exchange/src"
 	//"github.com/comhttp/jorm/app/jorm/n"
@@ -16,7 +16,7 @@ func (j *JORM) Tickers() {
 
 	//go j.Explorer.ExploreCoins(j.NodeCoins)
 
-	log.Println("Cron is wooikos")
+	log.Print("Cron is wooikos")
 	//go explorer.GetExplorer(coins)
 	//n.GetBitNodes(coins)
 	//go csrc.GetCoinSources()

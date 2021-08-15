@@ -1,0 +1,45 @@
+{{define "exchanges"}}
+<amp-list layout="responsive" height="80" width="800" src="https://jorm.okno.rs/j/info/exc" items="e" reset-on-refresh binding="no" class="flex">
+    <template type="amp-mustache">
+        <div class="flex flex-row">
+        {{`{{ #name }}`}}
+            <div><label><input type="radio" id="{{`{{ slug }}`}}" name="exchanges" value="{{`{{ name }}`}}" on="change:AMP.setState({
+              exchanges: {
+              searchColor: event.checked == true ? '{{`{{ slug }}`}}' : '',
+              listSrc: 'https://jorm.okno.rs/j/exchanges/'+ (event.checked == true ? '{{`{{ slug }}`}}' : '')
+              }
+              })">{{`{{ name }}`}}</label></div>
+        {{`{{ /name }}`}}
+        </div>
+    </template>
+</amp-list>
+
+
+<amp-list layout="flex-item" src="exchanges.listSrc" [src]="exchanges.listSrc" single-item items="markets" reset-on-refresh binding="no" class="flex">
+    <template type="amp-mustache">
+        <div class="flex flex-col rounded md:rounded-lg bg-invert text-xl text-invert container mx-auto mb-2 p-4 main-wrap">
+            {{`{{ #symbol }}`}}<h3 class="text-2xl">{{`{{ symbol }}`}}</h3>{{`{{ /symbol }}`}}
+            <div class="grid grid-cols-7 gap-2 text-md">
+                <span>symbol</span>
+                <span>ask</span>
+                <span>bid</span>
+                <span>high</span>
+                <span>last</span>
+                <span>low</span>
+                <span>volume</span>
+            </div>
+                {{`{{ #currencies }}`}}
+            <div class="grid grid-cols-7 gap-2 text-sm">
+                <span>{{`{{symbol}}`}}</span>
+                <span>{{`{{ask}}`}}</span>
+                <span>{{`{{bid}}`}}</span>
+                <span>{{`{{high}}`}}</span>
+                <span>{{`{{last}}`}}</span>
+                <span>{{`{{low}}`}}</span>
+                <span>{{`{{volume}}`}}</span>
+            </div>
+                {{`{{ /currencies }}`}}
+        </div>
+    </template>
+</amp-list>
+{{end}}

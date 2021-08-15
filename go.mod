@@ -12,9 +12,11 @@ require (
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25
 	github.com/leprosus/golang-daemon v1.0.1
 	github.com/muesli/smartcrop v0.3.0
+	github.com/rs/zerolog v1.23.0 // indirect
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
 	github.com/sensepost/gowitness v0.0.0-20210807140749-38b57db38ae5
 	github.com/sirupsen/logrus v1.8.1
+	github.com/superoo7/go-gecko v1.0.0 // indirect
 	github.com/tdewolff/minify v2.3.6+incompatible
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d
 	golang.org/x/text v0.3.6

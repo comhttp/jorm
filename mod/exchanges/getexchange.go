@@ -9,7 +9,7 @@ func GetExchange(slug string) {
 	//_, err := os.Stat(filepath.FromSlash(cfg.Path + "/exchanges/" + slug))
 	//if err != nil {
 	//	e.Slug = slug
-	//	log.Println("Insert Exchange: ", slug)
+	//	log.Print("Insert Exchange: ", slug)
 	//	//if c.Checked == nil {
 	//	//	c.Checked = make(map[string]bool)
 	//	//}
@@ -19,12 +19,12 @@ func GetExchange(slug string) {
 	//} else {
 	//	//err = jdb.JDB.Read(filepath.FromSlash(cfg.C.Out+"/exchanges"), slug, &e)
 	//	utl.ErrorLog(err)
-	//	log.Println("Ima Coin: ", e.Name)
+	//	log.Print("Ima Coin: ", e.Name)
 	//	//if c.Checked == nil {
 	//	//	c.Checked = make(map[string]bool)
 	//	//}
 	//	//if !c.Checked[src] {
-	//	//	log.Println("Check Coin: ", c.Name)
+	//	//	log.Print("Check Coin: ", c.Name)
 	//	//	get(&c)
 	//	//	c.Checked[src] = true
 	//	//}

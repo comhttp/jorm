@@ -1,0 +1,46 @@
+{{define "css"}}
+    {{ template "coincss" .}}
+{{end}}
+{{define "main"}}
+    <amp-state id="coin" src="https://enso.okno.rs/coins/{{.Slug}}"></amp-state>
+    <amp-font layout="nodisplay"
+              font-family="bariolregular"
+              timeout="2000"
+              on-error-remove-class="bariolregular-loading"
+              on-error-add-class="plan9regular-missing"
+              on-load-remove-class="bariolregular-loading"
+              on-load-add-class="bariolregular-loaded">
+    </amp-font>
+    <amp-font layout="nodisplay"
+              font-family="plan9regular"
+              timeout="2000"
+              on-error-remove-class="plan9regular-loading"
+              on-error-add-class="plan9regular-missing"
+              on-load-remove-class="plan9regular-loading"
+              on-load-add-class="plan9regular-loaded">
+    </amp-font>
+    {{ template "bg" .}}
+    {{ template "header" .}}
+    <div class="container mx-auto mb-8 px-4 px-0 flex flex-col flex-1 content main-wrap">
+        <div class="flex flex-col py-12">{{ template "name" .}}</div>
+<div class="grid grid-cols-6 gap-5">
+        <div class="col-span-full md:col-span-4 lg:col-span-4 grid grid-cols-3 gap-5">
+<div class="col-span-2 flex flex-col pnlbg ">{{ template "basics" .}}</div>
+<div class="col-span-1 flex flex-col pnlbg">{{ template "specs" .}}</div>
+<div class="col-span-3 flex flex-col pnlbg ">{{ template "desc" .}}</div>
+<div class="col-span-3 flex flex-col pnlbg ">{{ template "info" .}}</div>
+<div class="col-span-3 flex flex-col pnlbg ">{{ template "lastblocks" .}}</div>
+
+
+<div class="col-span-1 flex flex-col pnlbg ">{{ template "exchange" .}}</div>
+<div class="col-span-1 flex flex-col pnlbg ">{{ template "news" .}}</div>
+<div class="col-span-1 flex flex-col pnlbg ">{{ template "tools" .}}</div>
+        </div>
+    <div class="col-span-full md:col-span-2 flex flex-col">
+        <div class="grid grid-cols-2 gap-3">
+            {{ template "coinbuttons" .}}
+        </div>
+    </div>
+    </div>
+</div>
+    {{ template "footer" .}}{{end}}

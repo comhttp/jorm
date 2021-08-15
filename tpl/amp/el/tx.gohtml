@@ -1,0 +1,80 @@
+{{define "tx"}}
+     <amp-state id="tx" src="https://enso.okno.rs/e/{{.Slug}}/tx/{{.ID}}"></amp-state>
+
+    <amp-list layout="flex-item"
+              src="amp-state:tx"
+              items="."
+              single-item
+              class="cgl">
+        <template type="amp-mustache">
+            <section class="flex-1 flex flex-col container mx-auto px-4 px-0 main-wrap">
+                <header class="flex">
+                    <h1 class="my-8 text-8xl heading-shadow-invert text-primary whitespace-nowrap overflow-ellipsis overflow-hidden">{{ .Slug }} Transaction {{ .ID }}</h1>
+                </header>
+                <article class="flex flex-col rounded md:rounded-lg bg-invert text-xl text-invert container mx-auto px-4 px-0 main-wrap">
+
+
+
+
+
+
+                    {{`{{#blockhash}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 tracking-wide font-bold whitespace-nowrap ">Block hash</span><a class="no-underline hover:no-underline whitespace-nowrap overflow-ellipsis overflow-hidden truncate" href="/block/{{`{{blockhash}}`}}" >{{`{{blockhash}}`}}</a></div>{{`{{/blockhash}}`}}
+                    {{`{{#blocktime}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 tracking-wide font-bold whitespace-nowrap ">Block time</span>{{`{{blocktime}}`}}</div>{{`{{/blocktime}}`}}
+                    {{`{{#confirmations}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Confirmations</span>{{`{{confirmations}}`}}</div>{{`{{/confirmations}}`}}
+                    {{`{{#hex}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Hex</span>{{`{{hex}}`}}</div>{{`{{/hex}}`}}
+                    {{`{{#locktime}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Locktime</span>{{`{{locktime}}`}}</div>{{`{{/locktime}}`}}
+                    {{`{{#time}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Time</span>{{`{{time}}`}}</div>{{`{{/time}}`}}
+                    {{`{{#txid}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 md:w-64 font-bold whitespace-nowrap ">TxID</span><span class="whitespace-nowrap overflow-ellipsis overflow-hidden truncate">{{`{{txid}}`}}</span></div>{{`{{/txid}}`}}
+                    {{`{{#version}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Version</span>{{`{{version}}`}}</div>{{`{{/version}}`}}
+
+
+                    <div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="font-bold flex min-w-64 w-64 font-bold">Transactions</span>
+                        <div class="flex flex-col my-4 p-6 bg-black bg-opacity-25 rounded-lg">
+
+
+                            {{`{{#vin}}`}}
+                            <div class="flex flex-row py-2">
+                                <strong>Value in</strong>
+                                <div class="flex flex-col py-2">{{`{{#vin}}`}}
+                                    {{`{{#coinbase}}`}}<span class="flex"><strong class="min-w-64 w-64 font-bold whitespace-nowrap ">Coinbase: </strong><small>{{`{{coinbase}}`}}</small></span>{{`{{/coinbase}}`}}
+                                    {{`{{#sequence}}`}}<span class="flex"><strong class="min-w-64 w-64 font-bold whitespace-nowrap ">Sequence: </strong>{{`{{sequence}}`}}</span>{{`{{/sequence}}`}}
+                                    {{`{{/vin}}`}}</div>
+                            </div>
+                            {{`{{/vin}}`}}
+                            {{`{{#vout}}`}}
+                            <div class="flex flex-col py-2">
+                                <strong>Value out</strong>
+                                <div class="flex flex-col py-2">{{`{{#vout}}`}}
+                                    {{`{{#n}}`}}<span class="flex"><strong>N: </strong>{{`{{n}}`}}</span>{{`{{/n}}`}}
+                                    {{`{{#scriptPubKey}}`}}
+                                    {{`{{#addresses}}`}}<span class="flex"><strong>Addresses: </strong><a href="/addr/{{`{{.}}`}}">{{`{{.}}`}}</a></span>{{`{{/addresses}}`}}
+
+                                    {{`{{#asm}}`}}<span class="flex"><strong>ASM: </strong><small>{{`{{asm}}`}}</small></span>{{`{{/asm}}`}}
+                                        {{`{{#hex}}`}}<span class="flex"><strong>hex: </strong>{{`{{hex}}`}}</span>{{`{{/hex}}`}}
+                                            {{`{{#reqSigs}}`}}<span class="flex"><strong>ReqSigs: </strong>{{`{{reqSigs}}`}}</span>{{`{{/reqSigs}}`}}
+                                                {{`{{#type}}`}}<span class="flex"><strong>Type: </strong>{{`{{type}}`}}</span>{{`{{/type}}`}}
+                                    {{`{{/scriptPubKey}}`}}
+                                    <hr>
+                                                    {{`{{#value}}`}}<span class="flex"><strong>Value: </strong>{{`{{value}}`}}</span>{{`{{/value}}`}}
+
+                                    {{`{{/vout}}`}}</div>
+                            </div>
+                            {{`{{/vout}}`}}
+
+
+
+                        </div>
+                    </div>
+
+                </article>
+                <footer class="flex space-between">
+
+                </footer>
+
+            </section>
+        </template>
+
+    </amp-list>
+
+
+{{end}}

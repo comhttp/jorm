@@ -1,7 +1,7 @@
 package xsrc
 
 func getGeminiExchange() {
-	//log.Println("Get Gemini Exchange Start")
+	//log.Print("Get Gemini Exchange Start")
 	//var symbolsRaw []string
 	//slug := "gemini"
 	//var e exchange.Exchange
@@ -62,9 +62,9 @@ func getGeminiExchange() {
 	//			}
 	//		}
 	//		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//		log.Println("Get Gemini Exchange Done")
+	//		log.Print("Get Gemini Exchange Done")
 	//	}
 	//} else {
-	//	log.Println("Get Gemini Exchange Fail")
+	//	log.Print("Get Gemini Exchange Fail")
 	//}
 }

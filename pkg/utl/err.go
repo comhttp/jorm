@@ -1,11 +1,11 @@
 package utl
 
 import (
-	"log"
+	"github.com/rs/zerolog/log"
 )
 
 func ErrorLog(err error) {
 	if err != nil {
-		log.Println("Error", err)
+		log.Print("Error", err)
 	}
 }

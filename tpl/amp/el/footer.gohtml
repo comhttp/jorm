@@ -1,0 +1,59 @@
+{{define "footer"}}<amp-lightbox id="filter-lightbox" layout="nodisplay">
+    <div class="filter-section">
+        <h3>Filter results</h3>
+        <h4>Color</h4>
+        <div>
+            <label> yellow <input type="radio" name="colorFilter" value="Yellow" on="change:AMP.setState({{`{
+              products: {
+              searchColor: event.checked == true ? 'yellow' : '',
+              listSrc: '/documentation/examples/api/products?searchProduct='+ products.searchProduct +'&sort='+ products.sortChoiceValue +'&searchColor='+ (event.checked == true ? 'yellow' : '') +'&_=RANDOM'
+              }}`}}), filter-lightbox.close"></label>
+            <label> orange <input type="radio" name="colorFilter" value="Orange" on="change:AMP.setState({{`{
+              products: {
+              searchColor: event.checked == true ? 'orange' : '',
+              listSrc: '/documentation/examples/api/products?searchProduct='+ products.searchProduct +'&sort='+ products.sortChoiceValue +'&searchColor='+ (event.checked == true ? 'orange' : '') +'&_=RANDOM'
+              }}`}}), filter-lightbox.close"></label>
+            <label> green <input type="radio" name="colorFilter" value="Green" on="change:AMP.setState({{`{
+              products: {
+              searchColor: event.checked == true ? 'green' : '',
+              listSrc: '/documentation/examples/api/products?searchProduct='+ products.searchProduct +'&sort='+ products.sortChoiceValue +'&searchColor='+ (event.checked == true ? 'green' : '') +'&_=RANDOM'
+              }}`}}), filter-lightbox.close"> </label>
+            <label> all <input type="radio" name="colorFilter" value="all" on="change:AMP.setState({{`{
+              products: {
+              searchColor: event.checked == true ? 'all' : '',
+              listSrc: '/documentation/examples/api/products?searchProduct='+ products.searchProduct +'&sort='+ products.sortChoiceValue +'&searchColor='+ (event.checked == true ? 'all' : '') +'&_=RANDOM'
+              }}`}}), filter-lightbox.close"> </label>
+        </div>
+        <div>
+            <a on="tap:filter-lightbox.close" role="button" tabindex="0">
+                Close
+            </a>
+        </div>
+    </div>
+</amp-lightbox>
+
+
+
+<footer class="footer">
+    <nav class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-18 gap-0 flex md:flex-row sm:flex-col space-x-4 justify-center text-sm text-center">
+        <a href="{{.ProtoURL }}us" class="p-1">us</a>
+        <a href="{{.ProtoURL }}trade" class="p-1">trade</a>
+        <a href="{{.ProtoURL }}directory" class="p-1">directory</a>
+        <a href="{{.ProtoURL}}download" class="p-1">download</a>
+        <a href="{{.ProtoURL}}exchange" class="p-1">exchange</a>
+        <a href="{{.ProtoURL}}games" class="p-1">games</a>
+        <a href="{{.ProtoURL}}help" class="p-1">help</a>
+        <a href="{{.ProtoURL}}info" class="p-1">info</a>
+        <a href="{{.ProtoURL}}link" class="p-1">link</a>
+        <a href="{{.ProtoURL}}live" class="p-1">live</a>
+        <a href="{{.ProtoURL}}net" class="p-1">net</a>
+        <a href="{{.ProtoURL}}network" class="p-1">network</a>
+        <a href="{{.ProtoURL}}news" class="p-1">news</a>
+        <a href="{{.ProtoURL}}org" class="p-1">org</a>
+        <a href="{{.ProtoURL}}social" class="p-1">social</a>
+        <a href="{{.ProtoURL}}support" class="p-1">support</a>
+        <a href="{{.ProtoURL}}today" class="p-1">today</a>
+        <a href="{{.ProtoURL}}tools" class="p-1">tools</a>
+    </nav>
+</footer>
+{{end}}

@@ -1,0 +1,274 @@
+{{define "style"}}<style amp-custom>
+    {{ template "cssreset" .}}
+    {{ template "csscolors" .}}
+    {{ template "cssspace" .}}
+
+    {{ template "cssflex" .}}
+    {{ template "cssgrid" .}}
+    {{ template "cssmargin" .}}
+    {{ template "csspadding" .}}
+    {{ template "csstext" .}}
+    {{ template "cssborders" .}}
+    {{ template "cssutils" .}}
+
+
+    @font-face {
+        font-family: 'bariolregular';
+        src: local('bariolregular'), url('https://font.okno.rs/bariol/regular.woff2') format('woff2'),
+        url('https://font.okno.rs/bariol/regular.woff') format('woff');
+        url('https://font.okno.rs/bariol/regular.ttf') format('truetype');
+
+        font-weight: normal;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'splendid';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src: local('splendid'), url('https://font.okno.rs/splendid/regular.woff2') format('woff2'),
+        url('https://font.okno.rs/splendid/regular.woff') format('woff');
+        url('https://font.okno.rs/splendid/regular.ttf') format('truetype');
+
+    }
+    @font-face {
+        font-family: 'lucidaconsole';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 400;
+        src: local('lucidaconsole'), url('https://font.okno.rs/lucida/console.woff2') format('woff2'),
+        url('https://font.okno.rs/lucida/console.woff') format('woff');
+        url('https://font.okno.rs/lucida/console.ttf') format('truetype');
+
+    }
+
+
+    :root {
+        --blue: #80a8cf;
+        --light-blue: #80a8cf;
+        --dark-blue: #305880;
+        --green-blue: #308080;
+        --green-blue-light: #80a8a8;
+
+        --green: #30CF30;
+        --orange: #cf8030;
+        --yellow: #CFCF30;
+        --red: #CF3030;
+        --purple: #803080;
+
+        --dark: #303030;
+        --light: #cfcfcf;
+
+        --dark-gray:#424242;
+        --gray:#888888;
+        --light-gray:#bdbdbd;
+
+
+
+
+        --border-light: rgba(255,255,255,.62);
+        --border-dark: rgba(0,0,0,.38);
+
+        --trans-light: rgba(255,255,255,.64);
+        --trans-dark: rgba(0,0,0,.62);
+        --trans-dark-gray: rgba(48,48,48,0.62);
+        --trans-gray: rgba(48,48,48,.38);
+
+        --font-text: 'bariolregular';
+        --font-title: 'splendid';
+        --font-mono: 'lucidaconsole';
+    }
+    .unavailable-font-loaded .unavailable-font {
+        font-family: 'UnavailableFont';
+    }
+    .bariolregular-loaded .bariolregular {
+        font-family: 'bariol';
+    }
+    .splendid-loaded .splendid {
+        font-family: 'splendid';
+    }
+    .lucidaconsole-loaded .lucidaconsole {
+             font-family: 'lucidaconsole';
+    }
+    .bariolregular-loading .bariolregular,
+    .splendid-loading .splendid,
+    .lucidaconsole-loading .lucidaconsole,
+    .unavailable-font-loading .unavailable-font {
+        color: var(--color-primary);
+    }
+    .bariolregular-missing .bariolregular,
+    .splendid-missing .splendid,
+    .lucidaconsole-missing .lucidaconsole,
+    .unavailable-font-missing .unavailable-font {
+        color: var(--color-error);
+    }
+
+
+
+
+    a{
+        text-decoration: none;
+        color: var(--accent-color);
+    }
+
+    .a:hover {
+        color: var(--primary-color);
+    }
+
+    @media (prefers-color-scheme: light) {
+
+        body {
+            --background-primary: var(--dark);
+            --background-invert: var(--light);
+            --background-secondary: #535353;
+            --background-ternary: var(--green-blue);
+
+
+
+            --link:var(--orange);
+            --link-hover:var(--green-blue-light);
+
+
+
+            --background-dark-gray: var(--trans-dark-gray);
+            --text-primary: var(--light);
+            --text-invert: var(--dark);
+            --text-secondary: #acacac;
+
+            --border-primary: var(--gray);
+            --border-secondary: #80a8cf;
+            --heading-shadow: var(--trans-light);
+            --heading-shadow-invert: var(--trans-dark);
+
+
+        }
+    }
+    @media (prefers-color-scheme: dark) {
+        body {
+            --background-primary: var(--light);
+            --background-invert: var(--dark);
+            --background-secondary: #acacac;
+            --background-ternary: var(--green-blue-light);
+
+            --link:var(--green-blue-light);
+            --link-hover:var(--orange);
+
+            --text-primary: var(--dark);
+            --text-invert: var(--light);
+            --text-secondary: #535353;
+
+            --border-primary: var(--gray);
+            --border-secondary: #80a8cf;
+            --heading-shadow: var(--trans-dark);
+            --heading-shadow-invert: var(--trans-light);
+
+        }
+    }
+
+    a{color:var(--link);}
+    a,a:hover{--text-opacity:1;text-decoration:none}
+    a:hover{color:var(--link-hover);}
+
+    h1,h2, h3, h4, h5, h6 {font-family: var(--font-head);margin: 0;}
+    .heading-shadow {text-shadow: 2px 2px 1px var(--heading-shadow);}
+    .heading-shadow-invert {text-shadow: 2px 2px 1px var(--heading-shadow-invert);}
+    .bg-primary {background-color: var(--background-primary);}
+    .bg-invert {background-color: var(--background-invert);}
+    .bg-blue {background-color: var(--background-blue);}
+    .border-secondary {border-color: var(--border-secondary);}
+    .text-primary {color: var(--text-primary);}
+    .text-invert {color: var(--text-invert);}
+    .text-text-light {color: var(--light);}
+    .bg-ternary {background-color: var(--background-ternary);}
+    .bg-secondary {background-color: var(--background-secondary);}
+    *, *:before, *:after {box-sizing: border-box;margin: 0;}
+    pre{
+        font-size: .62rem;
+        padding: var(--space-1);
+        background-color: var(--color-bg-light);
+        box-shadow: var(--box-shadow-inset);
+        word-break: break-all;
+        white-space: pre-wrap;
+        border-radius: var(--space-05);
+        color:  var(--color-dark);
+    }
+
+    .pd1{
+        padding: var(--space-1);
+    }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        min-height: 1vh;
+    }
+
+    body {
+        font-family: var(--font-text);
+        color:  var(--color-dark);
+        background-color: var(--background-primary);
+    }
+
+
+    header.header {
+        background-color: var(--text-primary);
+        color: var(--background-primary);
+    }
+    aside {
+        background-color: var(--text-primary);
+    }
+    footer.footer {
+        background-color: var(--text-primary);
+        color: var(--background-primary);
+    }
+
+
+
+    header .menulogo{
+
+    }
+
+    .sidelogo, .sidelogo:hover{
+        -webkit-animation:logocolors 5s ease 3s infinite normal;
+        -moz-animation:logocolors 5s ease 3s infinite normal;
+        -ms-animation:logocolors 5s ease 3s infinite normal;
+        animation:logocolors 5s ease 3s infinite normal;
+    }
+
+    @-webkit-keyframes logocolors {
+
+        0%{ fill:#fcfcfc; }
+        38%{ fill:#c3c3c3; }
+        62%{ fill:#cf3030; }
+        64%{ fill:#3075cf; }
+        65%{ fill:#ff7500; }
+        66%{ fill:#cf30cf; }
+        67%{ fill:#30a5cf; }
+        68%{ fill:#ffd500; }
+        70%{ fill:#30cf30; }
+        92%{ fill:#f3f3f3; }
+        99%{ fill:#fcfcfc; }
+
+    }
+
+    @keyframes logocolors {
+        0%{ fill:#fcfcfc; }
+        38%{ fill:#c3c3c3; }
+        62%{ fill:#cf3030; }
+        64%{ fill:#3075cf; }
+        65%{ fill:#ff7500; }
+        66%{ fill:#cf30cf; }
+        67%{ fill:#30a5cf; }
+        68%{ fill:#ffd500; }
+        70%{ fill:#30cf30; }
+        92%{ fill:#f3f3f3; }
+        99%{ fill:#fcfcfc; }
+
+    }
+    {{ template "varcss" .}}
+    {{ template "cssbuttons" .}}
+    {{ template "css" .}}
+</style>{{end}}

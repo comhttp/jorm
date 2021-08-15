@@ -3,7 +3,7 @@ package nodes
 import (
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"log"
+	"github.com/rs/zerolog/log"
 )
 
 type BitNode struct {
@@ -20,21 +20,6 @@ type BitNoded struct {
 	Coin     string          `json:"coin"`
 	BitNodes []BitNodeStatus `json:"bitnodes"`
 }
-
-//// Coin stores identifying information about coins in the database
-//type NodeCoin struct {
-//	Rank   int      `json:"r"`
-//	Name   string   `json:"n"`
-//	Ticker string   `json:"t"`
-//	Slug   string   `json:"s"`
-//	Algo   string   `json:"a"`
-//	Nodes  BitNodes `json:"b"`
-//}
-
-//type NodeCoins struct {
-//	N int        `json:"n"`
-//	C []NodeCoin `json:"c"`
-//}
 
 // NodeStatus stores current data for a node
 type BitNodeStatus struct {
@@ -78,7 +63,7 @@ type Node struct {
 func GetBitNodes(j *jdb.JDB, bitNodeCoins []string) {
 	var b []string
 	bns := make(map[string]*BitNoded)
-	//log.Println("bitNodeCoinsbitNodeCoinsbitNodeCoinsbitNodeCoins", bitNodeCoins)
+	//log.Print("bitNodeCoinsbitNodeCoinsbitNodeCoinsbitNodeCoins", bitNodeCoins)
 	for _, coin := range bitNodeCoins {
 		bn := &BitNoded{}
 		b = append(b, coin)
@@ -112,11 +97,11 @@ func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, username, password, coin str
 	j.Write("info", coin+"_network", s.GetNetworkInfo)
 	j.Write("info", coin+"_peers", s.GetPeerInfo)
 
-	log.Println("GetBitNodeStatus: ", coin+"_"+b.IP)
+	log.Print("GetBitNodeStatus: ", coin+"_"+b.IP)
 	nds := GetNodes(s)
 	for _, n := range nds {
 		j.Write("nodes", coin+"_"+n.IP, n)
-		log.Println("Node: ", coin+"_"+n.IP)
+		log.Print("Node: ", coin+"_"+n.IP)
 
 	}
 

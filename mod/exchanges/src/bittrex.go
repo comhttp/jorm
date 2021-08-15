@@ -10,7 +10,7 @@ import (
 )
 
 func getBitTrexExchange() {
-	log.Println("Get Bit Trex Exchange Start")
+	log.Print("Get Bit Trex Exchange Start")
 	var exchangeRaw []map[string]interface{}
 	slug := "bittrex"
 	var e exchanges.Exchange
@@ -73,6 +73,6 @@ func getBitTrexExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	log.Println("Get BitTrex Exchange Done")
+	//	log.Print("Get BitTrex Exchange Done")
 	//}
 }

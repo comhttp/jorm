@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/mod/exchanges"
 	"github.com/comhttp/jorm/pkg/jdb"
-	"log"
+	"github.com/rs/zerolog/log"
 )
 
 func getDexTradeExchange(j *jdb.JDB) {
@@ -51,7 +51,7 @@ func getDexTradeExchange(j *jdb.JDB) {
 						tickerRaw := exchanges.GetSource("https://api.dex-trade.com/v1/public/ticker?pair=" + m["pair"].(string)).(map[string]interface{})
 						if tickerRaw["data"] != nil {
 							ticker := tickerRaw["data"].(map[string]interface{})
-							//log.Println("Get ticker",ticker)
+							//log.Print("Get ticker",ticker)
 							e.SetCurrencyMarket(
 								q.(string),
 								m["base"].(string),
@@ -67,9 +67,9 @@ func getDexTradeExchange(j *jdb.JDB) {
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 			ex.WriteExchange(j, e)
-			log.Println("Get Dex Trade Exchange Done")
+			log.Print("Get Dex Trade Exchange Done")
 		}
 	} else {
-		log.Println("Get Gate Exchange Fail")
+		log.Print("Get Gate Exchange Fail")
 	}
 }

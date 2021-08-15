@@ -1,0 +1,12 @@
+{{define "specs"}}<amp-list id="coin-spec" layout="fixed-height" height="200" width="auto" src="amp-state:coin" items= "." single-item class="m1">
+<template type="amp-mustache" id="coin-spec">
+<h3 class="pnlhd pnlh text-xl py-4"><i class="fas fa-network-wired mr-2 pl-4 text-2xl"></i>{{`{{name}}`}} Specifications</h3>
+<div class="grid grid-cols-3 gap-1 p-4">
+{{`{{#algo}}`}}<span>Algorithm</span><span class="col-span-2">{{`{{algo}}`}}</span>{{`{{/algo}}`}}
+{{`{{#total}}`}}<span>Total Coin Supply</span><span class="col-span-2">{{`{{total}}`}}</span>{{`{{/total}}`}}
+{{`{{#diff}}`}}<span>Difficulty Adjustment</span><span class="col-span-2">{{`{{diff}}`}}</span>{{`{{/diff}}`}}
+{{`{{#rew}}`}}<span>Block Reward Reduction</span><span class="col-span-2">{{`{{rew}}`}}</span>{{`{{/rew}}`}}
+{{`{{#proof}}`}}<span>Proof Type</span><span class="col-span-2">{{`{{proof}}`}}</span>{{`{{/proof}}`}}
+</div>
+</template>
+</amp-list>{{end}}

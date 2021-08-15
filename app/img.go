@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/gorilla/mux"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -39,12 +39,12 @@ func (j *JORM) viewWebImg(w http.ResponseWriter, r *http.Request) {
 	path := j.config.Path + "/static/img"
 	_, err := os.Stat(path + "/" + url)
 	if err != nil {
-		log.Println(path + "/" + url)
-		log.Println("nema")
+		log.Print(path + "/" + url)
+		log.Print("nema")
 		exec.Command("gowitness single --destination " + path + " -o " + url + ".png https://" + url)
 	} else {
-		log.Println(path)
-		log.Println("ima")
+		log.Print(path)
+		log.Print("ima")
 	}
 	http.ServeFile(w, r, path+"/"+url)
 }

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -70,20 +72,6 @@ type MarketSrc struct {
 	Currencies map[string]Currency
 }
 
-func GetSource(url string) interface{} {
-	var marketsRaw interface{}
-	res, err := http.Get(url)
-	if err != nil {
-		log.Println("Error: ", err)
-	}
-	defer res.Body.Close()
-	mapBody, err := ioutil.ReadAll(res.Body)
-	if mapBody != nil {
-		json.Unmarshal(mapBody, &marketsRaw)
-	}
-	return marketsRaw
-}
-
 func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 	for _, exs := range ex.Markets {
 		mSrc := Market{}
@@ -97,11 +85,11 @@ func (e *Exchange) WriteExchange(j *jdb.JDB, ex ExchangeSrc) {
 }
 
 func (es *ExchangeSrc) SetExchange(j *jdb.JDB) {
-	log.Println("Get " + es.Name + " Exchange Start")
+	log.Print("Get " + es.Name + " Exchange Start")
 	var e Exchange
 	e.Name = es.Name
 	e.Slug = es.Slug
-	marketsSrc := GetSource(es.Url).(map[string]interface{})
+	marketsSrc := utl.GetSource(es.Url).(map[string]interface{})
 	if len(marketsSrc) > 0 {
 		es.Markets = make(map[string]MarketSrc)
 
@@ -125,8 +113,8 @@ func (es *ExchangeSrc) SetExchange(j *jdb.JDB) {
 				marketSrc[es.Ticker.Vol])
 		}
 		e.WriteExchange(j, *es)
-		log.Println("Get " + e.Name + " Exchange Done")
+		log.Print("Get " + e.Name + " Exchange Done")
 	} else {
-		log.Println("Get " + e.Name + " Exchange Fail")
+		log.Print("Get " + e.Name + " Exchange Fail")
 	}
 }

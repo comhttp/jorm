@@ -2,7 +2,7 @@ package app
 
 import (
 	"fmt"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -20,7 +20,7 @@ type baseHandle struct{}
 
 func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	host := r.Host
-	log.Println("target hosthosthost fail:", host)
+	log.Print("target hosthosthost fail:", host)
 
 	if target, ok := hostTarget[host]; ok {
 		reverseproxy(w, r, target)
@@ -33,7 +33,7 @@ func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	remoteUrl, err := url.Parse(target)
 	if err != nil {
-		log.Println("target parse fail:", err)
+		log.Print("target parse fail:", err)
 		return
 	}
 

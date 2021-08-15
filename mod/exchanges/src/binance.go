@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/mod/exchanges"
 	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/comhttp/jorm/pkg/utl"
@@ -85,7 +85,7 @@ func getBinanceExchange(j *jdb.JDB) {
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
 			ex.WriteExchange(j, e)
-			log.Println("Get Binance Exchange Done")
+			log.Print("Get Binance Exchange Done")
 		}
 	}
 }

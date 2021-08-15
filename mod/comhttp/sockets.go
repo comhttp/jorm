@@ -2,9 +2,9 @@ package comhttp
 
 import (
 	"flag"
+	"github.com/rs/zerolog/log"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strconv"

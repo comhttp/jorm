@@ -1,0 +1,10 @@
+{{define "vue"}}
+    <!DOCTYPE html>
+    <head>{{ template "head" .}}<title>{{ .Title }}</title></head>
+    <body>
+    <div id="comhttp" class="w-full h-screen"><index section="{{ .Section }}" slug="{{ .Slug }}" app="{{ .App }}"></index></div>
+    {{ template "footer" .}}
+    </body>
+    {{ template "js" .}}
+    </html>
+{{end}}

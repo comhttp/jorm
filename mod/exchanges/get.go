@@ -42,7 +42,7 @@ func GetAllExchanges(j *jdb.JDB) {
 }
 
 func getExchanges(j *jdb.JDB) []Exchange {
-	exchanges, err := j.ReadAll("exchanges", "ex_")
+	exchanges, err := j.ReadAll("exchange")
 	utl.ErrorLog(err)
 	exs := make([]Exchange, len(exchanges))
 	for _, e := range exchanges {

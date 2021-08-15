@@ -1,0 +1,37 @@
+{{define "js"}}
+    <script src="https://comhttp.okno.rs/js/vue.min.js"></script>
+    <script src="https://comhttp.okno.rs/js/httpVueLoader.js"></script>
+    <script src="https://comhttp.okno.rs/js/axios.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue2-perfect-scrollbar@1.5.0/dist/vue2-perfect-scrollbar.umd.min.js"></script>
+    <script src="https://unpkg.com/vuescroll"></script>
+    <script src="https://unpkg.com/vuescroll/dist/vuescroll-slide.js"></script>
+    <script src="https://unpkg.com/vuescroll/dist/vuescroll-native.js"></script>
+
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/continentsLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/wordCloud.js"></script>
+
+
+    <script>
+        new Vue({
+            el: '#comhttp',
+            data() {
+                return {
+                }
+            },
+            mounted() {
+            },
+            components: {
+                index: httpVueLoader('https://comhttp.okno.rs/vue/{{ .Section }}/{{ .App }}.vue'),
+            },
+        });
+    </script>
+{{end}}
+
+{{define "ga"}}
+
+{{end}}

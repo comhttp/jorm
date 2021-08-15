@@ -1,7 +1,7 @@
 package xsrc
 
 func getDigiFinexExchange() {
-	//log.Println("Get DigiFinex Exchange Start")
+	//log.Print("Get DigiFinex Exchange Start")
 	//marketsRaw := make(map[string]interface{})
 	//slug := "digifinex"
 	//var e exchange.Exchange
@@ -37,9 +37,9 @@ func getDigiFinexExchange() {
 	//			}
 	//		}
 	//		jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//		log.Println("Get DigiFinex Exchange Done")
+	//		log.Print("Get DigiFinex Exchange Done")
 	//	}
 	//} else {
-	//	log.Println("Get Gate Exchange Fail")
+	//	log.Print("Get Gate Exchange Fail")
 	//}
 }

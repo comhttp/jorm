@@ -1,0 +1,98 @@
+{{define "css"}}
+    {{ template "coincss" .}}
+{{end}}
+
+{{define "main"}}
+    <amp-state id="coin" src="https://enso.okno.rs/coins/{{.Slug}}"></amp-state>
+    <amp-font layout="nodisplay"
+              font-family="bariolregular"
+              timeout="2000"
+              on-error-remove-class="bariolregular-loading"
+              on-error-add-class="plan9regular-missing"
+              on-load-remove-class="bariolregular-loading"
+              on-load-add-class="bariolregular-loaded">
+    </amp-font>
+    <amp-font layout="nodisplay"
+              font-family="plan9regular"
+              timeout="2000"
+              on-error-remove-class="plan9regular-loading"
+              on-error-add-class="plan9regular-missing"
+              on-load-remove-class="plan9regular-loading"
+              on-load-add-class="plan9regular-loaded">
+    </amp-font>
+    {{ template "bg" .}}
+    {{ template "header" .}}
+    {{template "sidebar" .}}
+    <div class="container mx-auto mb-8 px-4 px-0 flex flex-col flex-1 content main-wrap">
+        <div class="flex flex-col py-12">{{ template "name" .}}</div>
+        <div class="grid grid-cols-6 gap-5">
+            <div class="col-span-full md:col-span-4 lg:col-span-4 grid grid-cols-3 gap-5">
+                <div class="col-span-2 flex flex-col pnlbg ">
+
+                    <div class="p-8 flex-1 content justify-between text-center">
+                        <amp-list id="coin-name" layout="responsive"  width="1080" height="610" src="https://enso.okno.rs/e/{{.Slug}}/info" items= "." single-item class="flex flex-1 p-4">
+                            <template type="amp-mustache" id="coin-name">
+                                {{`{{#blocks}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Blocks</div>
+                                    <div class="flex">{{`{{blocks}}`}}</div>
+                                </div>
+                                {{`{{/blocks}}`}}
+                                {{`{{#difficulty}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Difficulty</div>
+                                    <div class="flex">{{`{{difficulty}}`}}</div>
+                                </div>
+                                {{`{{/difficulty}}`}}
+
+                                {{`{{#difficulty_scrypt}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Difficulty scrypt</div>
+                                    <div class="flex">{{`{{difficulty_scrypt}}`}}</div>
+                                </div>
+                                {{`{{/difficulty_scrypt}}`}}
+
+                                {{`{{#difficulty_sha256d}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Difficulty sha256d</div>
+                                    <div class="flex">{{`{{difficulty_sha256d}}`}}</div>
+                                </div>
+                                {{`{{/difficulty_sha256d}}`}}
+
+                                {{`{{#keypoololdest}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Key pool oldest</div>
+                                    <div class="flex">{{`{{keypoololdest}}`}}</div>
+                                </div>
+                                {{`{{/keypoololdest}}`}}
+
+                                {{`{{#keypoolsize}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">Key pool size</div>
+                                    <div class="flex">{{`{{keypoolsize}}`}}</div>
+                                </div>
+                                {{`{{/keypoolsize}}`}}
+
+                                {{`{{#pow_algo}}`}}
+                                <div class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                                    <div class="flex">POW algo</div>
+                                    <div class="flex">{{`{{pow_algo}}`}}</div>
+                                </div>
+                                {{`{{/pow_algo}}`}}
+
+
+
+                            </template>
+                        </amp-list>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-span-full md:col-span-2 flex flex-col">
+                <div class="grid grid-cols-2 gap-3">
+                    {{ template "coinbuttons" .}}
+                </div>
+            </div>
+        </div>
+    </div>
+{{ template "footer" .}}{{end}}

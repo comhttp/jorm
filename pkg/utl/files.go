@@ -1,8 +1,8 @@
 package utl
 
 import (
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
-	"log"
 	"path"
 	"strings"
 )
@@ -11,7 +11,7 @@ import (
 func GPFiles(p string) (s []string) {
 	cm, err := ioutil.ReadDir(p)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 	for _, c := range cm {
 		cn := c.Name()

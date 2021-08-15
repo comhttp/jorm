@@ -1,7 +1,7 @@
 package xsrc
 
 func getGateExchange() {
-	//log.Println("Get Gate Exchange Start")
+	//log.Print("Get Gate Exchange Start")
 	//marketsRaw := make(map[string]interface{})
 	//slug := "gate"
 	//var e exchange.Exchange
@@ -34,8 +34,8 @@ func getGateExchange() {
 	//			mSrc["vol"])
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	log.Println("Get Gate Exchange Done")
+	//	log.Print("Get Gate Exchange Done")
 	//} else {
-	//	log.Println("Get Gate Exchange Fail")
+	//	log.Print("Get Gate Exchange Fail")
 	//}
 }

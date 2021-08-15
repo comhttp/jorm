@@ -1,0 +1,88 @@
+{{define "varcss"}}
+    .duoloader{
+    width:62%;
+    margin:0 auto;
+    display:block;
+    text-align:center;}
+    .duoloader svg{
+    max-width: 100%;
+    height: auto;}
+    .duoloader .path {
+    stroke-dasharray: 2110;
+    stroke-dashoffset: 2110;
+    stroke-width:2;
+    stroke-linecap:round;
+    animation: duodash 1s linear infinite;
+    fill-opacity:0;
+    stroke:#cf8030;}
+
+    @keyframes duodash {
+    0% {
+    stroke-dashoffset: 2110;
+    opacity:0;
+    stroke:#cf8030;}
+    15%{
+    opacity:1;
+    stroke:#cf8030;}
+    70%{
+    opacity:1;
+    stroke:#cf8030;}
+    100%{
+    stroke-dashoffset:0;
+    opacity:0;
+    stroke:#CFCF30;}
+    }
+
+
+
+    .w-full {
+    width: 100%;}
+    .w-screen {
+    width: 100vw;}
+
+
+
+    .min-h-0{min-height: 0px;}
+    .min-h-full{min-height: 100%;}
+    .min-h-screen {min-height: 100vh;}
+
+
+    /* PANELS */
+    .pnl{
+    min-width: 300px;
+    border-radius: 1px;
+    transition: all 55ms ease-in;}
+    .pnl.dbl{
+    min-width: 600px;}
+    .pnl.tpl{
+    min-width: 900px;}
+    .pnlbg{
+    background: #fcfcfc; /* Old browsers */ /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(252,252,252,.62) 62%,rgba(257,257,257,.62) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#cfcfcf',GradientType=0 ); /* IE6-9 */
+    border: 1px solid rgba(0,0,0, .38);
+    border: 1px solid var(--border-dark);
+    box-shadow: inset 1px 0 3px rgba(0,0,0,.9);
+    transition: all 55ms ease-in;
+    color: #303030;}
+
+    .pnlbg:hover{
+    box-shadow: inset 1px 0 1px rgba(0,0,0,.62);
+    transition: all 33ms ease-in;}
+
+    .pnlhd{
+    border-bottom:  1px solid rgba(0,0,0, .24);
+    border-bottom:  1px solid var(--trans-dark);
+    border-radius: 1px;
+    background: rgba(48,48,48,.48);
+    box-shadow: inset 1px 1px 1px rgba(243,243,243,.5);
+    justify-content: space-between;
+    align-items: center;
+
+    font-family: var(--title);
+    color: #404040;
+    line-height: 1;
+    text-shadow: 0px 1px 0px rgba(243,243,243,.5);}
+
+
+{{end}}

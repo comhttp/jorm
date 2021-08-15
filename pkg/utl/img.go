@@ -3,12 +3,12 @@ package utl
 import (
 	"bytes"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"image"
 	_ "image/gif" // register gif format
 	"image/jpeg"
 	"image/png"
 	"io"
-	"log"
 	"math"
 
 	"github.com/disintegration/imaging"

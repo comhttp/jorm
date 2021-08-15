@@ -1,0 +1,19 @@
+{{define "news"}}<amp-list  id="coin-news"  layout="fixed-height" height="200" width="auto" src="//{{.Slug}}.com-http.news"  items= "news"  class="m1"><template type="amp-mustache" id="coin-news">
+            <h3>{{`{{name}}`}} News</h3>
+            <div class="nws"><amp-img src="//i.com-http.us/{{.Slug}}/16" alt="{{.Coin}}"  width="16"  height="16"  layout="fixed"  class="nico"></amp-img>{{.AMP.News}}</div></template></amp-list>{{end}}
+
+
+
+{{define "trends"}}<amp-iframe title="{{.Slug}} Trends - Interest over time"  src="https://trends.google.com/trends/embed/explore/TIMESERIES?req=%7B%22comparisonItem%22%3A%5B%7B%22keyword%22%3A%22{{.Slug}}%22%2C%22geo%22%3A%22%22%2C%22time%22%3A%22today%2012-m%22%7D%5D%2C%22category%22%3A0%2C%22property%22%3A%22%22%7D&tz=-120&eq=q%3D{{.Slug}}%26date%3Dtoday%2012-m"      height="360"    width="auto"  layout="flex-item"  frameborder="0"  sandbox="allow-scripts allow-same-origin"><amp-img src="//img.okno.rs/coins/256/{{.Slug}}256.png"  layout="flex-item"  placeholder></amp-img></amp-iframe>{{end}}
+
+
+
+{{define "cbg"}}<amp-img src="//img.okno.rs/coins/128/{{.Slug}}128.png" alt="{{.Coin}}"  width="128px" height="128px" layout="fixed"  class="pbg"><noscript><img src="//img.okno.rs/coins/128/{{.Slug}}128.png" width="128" height="128" alt="{{.Coin.Name}}"></noscript></amp-img>{{end}}
+
+
+{{define "links"}}<div class="pnl "><h3>{{.Coin}} Links</h3><form method="get" target="_blank" action="https://isthiscoinascam.com/check/{{.Slug}}"><button class="btn btn-primary btn-lg h3" type="submit" >Is {{.Coin}} Scam?</button></form><a href="//{{.Slug}}.com-http.us/explorer"><button class="btn btn-primary btn-lg h3">{{.Coin}} Blockchain Explorer</button></a></div>{{end}}
+
+{{define "trans"}}<div class="pnl "><h3>Last Transactions</h3><amp-list width="auto"  height="542"  layout="flex-item" src="//{{.Slug}}.com-http.us/a/rawpool" items="d" class="cgl"><template type="amp-mustache"><li class="menu-item">{{.AMP.Tx}}</li></template></amp-list></div>{{end}}
+
+{{define "explorers"}}
+{{end}}

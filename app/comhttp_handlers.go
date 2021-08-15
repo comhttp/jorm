@@ -4,7 +4,7 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"text/template"
 )
@@ -119,14 +119,16 @@ func (j *JORM) appHandler() func(w http.ResponseWriter, r *http.Request) {
 		funcMap := template.FuncMap{
 			"truncate": utl.Truncate,
 		}
-		log.Println("Top level domain keyword 1:  ", d.TLD)
-		log.Println("App 1: ", d.App)
-		log.Println("Slug 1: ", d.Slug)
-		log.Println("Page 1: ", d.Page)
-		log.Println("Path 1: ", d.Path)
-		log.Println("Base 1: ", d.Base)
+		log.Print("Top level domain keyword 1:  ", d.TLD)
+		log.Print("App 1: ", d.App)
+		log.Print("Slug 1: ", d.Slug)
+		log.Print("Page 1: ", d.Page)
+		log.Print("Path 1: ", d.Path)
+		log.Print("Base 1: ", d.Base)
+		//j.goHTML.Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
+		//template.Must(j.goHTML,nil).Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
 		template.Must(j.parseFiles(d.Base, d.Path+"/"+d.Page+".gohtml")).Funcs(funcMap).ExecuteTemplate(w, d.Base, d)
-		log.Println("d.Base", d.Base)
-		log.Println("dadadad", d.Path+"/"+d.Page+".gohtml")
+		log.Print("d.Base", d.Base)
+		log.Print("dadadad", d.Path+"/"+d.Page+".gohtml")
 	}
 }

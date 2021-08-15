@@ -2,7 +2,7 @@ package nodes
 
 import (
 	"github.com/comhttp/jorm/pkg/utl"
-	"log"
+	"github.com/rs/zerolog/log"
 )
 
 // GetBitNodeStatus returns the full set of information about a node
@@ -36,7 +36,7 @@ func (b *BitNode) GetBitNodeStatus(username, password string) (bitnodeStatus *Bi
 
 // GetNodes returns the peers connected to a
 func GetNodes(n *BitNodeStatus) (nodes []Node) {
-	log.Println("GetNodes", n.IP)
+	log.Print("GetNodes", n.IP)
 	switch p := n.GetPeerInfo.(type) {
 	case []interface{}:
 		for _, nodeRaw := range p {

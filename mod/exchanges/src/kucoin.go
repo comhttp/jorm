@@ -33,7 +33,7 @@ package xsrc
 //}
 //
 //func getKuCoinExchange() {
-//	log.Println("GetKuCoinExchangeStart")
+//	log.Print("GetKuCoinExchangeStart")
 //	marketsRaw := KuCoinExchange{}
 //	slug := "kucoin"
 //	var exchange x.Exchange
@@ -74,6 +74,6 @@ package xsrc
 //	exchange.Markets = marketsSlice
 //	//jdb.WriteExchange(slug, exchange)
 //
-//	log.Println("GetKuCoinExchangeDone")
+//	log.Print("GetKuCoinExchangeDone")
 //
 //}

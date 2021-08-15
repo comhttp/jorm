@@ -10,7 +10,7 @@ import (
 )
 
 func getBitZExchange() {
-	log.Println("Get BitZ Exchange Start")
+	log.Print("Get BitZ Exchange Start")
 	marketsRaw := make(map[string]interface{})
 	slug := "bitz"
 	var e exchanges.Exchange
@@ -46,6 +46,6 @@ func getBitZExchange() {
 	//		}
 	//	}
 	//	jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-	//	log.Println("Get BitZ Exchange Done")
+	//	log.Print("Get BitZ Exchange Done")
 	//}
 }

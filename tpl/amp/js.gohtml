@@ -1,0 +1,58 @@
+{{define "js"}}
+    <script>
+        new Vue({
+            el: '#comhttp',
+            data() {
+                return {
+                }
+            },
+            mounted() {
+            },
+            components: {
+                index: httpVueLoader('https://comhttp.okno.rs/vue/{{ .App }}/{{ .TLD }}.vue'),
+            },
+        });
+    </script>
+{{end}}
+
+
+{{define "vue"}}
+    <amp-script layout="container" src="https://comhttp.okno.rs/vue/vue.js" sandbox="allow-forms"><div id="comhttp"></div></amp-script>
+{{end}}
+
+
+{{define "ga"}}
+<amp-state id="autosuggest">
+    <script type="application/json">
+        {{`{
+            "endpoint": "/documentation/examples/api/products-autosuggest?q=",
+            "emptyAndInitialTemplateJson": [{
+                "query": "",
+                "results": []
+            }],
+            "showDropdown":false,
+            "query":""
+        }`}}
+    </script>
+</amp-state>
+
+<amp-analytics type="googleanalytics">
+    <script type="application/json">
+{{`{
+                    "vars": {
+                        "account": "G-GK3P8ZB0B1"
+                    },
+                    "triggers": {
+                        "default pageview": {
+                            "on": "visible",
+                            "request": "pageview",
+                            "vars": {
+                                "title": "`}}{{ .Title}}{{`"
+                            }
+                        }
+                    }
+                }`}}
+
+        </script>
+</amp-analytics>
+{{end}}

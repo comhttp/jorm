@@ -2,26 +2,24 @@ package app
 
 import "C"
 import (
-	"github.com/comhttp/jorm/mod/coins"
-	csrc "github.com/comhttp/jorm/mod/coins/src"
-	"github.com/comhttp/jorm/mod/nodes"
-	"log"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
 )
 
 func (j *JORM) JormSRV() {
 	//exchanges.GetAllExchanges(j.JDB)
-	go csrc.GetCoinSources(j.JDB)
-	coins.ProcessCoins(j.JDB)
+	//go csrc.GetCoinSources(j.JDB)
+	//coin.ProcessCoins(j.JDB)
 	//coins.BitNodeCoins(j.NodeCoins, j.JDB)
 	//cloudflare.CloudFlare(j.config, j.JDB)
 	//j.NodeCoins = coins.GetNodeCoins(j.JDB)
-	nodes.GetBitNodes(j.JDB, j.NodeCoins)
+	//nodes.GetBitNodes(j.JDB, j.NodeCoins)
 	//j.Explorer = explorers.GetExplorer(j.JDB)
 	//j.Explorer.ExploreCoins(j.NodeCoins)
-	//log.Println("nodessss: ", j.NodeCoins)
+	//log.Print("nodessss: ", j.NodeCoins)
 	//go j.Tickers()
+
 	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})
 	go func() {
@@ -29,7 +27,7 @@ func (j *JORM) JormSRV() {
 			select {
 			case <-ticker.C:
 				j.Tickers()
-				log.Println("OKNO wooikos")
+				log.Print("OKNO wooikos")
 			case <-quit:
 				ticker.Stop()
 				return
@@ -37,14 +35,14 @@ func (j *JORM) JormSRV() {
 		}
 	}()
 	//log.Fatal(srv.ListenAndServeTLS("./cfg/server.pem", "./cfg/server.key"))
-	//log.Println("JORM is listening on port: ", cfg.C.Port["jorm"])
+	//log.Print("JORM is listening on port: ", cfg.C.Port["jorm"])
 	//log.Fatal(j.WWW.ListenAndServe())
 	//log.Fatal(j.WS.ListenAndServeTLS("", ""))
 
 }
 
 func (j *JORM) ExplorerSRV(coin string) {
-	log.Println("coincoincoincoincoin", coin)
+	log.Print("coincoincoincoincoin", coin)
 	http.HandleFunc("/", status)
 
 	ticker := time.NewTicker(12 * time.Second)
@@ -53,14 +51,14 @@ func (j *JORM) ExplorerSRV(coin string) {
 		for {
 			select {
 			case <-ticker.C:
-				j.ExploreCoin(j.config.RPC.Username, j.config.RPC.Password, coin)
+				//j.JDBS.ExploreCoin(j.config.RPC.Username, j.config.RPC.Password, coin)
 			case <-quit:
 				ticker.Stop()
 				return
 			}
 		}
 	}()
-	//log.Println("JORM explorer is listening: ", port)
+	//log.Print("JORM explorer is listening: ", port)
 	// Start HTTP server
 	//log.Fatal(http.ListenAndServe(":"+port, nil))
 }

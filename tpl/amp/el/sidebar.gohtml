@@ -1,0 +1,24 @@
+{{define "sidebar"}}
+    <amp-sidebar id="drawermenu" layout="nodisplay">
+        <aside class="min-h-full flex flex-col px-4">
+    <a href="https://com-http.us/" class="py-3 cursor-pointer sidelogo">{{template "logo" .}}</a>
+    <hr class="pb-3">
+
+            <nav class="flex flex-col nav">
+                <a href="{{ .ProtoURL }}info">Info</a>
+                <a href="{{ .ProtoURL }}network">Network</a>
+                <a href="{{ .ProtoURL }}live">Live</a>
+                <a href="{{ .ProtoURL }}directory">Directory</a>
+                <a href="{{ .ProtoURL }}support">Support</a>
+                <a href="{{ .ProtoURL }}games">Games</a>
+                <a href="{{ .ProtoURL }}download">Download</a>
+                <a href="{{ .ProtoURL }}social">Social</a>
+                <a href="{{ .ProtoURL }}tools">Tools</a>
+                <a href="{{ .ProtoURL }}today">Today</a>
+                <a href="{{ .ProtoURL }}news">News</a>
+                <a href="{{ .ProtoURL }}help">Help</a>
+                <a href="{{ .ProtoURL }}exchange">Exchange</a>
+            </nav>
+        </aside>
+</amp-sidebar>
+{{end}}

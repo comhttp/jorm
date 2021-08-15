@@ -3,8 +3,8 @@ package utl
 import (
 	"encoding/base64"
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -37,7 +37,7 @@ func GetJSON(completeURL string) (interface{}, error) {
 func GetIMG(url, path, slug string) (i Images) {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Println("Problem Insert", err)
+		log.Print("Problem Insert", err)
 	}
 	defer resp.Body.Close()
 	content, err := ioutil.ReadAll(resp.Body)

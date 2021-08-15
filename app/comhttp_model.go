@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/comhttp/jorm/pkg/utl"
-	"log"
+	"github.com/rs/zerolog/log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,16 +20,14 @@ type COMHTTP struct {
 }
 
 func (j *JORM) parseTemplates(base string, t *template.Template) *template.Template {
-	log.Println("cfg.Pathcfg.Pathcfg.Pathssssssssssss", j.config.Path)
-	log.Println("ssssssssssss", j.config.Path+"tpl/"+base)
-	err := filepath.Walk(j.config.Path+"tpl/"+base, func(path string, info os.FileInfo, err error) error {
+	log.Print("ssssssssssss", "tpl/"+base)
+	err := filepath.Walk("tpl/"+base, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(path, ".gohtml") {
 			_, err = t.ParseFiles(path)
 			if err != nil {
 				utl.ErrorLog(err)
 			}
 		}
-
 		return err
 	})
 
@@ -41,5 +39,33 @@ func (j *JORM) parseTemplates(base string, t *template.Template) *template.Templ
 
 func (j *JORM) parseFiles(base, tpl string) (*template.Template, error) {
 	t := new(template.Template)
-	return j.parseTemplates(base, t).ParseFiles(j.config.Path + "tpl/" + tpl)
+	return j.parseTemplates(base, t).ParseFiles("tpl/" + tpl)
 }
+
+//
+//func (j *JORM) parseTemplates(path string) {
+//	t := new(template.Template)
+//	log.Print("cfg.Pathcfg.Pathcfg.Pathssssssssssss")
+//	log.Print("ssssssssssss", path)
+//	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+//		if strings.Contains(path, ".gohtml") {
+//			log.Print("WalkWalkWalk", path)
+//			_, err = j.goHTML.ParseFiles(path)
+//			if err != nil {
+//				utl.ErrorLog(err)
+//			}
+//		}
+//
+//		return err
+//	})
+//
+//	if err != nil {
+//		panic(err)
+//	}
+//	j.goHTML = *t
+//	return
+//}
+//
+//func (j *JORM) parseFiles(path string) (*template.Template, error) {
+//	return j.goHTML.ParseFiles(path)
+//}

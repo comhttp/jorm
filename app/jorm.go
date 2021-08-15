@@ -3,40 +3,38 @@ package app
 import "C"
 import (
 	"crypto/tls"
-	"github.com/comhttp/jorm/mod/coins"
+	"fmt"
+	"github.com/comhttp/jorm/mod/cloudflare"
+	"github.com/comhttp/jorm/mod/coin"
+	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"github.com/jcelliott/lumber"
-	"log"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"github.com/rs/zerolog/log"
 	"net/http"
+	"text/template"
 	"time"
 )
 
-const (
-	// HTTPMethodOverrideHeader is a commonly used
-	// http header to override a request method.
-	HTTPMethodOverrideHeader = "X-HTTP-Method-Override"
-	// HTTPMethodOverrideFormKey is a commonly used
-	// HTML form key to override a request method.
-	HTTPMethodOverrideFormKey = "_method"
-)
+//const (
+//	// HTTPMethodOverrideHeader is a commonly used
+//	// http header to override a request method.
+//	HTTPMethodOverrideHeader = "X-HTTP-Method-Override"
+//	// HTTPMethodOverrideFormKey is a commonly used
+//	// HTML form key to override a request method.
+//	HTTPMethodOverrideFormKey = "_method"
+//)
 
 type (
-	Logger interface {
-		Fatal(string, ...interface{})
-		Error(string, ...interface{})
-		Warn(string, ...interface{})
-		Info(string, ...interface{})
-		Debug(string, ...interface{})
-		Trace(string, ...interface{})
-	}
 	JORM struct {
-		Coins     coins.Coins
+		Coins     coin.Coins
 		Coin      string
 		NodeCoins []string
-		Explorers map[string]*Explorer
+		Explorers map[string]*explorer.Explorer
 		//Hosts         map[string]Host
 		WWW       *http.Server
 		WS        *http.Server
@@ -44,12 +42,24 @@ type (
 		//CertManager autocert.Manager
 		//BitNodes   map[string]nodes.BitNodes
 		JDBservers map[string]string
-		JDB        *jdb.JDB
+		JDBS       *jdb.JDBS
 		comhttp    *COMHTTP
-		Log        *lumber.ConsoleLogger
+		goHTML     *template.Template
 		config     cfg.Config
 	}
 )
+
+func (j *JORM) ENSOhandlers() http.Handler {
+	//coinsCollection := Queries(j.B["coins"],"coin")
+	r := mux.NewRouter()
+	//s := r.Host("enso.okno.rs").Subrouter()
+	r.StrictSlash(true)
+
+	//n := r.PathPrefix("/n").Subrouter()
+	coin.ENSOroutes(j.JDBS, r)
+	explorer.ENSOroutes(j.JDBS, r)
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+}
 
 func NewJORM(service, path, singleCoin string) (j *JORM) {
 	j = new(JORM)
@@ -72,22 +82,39 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 	//	HostPolicy: autocert.HostWhitelist("ws.okno.rs", "wss.okno.rs", "ns.okno.rs"),
 	//	Cache:      autocert.DirCache(cfg.Path),
 	//},
+	log.Print("pre: ", path)
+
+	//j.goHTML = j.parseTemplates("amp", j.goHTML)
+	log.Print("posle: ", path)
 
 	j.JDBservers = j.config.JDBservers
-	j.JDB = jdb.NewJDB(j.JDBservers)
-	j.Log = lumber.NewConsoleLogger(lumber.INFO)
+	j.JDBS = jdb.NewJDBS(j.JDBservers)
 	//}
-	j.Explorers = make(map[string]*Explorer)
+
+	ttt := j.JDBS.B["coins"].ReadAllPerPages("coin", 10, 1)
+
+	for _, t := range ttt {
+		if t["slug"] != "" {
+		} else {
+			//fmt.Println("ssssssssssssssttttttttt2222222222ttttttt",t)
+		}
+
+	}
+	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+
+	ccc := cc.GetAllCoins()
+	fmt.Println("ssssssssssssssttttttttt2222222222tttttttccccccccccccccccccc", ccc)
+	j.Explorers = make(map[string]*explorer.Explorer)
 	for coin, _ := range bitNodesCfg {
 		j.NodeCoins = append(j.NodeCoins, coin)
 		coinBitNodes := nodes.BitNodes{}
 		err = c.Read("nodes", coin, &coinBitNodes)
 		utl.ErrorLog(err)
-		j.Explorers[coin] = NewExplorer(j.JDB, coin)
+		j.Explorers[coin] = explorer.NewExplorer(j.JDBS.B[coin], coin)
 		j.Explorers[coin].BitNodes = coinBitNodes
 	}
 
-	//log.Println("Get ", cfg.C)
+	//log.Print("Get ", cfg.C)
 
 	//j.Coins = coin.LoadCoinsBase(j.JDB)
 	j.WWW = &http.Server{
@@ -97,52 +124,56 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 
 	switch service {
 	case "proxy":
-		log.Println("reverse proxy")
+		log.Print("reverse proxy")
 		h := &baseHandle{}
 		http.Handle("/", h)
 		j.WWW.Handler = h
 		j.WWW.Addr = ":" + j.config.Port["proxy"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "jorm":
-		log.Println("jorm")
+		log.Print("jorm")
 		j.JormSRV()
 		j.WWW.Handler = j.JORMhandlers()
 		j.WWW.Addr = ":" + j.config.Port["jorm"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "enso":
-		log.Println("enso")
+		log.Print("enso")
 		j.WWW.Handler = j.ENSOhandlers()
 		j.WWW.Addr = ":" + j.config.Port["enso"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "our":
-		log.Println("our")
+		log.Print("our")
 		j.WWW.Handler = j.OURhandlers()
 		j.WWW.Addr = ":" + j.config.Port["our"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	//ourSRV()
 	case "comhttp":
-		log.Println("comhttp")
+		log.Print("comhttp")
 		j.WWW.Handler = j.COMHTTPhandlers()
 		j.WWW.Addr = ":" + j.config.Port["comhttp"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "admin":
-		log.Println("admin")
+		log.Print("admin")
 		j.WWW.Handler = j.ADMINhandlers()
 		j.WWW.Addr = ":" + j.config.Port["admin"]
-		return
+		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "explorer":
-		//log.Println("explorer " + *coin)
+		//log.Print("explorer " + *coin)
 		if path == "" {
 			j.ExplorerSRV(singleCoin)
 			j.WWW.Addr = ":" + j.config.Port[singleCoin]
 		} else {
-			log.Println("Missing coin for explorer!")
+			log.Print("Missing coin for explorer!")
 		}
+		log.Fatal().Err(j.WWW.ListenAndServe())
+	case "cloudflare":
+		log.Print("cloudflare")
+		cloudflare.CloudFlare(j.config, &coin.CoinsShort{})
 		return
 	}
 
-	j.JDB.Write("info", "jdbs", j.JDBservers)
-	j.JDB.Write("info", "explorers", j.Explorers)
+	j.JDBS.B["info"].Write("info", "jdbs", j.JDBservers)
+	j.JDBS.B["info"].Write("info", "explorers", j.Explorers)
 
 	//j.WS = &http.Server{
 	//	Handler: j.WShandleR(),

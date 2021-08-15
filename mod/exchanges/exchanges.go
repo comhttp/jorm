@@ -32,7 +32,7 @@ func ViewMarket(w http.ResponseWriter, r *http.Request) {
 	}
 	out, err := json.Marshal(x)
 	if err != nil {
-		log.Println("Error encoding JSON")
+		log.Print("Error encoding JSON")
 		return
 	}
 	w.Write([]byte(out))

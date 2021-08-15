@@ -1,0 +1,105 @@
+{{define "cssbuttons"}}
+
+
+        .button{
+        display: flex;
+        transition: all 111ms ease-in;
+        border: none;
+
+        cursor: pointer;
+        font-family: 'splendid';
+        color:var(--text-invert);
+        text-align:center;
+        transition: box-shadow 111ms ease-in;
+        letter-spacing:2px;
+        }
+
+        .med.button{
+        background: var(--trans-dark);
+        color:var(--text-invert);
+        text-align:center;
+        letter-spacing:2px;
+        }
+
+        .huge.button{
+        color:var(--text-invert);
+        text-align:center;
+        letter-spacing:2px;
+        text-shadow:  0px 0px 0px var(--dark), 0px 0px 0px var(--light);
+        }
+
+        .button:hover{
+        color: var(--lighter);
+        transition: all 99ms ease-in;
+
+        }
+        .huge.button:hover{
+        color: var(--lighter);
+        transition: all 99ms ease-in;
+        transition: text-shadow 77ms ease-in;
+        text-shadow:  1px 3px 1px var(--dark), 1px 3px 1px var(--light);
+        }
+        .huge.button.blue{
+        color: var(--blue);
+        text-shadow:  1px 3px 1px var(--dark), 1px 3px 1px var(--blue);
+        }
+        .huge.button.blue:hover{
+        text-shadow:  0px 0px 0px var(--dark), 0px 0px 0px var(--blue);
+        }
+        .huge.button.green{
+        color: var(--green);
+        text-shadow:  1px 3px 1px var(--dark), 1px 3px 1px var(--green);
+        }
+        .huge.button.green:hover{
+        text-shadow:  0px 0px 0px var(--dark), 0px 0px 0px var(--green);
+        }
+        .med.button:hover{
+        transition: box-shadow 77ms ease-in;
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--light);
+        }
+        .med.button.orange{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--orange);
+        }
+        .med.button.orange:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--orange);
+        }
+        .med.button.red{
+        box-shadow: inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--red);
+        }
+        .med.button.red:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark), inset 0 99px 0 var(--red);
+        }
+        .med.button.green{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--green);
+        }
+        .med.button.green:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--green);
+        }
+        .med.button.blue{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--blue);
+        }
+        .med.button.blue:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--blue);
+        }
+        .med.button.light-blue{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--light-blue);
+        }
+        .med.button.light-blue:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--light-blue);
+        }
+
+        .med.button.purple{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--purple);
+        }
+        .med.button.purple:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--purple);
+        }
+        .med.button.yellow{
+        box-shadow:inset 0 0px 0px  var(--dark), inset 0 5px 0 var(--yellow);
+        }
+        .med.button.yellowblue:hover{
+        box-shadow:  inset 0 5px 10px  var(--dark),inset 0 99px 0 var(--yellow);
+        }
+
+
+{{end}}

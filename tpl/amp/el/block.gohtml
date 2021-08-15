@@ -1,0 +1,53 @@
+{{define "block"}}
+    <amp-state id="block" src="https://enso.okno.rs/e/{{.Slug}}/block/{{.ID}}"></amp-state>
+
+    <amp-list layout="flex-item"
+          src="amp-state:block"
+          items="."
+          single-item
+				  class="cgl">
+		  <template type="amp-mustache">
+<section class="flex-1 flex flex-col container mx-auto px-4 px-0 main-wrap">
+    <header class="flex flex-col">
+        <h1 class="my-8 flex flex-col xl:flex-row justify-between items-center heading-shadow-invert text-primary whitespace-nowrap overflow-ellipsis overflow-hidden"><strong class="text-4xl sm:text-5xl md:text-6xl xl:text-7xl xl:text-8xl">{{ .Slug }} Block</strong><span class="text-7xl md:text-8xl xl:text-9xl xl:text-10xl">{{`{{height}}`}}</span></h1>
+    </header>
+  <article class="flex flex-col rounded md:rounded-lg bg-invert text-xl text-invert container mx-auto px-4 px-0 main-wrap">
+{{`{{#hash}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 tracking-wide font-bold whitespace-nowrap ">Block hash</span><a class="no-underline hover:no-underline whitespace-nowrap overflow-ellipsis overflow-hidden truncate" href="/block/{{`{{hash}}`}}" >{{`{{hash}}`}}</a></div>{{`{{/hash}}`}}
+{{`{{#height}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 tracking-wide font-bold whitespace-nowrap ">Height</span>{{`{{height}}`}}</div>{{`{{/height}}`}}
+{{`{{#previousblockhash}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold  whitespace-nowrap ">Previous block Hash</span><a class="no-underline hover:no-underline whitespace-nowrap overflow-ellipsis overflow-hidden truncate" href="/block/{{`{{previousblockhash}}`}}">{{`{{previousblockhash}}`}}</a></div>{{`{{/previousblockhash}}`}}
+{{`{{#nextblockhash}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Next block Hash</span><a class="no-underline hover:no-underline whitespace-nowrap overflow-ellipsis overflow-hidden truncate" href="/block/{{`{{nextblockhash}}`}}">{{`{{nextblockhash}}`}}</a></div>{{`{{/nextblockhash}}`}}
+  {{`{{#bits}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Bits</span>{{`{{bits}}`}}</div>{{`{{/bits}}`}}
+  {{`{{#confirmations}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Confirmations</span>{{`{{confirmations}}`}}</div>{{`{{/confirmations}}`}}
+  {{`{{#difficulty}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold whitespace-nowrap ">Difficulty</span>{{`{{difficulty}}`}}</div>{{`{{/difficulty}}`}}
+  {{`{{#merkleroot}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 md:w-64 font-bold whitespace-nowrap ">Merkle root</span><span class="whitespace-nowrap overflow-ellipsis overflow-hidden truncate">{{`{{merkleroot}}`}}</span></div>{{`{{/merkleroot}}`}}
+
+  {{`{{#nonce}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Nonce</span>{{`{{nonce}}`}}</div>{{`{{/nonce}}`}}
+  {{`{{#size}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Size</span>{{`{{size}}`}}</div>{{`{{/size}}`}}
+  {{`{{#pow_algo}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">POW algo</span>{{`{{pow_algo}}`}}</div>{{`{{/pow_algo}}`}}
+  {{`{{#pow_hash}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">POW Hash</span><span class="whitespace-nowrap overflow-ellipsis overflow-hidden truncate">{{`{{pow_hash}}`}}</span></div>{{`{{/pow_hash}}`}}
+  {{`{{#pow_algo_id}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">POW algo ID</span>{{`{{pow_algo_id}}`}}</div>{{`{{/pow_algo_id}}`}}
+  {{`{{#time}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Time</span>{{`{{time}}`}}</div>{{`{{/time}}`}}
+  {{`{{#timeutc}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Time UTC</span>{{`{{timeutc}}`}}</div>{{`{{/timeutc}}`}}
+
+  {{`{{#version}}`}}<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="flex min-w-64 w-64 font-bold">Version</span>{{`{{version}}`}}</div>{{`{{/version}}`}}
+  <div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="font-bold flex min-w-64 w-64 font-bold">Number of transactions</span>{{`{{tx.length}}`}}</div>
+<div class="flex flex-row py-2 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0"><span class="font-bold flex min-w-64 w-64 font-bold">Transactions</span>
+
+  <div class="flex flex-col my-4 p-6 bg-black bg-opacity-25 rounded-lg">
+      {{`{{#tx}}`}}<a class="text-sm whitespace-nowrap overflow-ellipsis overflow-hidden no-underline hover:no-underline" href="/tx/{{`{{.}}`}}">{{`{{.}}`}}</a>{{`{{/tx}}`}}
+  </div>
+</div>
+
+</article>
+    <footer class="flex space-between">
+        {{`{{#previousblockhash}}`}}<a class="flex-1 justify-center p-6 button blue text-2xl no-underline hover:no-underline title" href="/block/{{`{{previousblockhash}}`}}"><i class="fas fa-angle-left mr-2"></i>Previous block</a>{{`{{/previousblockhash}}`}}
+        {{`{{#nextblockhash}}`}}<a class="flex-1 justify-center p-6 button blue text-2xl no-underline hover:no-underline" href="/block/{{`{{nextblockhash}}`}}">Next block<i class="fas fa-angle-right mr-2"></i></a>{{`{{/nextblockhash}}`}}
+</footer>
+
+</section>
+  </template>
+
+		</amp-list>
+
+
+{{end}}

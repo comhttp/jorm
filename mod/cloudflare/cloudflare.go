@@ -2,39 +2,38 @@ package cloudflare
 
 import (
 	"context"
-	"github.com/comhttp/jorm/mod/coins"
+	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/cfg"
-	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"log"
+	"github.com/rs/zerolog/log"
 
 	cf "github.com/cloudflare/cloudflare-go"
 )
 
-func CloudFlare(c cfg.Config, j *jdb.JDB) {
-	//log.Println("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
+func CloudFlare(c cfg.Config, cfCoins *coin.CoinsShort) {
+	//log.Print("CONFIGCONFIGCONFIGCONFIGCONFIGCONFIGCONFIG", cfg.C)
 	ctx := context.Background()
 	// Construct a new API object
 	api, err := cf.NewWithAPIToken(c.CF.CloudFlareAPItoken)
 	utl.ErrorLog(err)
 	for _, tld := range c.COMHTTP {
-		go createDNS(j, api, ctx, "com-http."+tld)
+		createDNS(cfCoins, api, ctx, "com-http."+tld)
+		//delAllCNameDNS(api, ctx, "com-http."+tld)
 	}
 	//createDNS(j,api, ctx, "com-http.us")
 	//delAllCNameDNS(api, ctx, "com-http.us")
 }
 
-func createDNS(j *jdb.JDB, api *cf.API, ctx context.Context, domain string) {
-	c := coins.GetAlgoCoins(j)
+func createDNS(cfCoins *coin.CoinsShort, api *cf.API, ctx context.Context, domain string) {
 	// Fetch the zone ID
 	id, err := api.ZoneIDByName(domain) // Assuming example.com exists in your Cloudflare account already
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 	// Fetch all records for a zone
 	recs, err := api.DNSRecords(context.Background(), id, cf.DNSRecord{})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 	var registrated []string
 	for _, r := range recs {
@@ -42,10 +41,10 @@ func createDNS(j *jdb.JDB, api *cf.API, ctx context.Context, domain string) {
 			registrated = append(registrated, r.Name)
 		}
 	}
-	for _, coin := range c.C {
+	for _, cfCoin := range cfCoins.C {
 		//_, err := http.Get("https://" + slug + "." + domain)
 		//if err != nil {
-		setDNS(api, ctx, registrated, domain, coin.Slug)
+		setDNS(api, ctx, registrated, domain, cfCoin.Slug)
 	}
 }
 
@@ -53,7 +52,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 	var exist bool
 	for _, reg := range registrated {
 		if slug+"."+domain == reg {
-			log.Println("Ima:", slug+"."+domain)
+			log.Print("Ima:", slug+"."+domain)
 			exist = true
 		} else {
 			exist = false
@@ -71,7 +70,7 @@ func setDNS(api *cf.API, ctx context.Context, registrated []string, domain, slug
 			Proxied: &t,
 		})
 		utl.ErrorLog(err)
-		log.Println("Created subdomain: ", slug+"."+domain)
+		log.Print("Created subdomain: ", slug+"."+domain)
 	}
 }
 
@@ -79,12 +78,12 @@ func delAllCNameDNS(api *cf.API, ctx context.Context, domain string) {
 	// Fetch the zone ID
 	id, err := api.ZoneIDByName(domain) // Assuming example.com exists in your Cloudflare account already
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 	// Fetch all records for a zone
 	recs, err := api.DNSRecords(context.Background(), id, cf.DNSRecord{})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
 	}
 	for _, r := range recs {
 		if r.Type == "CNAME" {
@@ -96,5 +95,5 @@ func delAllCNameDNS(api *cf.API, ctx context.Context, domain string) {
 func delDNS(api *cf.API, ctx context.Context, zoneId, id string) {
 	err := api.DeleteDNSRecord(ctx, zoneId, id)
 	utl.ErrorLog(err)
-	log.Println("DeleteDNSRecord rrrrr:", id)
+	log.Print("DeleteDNSRecord rrrrr:", id)
 }

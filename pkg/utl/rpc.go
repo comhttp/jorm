@@ -37,7 +37,7 @@ func (c *Endpoint) MakeRequest(method string, params interface{}) (interface{}, 
 	if err != nil {
 		ErrorLog(err)
 	}
-	//	log.Println("Blooblockblockblockblockooradb", args)
+	//	log.Print("Blooblockblockblockblockooradb", args)
 
 	req.Body = ioutil.NopCloser(strings.NewReader(string(j)))
 	req.ContentLength = int64(len(string(j)))
@@ -99,7 +99,7 @@ func NewClient(user string, password string, host string, port int64) *Endpoint 
 // 		log.Printf("Error: %s when dialing", err)
 // 	}
 // 	defer conn.Close()
-// 	log.Println("Client connected to :", conn.RemoteAddr())
+// 	log.Print("Client connected to :", conn.RemoteAddr())
 // 	rpcClient := rpc.NewClient(conn)
 // 	var reply int
 // 	if err := rpcClient.Call("MyServer.Sum", &RpcCall{
