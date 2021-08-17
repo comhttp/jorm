@@ -27,6 +27,6 @@ type tradingPairs struct {
 
 func (c *cryptocompare) GetAllTradingPairs() Exchanges {
 	allAllTradingPairs := &rawAllTradingPairs{}
-	utl.GetSourceHeadersAPIkey(c.apiEndpoint+"data/v4/all/exchanges", c.apiKey, allAllTradingPairs)
+	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/v4/all/exchanges", allAllTradingPairs)
 	return allAllTradingPairs.Data
 }

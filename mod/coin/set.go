@@ -4,6 +4,7 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"strings"
+	"time"
 )
 
 func (cq *CoinQueries) SetCoin(src, slug string, get func(c *Coin)) {
@@ -18,9 +19,8 @@ func (cq *CoinQueries) SetCoin(src, slug string, get func(c *Coin)) {
 		get(c)
 		c.Checked[src] = true
 		cq.j.Write("coin", slug, c)
-	} else {
 		utl.ErrorLog(err)
-		//log.Print("Ima Coin: ", c.Name)
+	} else {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
@@ -59,47 +59,50 @@ func (c *Coin) SetProof(proof interface{}) {
 	return
 }
 
-func (c *Coin) SetStart(start interface{}) {
-	//c.Start = utl.InsertString(c.Start, start)
+func (c *Coin) SetStart(start string) {
+	s, err := time.Parse("2017-07-01", start)
+	log.Log().Err(err)
+	c.Start = s
 	return
 }
 
 func (c *Coin) SetBitcoinTalk(bitcointalk interface{}) {
-	c.BitcoinTalk = utl.InsertString(c.BitcoinTalk, bitcointalk)
+	//c.BitcoinTalk = utl.InsertString(c.BitcoinTalk, bitcointalk)
 	return
 }
 
 func (c *Coin) SetTwitter(twitter interface{}) {
-	c.Twitter = utl.InsertString(c.Twitter, twitter)
+	//c.Twitter = utl.InsertString(c.Twitter, twitter)
 	return
 }
 
 func (c *Coin) SetReddit(reddit interface{}) {
-	c.Reddit = utl.InsertString(c.Reddit, reddit)
+	//c.Reddit = utl.InsertString(c.Reddit, reddit)
 	return
 }
 
 func (c *Coin) SetTelegram(telegram interface{}) {
-	c.Telegram = utl.InsertString(c.Telegram, telegram)
+	//c.Telegram = utl.InsertString(c.Telegram, telegram)
 	return
 }
+
 func (c *Coin) SetFacebook(facebook interface{}) {
-	c.Facebook = utl.InsertString(c.Facebook, facebook)
+	//c.Facebook = utl.InsertString(c.Facebook, facebook)
 	return
 }
 
 func (c *Coin) SetWebSite(website interface{}) {
-	c.WebSite = utl.InsertStringSlice(c.WebSite, website)
+	//c.WebSite = utl.InsertStringSlice(c.WebSite, website)
 	return
 }
 
 func (c *Coin) SetExplorer(explorer interface{}) {
-	c.Explorer = utl.InsertStringSlice(c.Explorer, explorer)
+	//c.Explorer = utl.InsertStringSlice(c.Explorer, explorer)
 	return
 }
 
 func (c *Coin) SetChat(chat interface{}) {
-	c.Chat = utl.InsertStringSlice(c.Chat, chat)
+	//c.Chat = utl.InsertStringSlice(c.Chat, chat)
 	return
 }
 
@@ -115,5 +118,43 @@ func (c *Coin) SetLogo(logo interface{}) {
 		//Create a empty file
 		//c.Logo = true
 	}
+	return
+}
+
+func (c *Coin) SetNetHashesPerSecond(supply interface{}) {
+	c.NetHashesPerSecond = supply.(float64)
+	return
+}
+func (c *Coin) SetMaxSupply(supply interface{}) {
+	c.MaxSupply = supply.(float64)
+	return
+}
+
+func (c *Coin) SetTotalCoinsMined(supply interface{}) {
+	c.TotalCoinsMined = supply.(float64)
+	return
+}
+
+func (c *Coin) SetBlockHeight(supply interface{}) {
+	c.BlockHeight = supply.(int)
+	return
+}
+
+func (c *Coin) SetBlockTime(blockTime interface{}) {
+	c.BlockTime = blockTime.(float64)
+	return
+}
+
+func (c *Coin) SetDifficultyAdjustment(diff interface{}) {
+	c.DifficultyAdjustment = utl.InsertString(c.DifficultyAdjustment, diff)
+	return
+}
+
+func (c *Coin) SetBlockReward(rew interface{}) {
+	c.BlockReward = rew.(int)
+	return
+}
+func (c *Coin) SetBlockRewardReduction(rew interface{}) {
+	c.BlockRewardReduction = rew.(string)
 	return
 }

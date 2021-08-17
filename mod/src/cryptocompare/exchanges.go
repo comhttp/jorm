@@ -59,6 +59,6 @@ type Exchange struct {
 
 func (c *cryptocompare) GetAllExchanges() map[string]Exchange {
 	allExchanges := &rawAllExchanges{}
-	utl.GetSourceHeadersAPIkey(c.apiEndpoint+"data/exchanges/general", c.apiKey, allExchanges)
+	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/exchanges/general", allExchanges)
 	return allExchanges.Data
 }

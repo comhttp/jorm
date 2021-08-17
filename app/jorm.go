@@ -1,14 +1,11 @@
 package app
 
-import "C"
 import (
 	"crypto/tls"
-	"fmt"
 	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -49,14 +46,13 @@ type (
 	}
 )
 
-func (j *JORM) ENSOhandlers() http.Handler {
+func (j *JORM) ENSOhandlers(cq *coin.CoinQueries) http.Handler {
 	//coinsCollection := Queries(j.B["coins"],"coin")
 	r := mux.NewRouter()
 	//s := r.Host("enso.okno.rs").Subrouter()
 	r.StrictSlash(true)
-
 	//n := r.PathPrefix("/n").Subrouter()
-	coin.ENSOroutes(j.JDBS, r)
+	coin.ENSOroutes(cq, r)
 	explorer.ENSOroutes(j.JDBS, r)
 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 }
@@ -91,19 +87,42 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 	j.JDBS = jdb.NewJDBS(j.JDBservers)
 	//}
 
-	ttt := j.JDBS.B["coins"].ReadAllPerPages("coin", 10, 1)
+	//ttt := j.JDBS.B["coins"].ReadAllPerPages("coin", 10, 1)
 
-	for _, t := range ttt {
-		if t["slug"] != "" {
-		} else {
-			//fmt.Println("ssssssssssssssttttttttt2222222222ttttttt",t)
-		}
+	cq := coin.Queries(j.JDBS.B["coins"], "coin")
+	//cq.ProcessCoins()
 
-	}
-	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	//for _, t := range ttt {
+	//	if t["slug"] != "" {
+	//	} else {
+	//		fmt.Println("ssssssssssssssttttttttt2222222222ttttttt",t)
+	//	}
+	//
+	//}
+	//sss:= cq.GetCoins()
+	ccc := cq.GetCoin("parallelcoin")
+	//cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	//ccc:=cc.GetAllCoins(j.JDBS.B["coins"])
+	//	ccc := minerstat.GetAllCoins()
+	//ccc:=cc.GetAllExchanges()
+	//ccc:= cq.GetAllCoins()
 
-	ccc := cc.GetAllCoins()
-	fmt.Println("ssssssssssssssttttttttt2222222222tttttttccccccccccccccccccc", ccc)
+	//cc.GetAllCoins(cq)
+
+	//log.Print("ssssssssssssssttttttttt2222222222tttttttccccccccccccccccccc", ccc)
+	//spew.Dump(ccc.N)
+	//for _,ss:=range sss.C{
+	//	log.Print("SSSSSS: ",ss)
+	//}
+
+	log.Print("Slug: ", ccc.Slug)
+	log.Print("Name: ", ccc.Name)
+	log.Print("Ticker: ", ccc.Ticker)
+	log.Print("Description: ", ccc.Description)
+	log.Print("Algo: ", ccc.Algo)
+	log.Print("Proof: ", ccc.Proof)
+	log.Print("Start: ", ccc.Start.String())
+
 	j.Explorers = make(map[string]*explorer.Explorer)
 	for coin, _ := range bitNodesCfg {
 		j.NodeCoins = append(j.NodeCoins, coin)
@@ -138,7 +157,7 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "enso":
 		log.Print("enso")
-		j.WWW.Handler = j.ENSOhandlers()
+		j.WWW.Handler = j.ENSOhandlers(cq)
 		j.WWW.Addr = ":" + j.config.Port["enso"]
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "our":

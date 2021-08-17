@@ -39,7 +39,6 @@ func GetSourceHeadersAPIkey(apiKey, url string, srcRaw interface{}) {
 	if err != nil {
 		log.Printf("Get Source Headers API key, reading body %s", err)
 	}
-
 	if err := json.Unmarshal(body, &srcRaw); err != nil {
 		log.Printf("Get Source Headers API key, unmarshalling response, %s", err)
 	}

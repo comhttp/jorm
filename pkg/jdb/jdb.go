@@ -44,6 +44,12 @@ func (j *JDB) Read(collection, key string, v interface{}) error {
 	}
 	// unmarshal data
 	//return json.Unmarshal(b, &v)
+	//fmt.Println("00001111",key)
+	if key == "status" {
+		//spew.Dump(j.client)
+		//fmt.Println("00001111clientclientclientclient",j.client)
+	}
+
 	return j.client.GetJSON(collection+j.delimiter+key, &v)
 }
 
@@ -60,14 +66,16 @@ func (j *JDB) ReadAll(collection string) ([]string, error) {
 
 func (j *JDB) ReadAllPerPages(collection string, per, page int) (p []map[string]interface{}) {
 	records, err := j.ReadAll(collection)
-	log.Log().Err(err)
+	log.Err(err)
 	recordCount := len(records)
 	startRecord := recordCount - per*page
 	minusBlockStart := int(startRecord + per)
 	for _, record := range records {
+		fmt.Println("END cryptocompare COINS:::::::::::::::::::::::::::::: ", record)
 		r := make(map[string]interface{})
 		err := j.Read(collection, record, &r)
-		log.Print("Error", err)
+		log.Err(err)
+		//fmt.Println("<RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRS>:::::::::::::::::::::::::::::: ",r)
 		if ibh := minusBlockStart; ibh >= startRecord {
 			p = append(p, r)
 			ibh--
@@ -102,3 +110,10 @@ func (j *JDB) getOrCreateMutex(collection string) *sync.Mutex {
 	}
 	return m
 }
+
+//func (j *JDBS)CollectionQueries(db,col string) interface{} {
+//	return &Collection{
+//		j:   j.B[db],
+//		col: col,
+//	}
+//}

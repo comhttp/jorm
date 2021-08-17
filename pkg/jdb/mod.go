@@ -15,11 +15,15 @@ type (
 	}
 
 	JDB struct {
-		col       string
+		//col       string
 		mutex     sync.Mutex
 		mutexes   map[string]*sync.Mutex
 		path      string
 		client    *jdbc.Client
 		delimiter string
+	}
+	Collection struct {
+		j   *JDB
+		col string
 	}
 )

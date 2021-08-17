@@ -1,6 +1,8 @@
 package cryptocompare
 
 import (
+	"fmt"
+	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -40,21 +42,50 @@ type Coin struct {
 			MarketPerformanceRating  string `json:"MarketPerformanceRating"`
 		} `json:"Weiss"`
 	} `json:"Rating"`
-	IsTrading          bool   `json:"IsTrading"`
-	TotalCoinsMined    int    `json:"TotalCoinsMined"`
-	BlockNumber        int    `json:"BlockNumber"`
-	NetHashesPerSecond int    `json:"NetHashesPerSecond"`
-	BlockReward        int    `json:"BlockReward"`
-	BlockTime          int    `json:"BlockTime"`
-	AssetLaunchDate    string `json:"AssetLaunchDate"`
-	MaxSupply          int    `json:"MaxSupply"`
-	MktCapPenalty      int    `json:"MktCapPenalty"`
-	IsUsedInDefi       int    `json:"IsUsedInDefi"`
-	IsUsedInNft        int    `json:"IsUsedInNft"`
+	IsTrading          bool    `json:"IsTrading"`
+	TotalCoinsMined    float64 `json:"TotalCoinsMined"`
+	BlockNumber        int     `json:"BlockNumber"`
+	NetHashesPerSecond float64 `json:"NetHashesPerSecond"`
+	BlockReward        float64 `json:"BlockReward"`
+	BlockTime          float64 `json:"BlockTime"`
+	AssetLaunchDate    string  `json:"AssetLaunchDate"`
+	MaxSupply          float64 `json:"MaxSupply"`
+	MktCapPenalty      float64 `json:"MktCapPenalty"`
+	IsUsedInDefi       int     `json:"IsUsedInDefi"`
+	IsUsedInNft        int     `json:"IsUsedInNft"`
 }
 
-func (c *cryptocompare) GetAllCoins() map[string]Coin {
+func (c *cryptocompare) GetAllCoins(coinQueries *coin.CoinQueries) {
 	allCoins := &rawAllCoins{}
 	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/all/coinlist", allCoins)
-	return allCoins.Data
+	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare COINS:::::::::::::::::::::::::::::: ")
+	for _, ccCoin := range allCoins.Data {
+		if ccCoin.CoinName != "" {
+			slug := utl.MakeSlug(ccCoin.Name)
+			coinQueries.SetCoin("cryptocompare", slug, getCryptoCompareCoin(ccCoin))
+			//fmt.Println("COIN:: ",slug)
+		}
+	}
+	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare COINS:::::::::::::::::::::::::::::: ")
+	return
+}
+
+func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin) {
+	return func(c *coin.Coin) {
+		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
+			c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
+		}
+		c.SetName(ccCoin.CoinName)
+		c.SetTicker(ccCoin.Symbol)
+		c.SetDescription(ccCoin.Description)
+		c.SetAlgo(ccCoin.Algorithm)
+		c.SetProof(ccCoin.ProofType)
+		c.SetStart(ccCoin.AssetLaunchDate)
+		c.SetNetHashesPerSecond(ccCoin.NetHashesPerSecond)
+		c.SetMaxSupply(ccCoin.MaxSupply)
+		c.SetTotalCoinsMined(ccCoin.TotalCoinsMined)
+		c.SetBlockHeight(ccCoin.BlockNumber)
+		c.SetBlockTime(ccCoin.BlockTime)
+		c.SetBlockReward(ccCoin.BlockReward)
+	}
 }

@@ -17,7 +17,7 @@ func main() {
 	path := flag.String("path", "", "Path")
 	port := flag.String("port", "", "Port")
 	coin := flag.String("coin", "", "Coin")
-	loglevel := flag.String("loglevel", "info", "Logging level (debug, info, warn, error)")
+	loglevel := flag.String("loglevel", "debug", "Logging level (debug, info, warn, error)")
 	flag.Parse()
 
 	//j.Log.SetLevel(parseLogLevel(*loglevel))

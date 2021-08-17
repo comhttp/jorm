@@ -32,9 +32,10 @@ func NewExplorer(j *jdb.JDB, coin string) *Explorer {
 	e := &Explorer{
 		Coin:     coin,
 		BitNodes: bitNodes,
-		//JDB:      jdb.NewJDB(app.C.JDBservers),
 	}
 	err := j.Read(coin, "status", &e.Status)
+	utl.ErrorLog(err)
+
 	if e.Status == nil {
 		e.Status = &BlockchainStatus{
 			Blocks:    0,
@@ -42,6 +43,5 @@ func NewExplorer(j *jdb.JDB, coin string) *Explorer {
 			Addresses: 0,
 		}
 	}
-	utl.ErrorLog(err)
 	return e
 }
