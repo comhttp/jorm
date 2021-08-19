@@ -1,15 +1,17 @@
 {{define "exchanges"}}
-<amp-list layout="responsive" height="80" width="800" src="exchanges" items="e" reset-on-refresh binding="no" class="flex">
+<amp-list layout="responsive" height="80" width="800" src="https://enso.okno.rs/exchanges/poloniex/markets" items="." reset-on-refresh binding="no" class="flex">
     <template type="amp-mustache">
         <div class="flex flex-row">
-        {{`{{ #name }}`}}
-            <div><label><input type="radio" id="{{`{{ slug }}`}}" name="exchanges" value="{{`{{ name }}`}}" on="change:AMP.setState({
+{{/*        {{`{{ #name }}`}}*/}}
+            {{`{{ #. }}`}}
+            <div><label><input type="radio" id="{{`{{ symbol }}`}}" name="exchanges" value="{{`{{ symbol }}`}}" on="change:AMP.setState({
               exchanges: {
-              searchColor: event.checked == true ? '{{`{{ slug }}`}}' : '',
-              listSrc: 'exchanges/'+ (event.checked == true ? '{{`{{ slug }}`}}' : '')
+              searchColor: event.checked == true ? '{{`{{ symbol }}`}}' : '',
+              listSrc: 'https://enso.okno.rs/exchanges/poloniex/markets'+ (event.checked == true ? '{{`{{ symbol }}`}}' : '')
               }
-              })">{{`{{ name }}`}}</label></div>
-        {{`{{ /name }}`}}
+              })">{{`{{ symbol }}`}}</label></div>
+            {{`{{ /. }}`}}
+{{/*        {{`{{ /name }}`}}*/}}
         </div>
     </template>
 </amp-list>
@@ -18,7 +20,7 @@
 <amp-list layout="flex-item" src="exchanges.listSrc" [src]="exchanges.listSrc" single-item items="markets" reset-on-refresh binding="no" class="flex">
     <template type="amp-mustache">
         <div class="flex flex-col rounded md:rounded-lg bg-invert text-xl text-invert container mx-auto mb-2 p-4 main-wrap">
-            {{`{{ #symbol }}`}}<h3 class="text-2xl">{{`{{ symbol }}`}}</h3>{{`{{ /symbol }}`}}
+            {{`{{ #.symbol }}`}}<h3 class="text-2xl">{{`{{ .symbol }}`}}</h3>{{`{{ /.symbol }}`}}
             <div class="grid grid-cols-7 gap-2 text-md">
                 <span>symbol</span>
                 <span>ask</span>
