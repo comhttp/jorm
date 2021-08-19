@@ -1,6 +1,7 @@
 package coin
 
 import (
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 )
 
@@ -36,6 +37,7 @@ func (cq *CoinQueries) ProcessCoins() {
 
 	usableCoins := Coins{N: 0}
 	algoCoins := CoinsShort{N: 0}
+
 	coinsWords := Coins{N: 0}
 	restCoins := Coins{N: 0}
 
@@ -43,13 +45,20 @@ func (cq *CoinQueries) ProcessCoins() {
 	allCoins := Coins{N: 0}
 	c := cq.GetCoins()
 	for i, slug := range c.C {
-		coin := cq.getCoin(slug)
-		if coin.Algo != "N/A" && coin.Algo != "" {
+		coin, err := cq.getCoin(slug)
+		utl.ErrorLog(err)
+		if coin.Algo != "N/A" &&
+			coin.Symbol != "" &&
+			//coin.NetworkHashrate != 0 &&
+			coin.BlockHeight != 0 &&
+			coin.Difficulty != 0 &&
+			coin.Name != "" &&
+			coin.Description != "" {
 			algoCoins.N++
 			algoCoins.C = append(algoCoins.C, CoinShort{
 				Rank:   coin.Rank,
 				Name:   coin.Name,
-				Ticker: coin.Ticker,
+				Ticker: coin.Symbol,
 				Slug:   coin.Slug,
 				Algo:   coin.Algo,
 			})
@@ -84,4 +93,5 @@ func (cq *CoinQueries) ProcessCoins() {
 	cq.j.Write("info", "usablecoins", usableCoins)
 	cq.j.Write("info", "allcoins", allCoins)
 	cq.j.Write("info", "bincoins", coinsBin)
+	log.Print("End ProcessCoins")
 }

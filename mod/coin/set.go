@@ -7,45 +7,64 @@ import (
 	"time"
 )
 
+func NewCoin(slug string) (c *Coin) {
+	c = new(Coin)
+	c.Slug = slug
+	return c
+}
+
 func (cq *CoinQueries) SetCoin(src, slug string, get func(c *Coin)) {
-	c := &Coin{}
-	err := cq.j.Read("coin", slug, &c)
+	c, err := cq.getCoin(slug)
 	if err != nil {
-		c.Slug = slug
+		c = NewCoin(slug)
 		log.Print("Insert Coin: ", slug)
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
 		get(c)
 		c.Checked[src] = true
-		cq.j.Write("coin", slug, c)
-		utl.ErrorLog(err)
+		cq.WriteCoin(slug, c)
+		//utl.ErrorLog(err)
 	} else {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
 		if !c.Checked[src] {
-			log.Print("Check Coin: ", c.Name)
+			log.Print("Check Coin: ", c.Slug)
 			get(c)
 			c.Checked[src] = true
+		} else {
+			get(c)
+			log.Print("Already checked Coin: ", c.Slug)
 		}
-		cq.j.Write("coin", slug, c)
+		cq.WriteCoin(slug, c)
 	}
 	return
 }
 
+func (cq *CoinQueries) WriteCoin(slug string, c interface{}) error {
+	return cq.j.Write("coin", slug, c)
+}
+
+func (c *Coin) SetSrcID(src, id string) {
+	if c.SrcIDs == nil {
+		c.SrcIDs = make(map[string]string)
+	}
+	c.SrcIDs[src] = id
+}
 func (c *Coin) SetName(name interface{}) {
 	c.Name = utl.InsertString(c.Name, name)
 	return
 }
 
-func (c *Coin) SetTicker(ticker interface{}) {
-	c.Ticker = strings.ToUpper(utl.InsertString(c.Ticker, ticker))
+func (c *Coin) SetSymbol(ticker interface{}) {
+	c.Symbol = strings.ToUpper(utl.InsertString(c.Symbol, ticker))
 	return
 }
 
 func (c *Coin) SetAlgo(algo interface{}) {
-	c.Algo = utl.InsertString(c.Algo, algo)
+	//c.Algo = utl.InsertString(c.Algo, algo)
+	c.Algo = algo.(string)
 	return
 }
 
@@ -62,7 +81,7 @@ func (c *Coin) SetProof(proof interface{}) {
 func (c *Coin) SetStart(start string) {
 	s, err := time.Parse("2017-07-01", start)
 	log.Log().Err(err)
-	c.Start = s
+	c.GenesisDate = s
 	return
 }
 
@@ -121,8 +140,8 @@ func (c *Coin) SetLogo(logo interface{}) {
 	return
 }
 
-func (c *Coin) SetNetHashesPerSecond(supply interface{}) {
-	c.NetHashesPerSecond = supply.(float64)
+func (c *Coin) SetNetworkHashrate(supply interface{}) {
+	c.NetworkHashrate = utl.InsertFloat(supply)
 	return
 }
 func (c *Coin) SetMaxSupply(supply interface{}) {
@@ -141,17 +160,21 @@ func (c *Coin) SetBlockHeight(supply interface{}) {
 }
 
 func (c *Coin) SetBlockTime(blockTime interface{}) {
-	c.BlockTime = blockTime.(float64)
+	c.BlockTime = blockTime.(int)
 	return
 }
 
-func (c *Coin) SetDifficultyAdjustment(diff interface{}) {
-	c.DifficultyAdjustment = utl.InsertString(c.DifficultyAdjustment, diff)
+func (c *Coin) SetDifficulty(diff interface{}) {
+	c.Difficulty = utl.InsertFloat(diff)
+	return
+}
+func (c *Coin) SetDifficultyAdjustment(diffadj interface{}) {
+	c.DifficultyAdjustment = utl.InsertString(c.DifficultyAdjustment, diffadj)
 	return
 }
 
 func (c *Coin) SetBlockReward(rew interface{}) {
-	c.BlockReward = rew.(int)
+	c.BlockReward = rew.(float64)
 	return
 }
 func (c *Coin) SetBlockRewardReduction(rew interface{}) {

@@ -12,6 +12,7 @@ require (
 	github.com/gorilla/websocket v1.4.2
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25
 	github.com/leprosus/golang-daemon v1.0.1
+	github.com/miguelmota/go-coinmarketcap v0.1.7 // indirect
 	github.com/muesli/smartcrop v0.3.0
 	github.com/rs/zerolog v1.23.0 // indirect
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd

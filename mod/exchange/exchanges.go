@@ -1,10 +1,18 @@
-package exchanges
+package exchange
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/comhttp/jorm/pkg/jdb"
+	"github.com/rs/zerolog/log"
 	"net/http"
 )
+
+func Queries(j *jdb.JDB, col string) *ExchangeQueries {
+	return &ExchangeQueries{
+		j:   j,
+		col: col,
+	}
+}
 
 func ViewMarket(w http.ResponseWriter, r *http.Request) {
 	//rc := mux.Vars(r)["coin"]

@@ -33,7 +33,8 @@ type home struct {
 // CoinsHandler handles a request for coin data
 func (cq *CoinQueries) CoinHandler(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	out, err := json.Marshal(cq.GetCoin(v["coin"]))
+	coin, err := cq.GetCoin(v["coin"])
+	out, err := json.Marshal(coin)
 	if err != nil {
 		log.Print("Error encoding JSON")
 		return

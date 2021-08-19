@@ -10,8 +10,12 @@ func InsertFloat(i interface{}) (f float64) {
 		if s, err := strconv.ParseFloat(t, 64); err == nil {
 			f = s
 		}
+	case int:
+		f = float64(f)
 	case float64:
 		f = t
+	default:
+		f = float64(f)
 	}
 	return
 }

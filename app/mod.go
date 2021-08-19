@@ -2,6 +2,8 @@ package app
 
 import "C"
 import (
+	"github.com/comhttp/jorm/mod/exchange"
+	xsrc "github.com/comhttp/jorm/mod/exchange/src"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
@@ -19,6 +21,43 @@ func (j *JORM) JormSRV() {
 	//j.Explorer.ExploreCoins(j.NodeCoins)
 	//log.Print("nodessss: ", j.NodeCoins)
 	//go j.Tickers()
+	//cq := coin.Queries(j.JDBS.B["coins"], "coin")
+	eq := exchange.Queries(j.JDBS.B["exchanges"], "exchange")
+
+	xsrc.GetPoloniexExchange(eq)
+	xsrc.GetDexTradeExchange(eq)
+	//for _, t := range ttt {
+	//	if t["slug"] != "" {
+	//	} else {
+	//		fmt.Println("ssssssssssssssttttttttt2222222222ttttttt",t)
+	//	}
+	//
+	//}
+
+	//cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	//cc.GetAllCoins(cq)
+	//cc.GetAllExchanges(eq)
+	//minerstat.GetAllCoins(cq)
+
+	//cm := coinmarketcap.NewCoinMarketCapAPI(j.config.ApiKeys["coinmarketcap"])
+	//cm.GetAllCoins(cq)
+
+	//coingecko.GetAllCoins(cq)
+	//log.Print("ssssssssssssssttttttttt2222222222tttttttccccccccccccccccccc", ccc)
+	//spew.Dump(ccc.N)
+	//for _,ss:=range sss.C{
+	//	log.Print("SSSSSS: ",ss)
+	//}
+	//ccc := cq.GetCoin("parallelcoin")
+	//log.Print("Slug: ", ccc.Slug)
+	//log.Print("Name: ", ccc.Name)
+	//log.Print("Ticker: ", ccc.Symbol)
+	//log.Print("Description: ", ccc.Description)
+	//log.Print("Algo: ", ccc.Algo)
+	//log.Print("Proof: ", ccc.Proof)
+	//log.Print("Start: ", ccc.GenesisDate.String())
+
+	//cq.ProcessCoins()
 
 	ticker := time.NewTicker(999 * time.Second)
 	quit := make(chan struct{})

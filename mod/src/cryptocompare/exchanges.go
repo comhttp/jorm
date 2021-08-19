@@ -1,6 +1,8 @@
 package cryptocompare
 
 import (
+	"fmt"
+	"github.com/comhttp/jorm/mod/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -57,8 +59,28 @@ type Exchange struct {
 	} `json:"DISPLAYTOTALVOLUME24H"`
 }
 
-func (c *cryptocompare) GetAllExchanges() map[string]Exchange {
+func (c *cryptocompare) GetAllExchanges(exchangeQueries *exchange.ExchangeQueries) {
 	allExchanges := &rawAllExchanges{}
 	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/exchanges/general", allExchanges)
-	return allExchanges.Data
+	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare EXCHANGES:::::::::::::::::::::::::::::: ")
+	for _, ccExchange := range allExchanges.Data {
+		if ccExchange.Name != "" {
+			slug := utl.MakeSlug(ccExchange.Name)
+			exchangeQueries.SetExchange("cryptocompare", slug, getCryptoCompareExchange(ccExchange))
+		}
+	}
+	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare EXCHANGES:::::::::::::::::::::::::::::: ")
+	return
+}
+
+func getCryptoCompareExchange(ccExchange Exchange) func(e *exchange.Exchange) {
+	return func(e *exchange.Exchange) {
+		//if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
+		//	c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
+		//}
+		e.SetName(ccExchange.Name)
+		e.SetDescription(ccExchange.Description)
+		e.SetURL(ccExchange.URL)
+
+	}
 }

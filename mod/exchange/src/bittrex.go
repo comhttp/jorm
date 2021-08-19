@@ -2,9 +2,9 @@ package xsrc
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/comhttp/jorm/mod/exchanges"
+	"github.com/comhttp/jorm/mod/exchange"
 	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
 )
@@ -13,7 +13,7 @@ func getBitTrexExchange() {
 	log.Print("Get Bit Trex Exchange Start")
 	var exchangeRaw []map[string]interface{}
 	slug := "bittrex"
-	var e exchanges.Exchange
+	var e exchange.Exchange
 	e.Name = "Bit Trex"
 	e.Slug = slug
 	resps, err := http.Get("https://api.bittrex.com/v3/markets")

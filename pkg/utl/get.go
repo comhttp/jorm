@@ -8,7 +8,7 @@ import (
 )
 
 // FileExists returns whether a file exists
-func GetSource(url string, srcRaw interface{}) {
+func GetSource(url string, srcRaw interface{}) error {
 	res, err := http.Get(url)
 	if err != nil {
 		log.Print("Error: ", err)
@@ -18,7 +18,7 @@ func GetSource(url string, srcRaw interface{}) {
 	if mapBody != nil {
 		json.Unmarshal(mapBody, &srcRaw)
 	}
-	return
+	return err
 }
 
 // FileExists returns whether a file exists

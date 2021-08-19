@@ -4,16 +4,15 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func (cq *CoinQueries) GetCoin(slug string) Coin {
-	c := cq.getCoin(slug)
-	return c
+func (cq *CoinQueries) GetCoin(slug string) (Coin, error) {
+	c, err := cq.getCoin(slug)
+	return *c, err
 }
 
-func (cq *CoinQueries) getCoin(key string) Coin {
-	c := Coin{}
-	err := cq.j.Read("coin", key, &c)
-	utl.ErrorLog(err)
-	return c
+func (cq *CoinQueries) getCoin(key string) (c *Coin, err error) {
+	err = cq.j.Read("coin", key, &c)
+	//utl.ErrorLog(err)
+	return c, err
 }
 
 func (cq *CoinQueries) GetCoins() Coins {
@@ -26,6 +25,7 @@ func (cq *CoinQueries) GetCoins() Coins {
 	}
 	return allCoins
 }
+
 func (cq *CoinQueries) GetAllCoins() (c Coins) {
 	err := cq.j.Read("info", "allcoins", &c)
 	utl.ErrorLog(err)

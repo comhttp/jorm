@@ -3,7 +3,7 @@ package xsrc
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/mod/exchanges"
+	"github.com/comhttp/jorm/mod/exchange"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/rs/zerolog/log"
 	"io/ioutil"
@@ -14,7 +14,7 @@ import (
 
 func getBinanceExchange(j *jdb.JDB) {
 	fmt.Println("Get Binance Exchange Start")
-	t := exchanges.ExchangeTicker{
+	t := exchange.ExchangeTicker{
 		Ask:    "lowestAsk",
 		Bid:    "highestBid",
 		High24: "high24Hr",
@@ -22,17 +22,13 @@ func getBinanceExchange(j *jdb.JDB) {
 		Low24:  "low24Hr",
 		Vol:    "baseVolume",
 	}
-	e := exchanges.ExchangeSrc{
-		Name:        "Binance",
-		Slug:        "binance",
-		Url:         "https://api.binance.com/api/v3/exchangeInfo",
-		Logo:        "",
-		Description: "",
-		Established: "",
-		Country:     "",
-		Ticker:      t,
+	e := exchange.ExchangeSrc{
+		Name:   "Binance",
+		Slug:   "binance",
+		APIUrl: "https://api.binance.com/api/v3/exchangeInfo",
+		Ticker: t,
 	}
-	var ex exchanges.Exchange
+	var ex exchange.Exchange
 	ex.Name = e.Name
 	ex.Slug = e.Slug
 
@@ -42,8 +38,8 @@ func getBinanceExchange(j *jdb.JDB) {
 	//defer resps.Body.Close()
 	//mapBodyS, err := ioutil.ReadAll(resps.Body)
 	//json.Unmarshal(mapBodyS, &exchangeRaw)
-
-	marketsSrc := exchanges.GetSource(e.Url).(map[string]interface{})
+	marketsSrc := make(map[string]interface{})
+	err := utl.GetSource(e.APIUrl, marketsSrc)
 
 	var exchangeTickersRaw []map[string]interface{}
 	respsTickers, err := http.Get("https://api.binance.com/api/v3/ticker/24hr")
@@ -57,16 +53,16 @@ func getBinanceExchange(j *jdb.JDB) {
 			tickers[exchangeTicker["symbol"].(string)] = exchangeTicker
 		}
 	}
-	e.Markets = make(map[string]exchanges.MarketSrc)
+	e.Markets = make(map[string]exchange.MarketSrc)
 	if marketsSrc != nil {
 		if marketsSrc["symbols"] != nil {
 			for _, marketSrcRaw := range marketsSrc["symbols"].([]interface{}) {
 				marketSrc := marketSrcRaw.(map[string]interface{})
 				if q := marketSrc["quoteAsset"]; q != nil {
 					if nq := q.(string); nq != e.Markets[nq].Symbol {
-						e.Markets[nq] = exchanges.MarketSrc{
+						e.Markets[nq] = exchange.MarketSrc{
 							Symbol:     nq,
-							Currencies: make(map[string]exchanges.Currency),
+							Currencies: make(map[string]exchange.Currency),
 						}
 					}
 					if marketSrc["symbol"] != nil {
@@ -84,7 +80,7 @@ func getBinanceExchange(j *jdb.JDB) {
 				}
 			}
 			//jdb.JDB.Write(cfg.C.Out+"/exchanges", e.Slug, e)
-			ex.WriteExchange(j, e)
+			//ex.WriteExchange(j, e)
 			log.Print("Get Binance Exchange Done")
 		}
 	}

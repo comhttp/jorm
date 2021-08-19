@@ -61,9 +61,8 @@ func (c *cryptocompare) GetAllCoins(coinQueries *coin.CoinQueries) {
 	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare COINS:::::::::::::::::::::::::::::: ")
 	for _, ccCoin := range allCoins.Data {
 		if ccCoin.CoinName != "" {
-			slug := utl.MakeSlug(ccCoin.Name)
+			slug := utl.MakeSlug(ccCoin.CoinName)
 			coinQueries.SetCoin("cryptocompare", slug, getCryptoCompareCoin(ccCoin))
-			//fmt.Println("COIN:: ",slug)
 		}
 	}
 	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare COINS:::::::::::::::::::::::::::::: ")
@@ -72,20 +71,22 @@ func (c *cryptocompare) GetAllCoins(coinQueries *coin.CoinQueries) {
 
 func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin) {
 	return func(c *coin.Coin) {
-		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
-			c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
-		}
+		//if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
+		//	c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
+		//}
+		c.SetSrcID("cryptocompare", ccCoin.ID)
 		c.SetName(ccCoin.CoinName)
-		c.SetTicker(ccCoin.Symbol)
+		c.SetSymbol(ccCoin.Symbol)
 		c.SetDescription(ccCoin.Description)
 		c.SetAlgo(ccCoin.Algorithm)
-		c.SetProof(ccCoin.ProofType)
-		c.SetStart(ccCoin.AssetLaunchDate)
-		c.SetNetHashesPerSecond(ccCoin.NetHashesPerSecond)
-		c.SetMaxSupply(ccCoin.MaxSupply)
-		c.SetTotalCoinsMined(ccCoin.TotalCoinsMined)
+		//c.SetProof(ccCoin.ProofType)
+		//c.SetStart(ccCoin.AssetLaunchDate)
 		c.SetBlockHeight(ccCoin.BlockNumber)
-		c.SetBlockTime(ccCoin.BlockTime)
-		c.SetBlockReward(ccCoin.BlockReward)
+		c.SetNetworkHashrate(ccCoin.NetHashesPerSecond)
+		//c.SetMaxSupply(ccCoin.MaxSupply)
+		//c.SetTotalCoinsMined(ccCoin.TotalCoinsMined)
+		//c.SetBlockHeight(ccCoin.BlockNumber)
+		//c.SetBlockTime(int(ccCoin.BlockTime))
+		//c.SetBlockReward(ccCoin.BlockReward)
 	}
 }

@@ -1,9 +1,7 @@
 package coin
 
 import (
-	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/jdb"
-	"github.com/comhttp/jorm/pkg/utl"
 	"time"
 )
 
@@ -13,22 +11,22 @@ type CoinQueries struct {
 }
 
 type Coin struct {
+	Item
 	General
-	GeneralCoin
-	LinksCoin
-	BlockchainCoin
-	Rank     int               `json:"rank" form:"rank"`
-	Platform string            `json:"platform" form:"platform"`
-	BitNode  bool              `json:"bitnode" form:"bitnode"`
-	Markets  map[string]string `json:"markets"`
-	src      map[string]string `json:"markets"`
-	isLogo   bool              `json:"islogo" form:"islogo"`
-	Logo     utl.Images        `json:"logo" form:"logo"`
-	Nodes    nodes.BitNodes    `json:"bitnode"`
+	//Links
+	Blockchain
+	Rank     int    `json:"rank" form:"rank"`
+	Platform string `json:"platform" form:"platform"`
+	BitNode  bool   `json:"bitnode" form:"bitnode"`
+	//Markets  map[string]string `json:"markets"`
+	SrcIDs map[string]string `json:"srcids"`
+	isLogo bool              `json:"islogo" form:"islogo"`
+	//Logo     utl.Images        `json:"logo" form:"logo"`
+	//Nodes    nodes.BitNodes    `json:"bitnode"`
 }
 
 // General stores identifying information about item in the database
-type General struct {
+type Item struct {
 	Name        string          `json:"name" form:"name"`
 	Slug        string          `json:"slug" form:"slug"`
 	Description string          `json:"description" form:"description"`
@@ -43,31 +41,32 @@ type General struct {
 }
 
 // GeneralCoin stores identifying information about a coin in a database
-type GeneralCoin struct {
-	Ticker string    `json:"ticker" form:"ticker"`
-	Token  string    `json:"token" form:"token"`
-	Algo   string    `json:"algo" form:"algo"`
-	Proof  string    `json:"proof" form:"proof"`
-	Start  time.Time `json:"start"`
+type General struct {
+	Symbol string `json:"symbol" form:"symbol"`
+	Token  string `json:"token" form:"token"`
+	Algo   string `json:"algo" form:"algo"`
+	Proof  string `json:"proof" form:"proof"`
 
 	Ico     bool   `json:"ico" form:"ico"`
 	BuiltOn string `json:"builton"`
 }
 
 // GeneralCoin stores identifying information about a coin in a database
-type BlockchainCoin struct {
-	NetHashesPerSecond   float64 `json:"nhps"`
-	MaxSupply            float64 `json:"supply"`
-	TotalCoinsMined      float64 `json:"mined"`
-	BlockHeight          int     `json:"block_height"`
-	BlockTime            float64 `json:"block_time"`
-	DifficultyAdjustment string  `json:"diff"`
-	BlockReward          int     `json:"block_rew"`
-	BlockRewardReduction string  `json:"block_rewred"`
+type Blockchain struct {
+	GenesisDate          time.Time `json:"genesis"`
+	NetworkHashrate      float64   `json:"hashrate"`
+	MaxSupply            float64   `json:"supply"`
+	TotalCoinsMined      float64   `json:"mined"`
+	BlockHeight          int       `json:"block_height"`
+	BlockTime            int       `json:"block_time"`
+	Difficulty           float64   `json:"difficulty"`
+	DifficultyAdjustment string    `json:"diffadj"`
+	BlockReward          float64   `json:"block_rew"`
+	BlockRewardReduction string    `json:"block_rewred"`
 }
 
 // GeneralCoin stores identifying information about a coin in a database
-type LinksCoin struct {
+type Links struct {
 	WebSite     []Link `json:"web"`
 	Explorer    []Link `json:"explorer"`
 	Chat        []Link `json:"chat"`
