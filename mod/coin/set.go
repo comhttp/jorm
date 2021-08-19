@@ -46,6 +46,10 @@ func (cq *CoinQueries) WriteCoin(slug string, c interface{}) error {
 	return cq.j.Write("coin", slug, c)
 }
 
+func (cq *CoinQueries) WriteInfo(slug string, c interface{}) error {
+	return cq.j.Write("info", slug, c)
+}
+
 func (c *Coin) SetSrcID(src, id string) {
 	if c.SrcIDs == nil {
 		c.SrcIDs = make(map[string]string)

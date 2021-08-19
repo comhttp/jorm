@@ -87,11 +87,11 @@ func (cq *CoinQueries) ProcessCoins() {
 		allCoins.C = append(allCoins.C, coin.Slug)
 	}
 
-	cq.j.Write("info", "restcoins", restCoins)
-	cq.j.Write("info", "algocoins", algoCoins)
-	cq.j.Write("info", "wordscoins", coinsWords)
-	cq.j.Write("info", "usablecoins", usableCoins)
-	cq.j.Write("info", "allcoins", allCoins)
-	cq.j.Write("info", "bincoins", coinsBin)
+	cq.WriteInfo("restcoins", restCoins)
+	cq.WriteInfo("algocoins", algoCoins)
+	cq.WriteInfo("wordscoins", coinsWords)
+	cq.WriteInfo("usablecoins", usableCoins)
+	cq.WriteInfo("allcoins", allCoins)
+	cq.WriteInfo("bincoins", coinsBin)
 	log.Print("End ProcessCoins")
 }
