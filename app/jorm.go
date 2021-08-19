@@ -103,7 +103,11 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 		j.Explorers[coin].BitNodes = coinBitNodes
 	}
 	cq := coin.Queries(j.JDBS.B["coins"], "info")
-	cq.WriteInfo("nodecoins", j.NodeCoins)
+
+	cq.WriteInfo("nodecoins", &coin.Coins{
+		N: len(j.NodeCoins),
+		C: j.NodeCoins,
+	})
 
 	//log.Print("Get ", cfg.C)
 
