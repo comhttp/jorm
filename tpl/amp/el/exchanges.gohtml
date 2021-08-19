@@ -1,12 +1,12 @@
 {{define "exchanges"}}
-<amp-list layout="responsive" height="80" width="800" src="https://jorm.okno.rs/j/info/exc" items="e" reset-on-refresh binding="no" class="flex">
+<amp-list layout="responsive" height="80" width="800" src="exchanges" items="e" reset-on-refresh binding="no" class="flex">
     <template type="amp-mustache">
         <div class="flex flex-row">
         {{`{{ #name }}`}}
             <div><label><input type="radio" id="{{`{{ slug }}`}}" name="exchanges" value="{{`{{ name }}`}}" on="change:AMP.setState({
               exchanges: {
               searchColor: event.checked == true ? '{{`{{ slug }}`}}' : '',
-              listSrc: 'https://jorm.okno.rs/j/exchanges/'+ (event.checked == true ? '{{`{{ slug }}`}}' : '')
+              listSrc: 'exchanges/'+ (event.checked == true ? '{{`{{ slug }}`}}' : '')
               }
               })">{{`{{ name }}`}}</label></div>
         {{`{{ /name }}`}}

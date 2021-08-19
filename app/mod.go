@@ -4,6 +4,7 @@ import "C"
 import (
 	"github.com/comhttp/jorm/mod/exchange"
 	xsrc "github.com/comhttp/jorm/mod/exchange/src"
+	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
@@ -34,9 +35,9 @@ func (j *JORM) JormSRV() {
 	//
 	//}
 
-	//cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
 	//cc.GetAllCoins(cq)
-	//cc.GetAllExchanges(eq)
+	cc.GetAllExchanges(eq)
 	//minerstat.GetAllCoins(cq)
 
 	//cm := coinmarketcap.NewCoinMarketCapAPI(j.config.ApiKeys["coinmarketcap"])
