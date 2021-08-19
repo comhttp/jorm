@@ -35,7 +35,7 @@ func getCoinGecko(cq *coin.CoinQueries) {
 func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coin.Coin) {
 	return func(c *coin.Coin) {
 		c.SetName(coinSrc["name"])
-		c.SetTicker(coinSrc["symbol"])
+		c.SetSymbol(coinSrc["symbol"])
 		log.Print("Checked1:", c.Checked)
 		c.Slug = slug
 		coinDetails := make(map[string]interface{})
@@ -49,7 +49,7 @@ func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coin.
 				c.SetDescription(coinDetails["description"].(map[string]interface{})["en"])
 			}
 			c.SetAlgo(coinDetails["hashing_algorithm"])
-			c.SetStart(coinDetails["genesis_date"])
+			//c.SetStart(coinDetails["genesis_date"])
 
 			if coinDetails["image"] != nil {
 				c.SetLogo(coinDetails["image"].(map[string]interface{})["large"])
@@ -67,7 +67,7 @@ func getCoinGeckoCoin(slug string, coinSrc map[string]interface{}) func(c *coin.
 				c.SetReddit(coinDetails["links"].(map[string]interface{})["subreddit_url"])
 			}
 			if coinDetails["block_time_in_minutes"] != nil {
-				c.BlockTime = insertFloat(coinDetails["block_time_in_minutes"].(float64), c.BlockTime)
+				//c.BlockTime = insertFloat(coinDetails["block_time_in_minutes"].(float64), c.BlockTime)
 			}
 			//insertFloat(coinDetails["block_time_in_minutes"].(float64), c.BlockTime)
 		}
