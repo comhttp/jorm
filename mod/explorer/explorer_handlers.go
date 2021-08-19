@@ -2,29 +2,22 @@ package explorer
 
 import (
 	"encoding/json"
-	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"strconv"
 )
 
-type ExplorersQueries struct {
-	status *BlockchainStatus
-	j      *jdb.JDB
-	col    string
+func (eq *ExplorerQueries) ViewStatus(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	out, err := json.Marshal(eq.GetExplorer(v["coin"]))
+	if err != nil {
+		log.Print("Error encoding JSON")
+		return
+	}
+	w.Write([]byte(out))
 }
-
-func (eq *ExplorersQueries) ViewStatus(w http.ResponseWriter, r *http.Request) {
-	//v := mux.Vars(r)
-	//out, err := json.Marshal(eq.Explorers[v["coin"]].Status)
-	//if err != nil {
-	//	log.Print("Error encoding JSON")
-	//	return
-	//}
-	//w.Write([]byte(out))
-}
-func (eq *ExplorersQueries) ViewBlocks(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewBlocks(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	per, _ := strconv.Atoi(v["per"])
 	page, _ := strconv.Atoi(v["page"])
@@ -47,17 +40,17 @@ func (eq *ExplorersQueries) ViewBlocks(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(out))
 }
 
-func (eq *ExplorersQueries) LastBlock(w http.ResponseWriter, r *http.Request) {
-	//v := mux.Vars(r)
-	//out, err := json.Marshal(eq.j.Explorers[v["coin"]].Status.Blocks)
-	//if err != nil {
-	//	log.Print("Error encoding JSON")
-	//	return
-	//}
-	//w.Write([]byte(out))
+func (eq *ExplorerQueries) LastBlock(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	out, err := json.Marshal(eq.GetLastBlock(v["coin"]))
+	if err != nil {
+		log.Print("Error encoding JSON")
+		return
+	}
+	w.Write([]byte(out))
 }
 
-func (eq *ExplorersQueries) ViewBlock(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewBlock(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	out, err := json.Marshal(eq.GetBlock(v["coin"], v["id"]))
 	if err != nil {
@@ -89,7 +82,7 @@ func (eq *ExplorersQueries) ViewBlock(w http.ResponseWriter, r *http.Request) {
 //	http.Redirect(w, r, "/b/"+v["coin"]+"/block/"+h, 301)
 //}
 
-func (eq *ExplorersQueries) ViewTx(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewTx(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	out, err := json.Marshal(eq.GetTx(v["coin"], v["txid"]))
 	if err != nil {
@@ -99,7 +92,7 @@ func (eq *ExplorersQueries) ViewTx(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(out))
 }
 
-func (eq *ExplorersQueries) ViewAddr(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewAddr(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	var block interface{}
 	block = eq.GetBlock(v["coin"], v["id"])
@@ -111,7 +104,7 @@ func (eq *ExplorersQueries) ViewAddr(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(out))
 }
 
-func (eq *ExplorersQueries) ViewRawMemPool(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewRawMemPool(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	rawMemPool := eq.GetMemPool(v["coin"])
 	out, err := json.Marshal(rawMemPool)
@@ -121,7 +114,7 @@ func (eq *ExplorersQueries) ViewRawMemPool(w http.ResponseWriter, r *http.Reques
 	}
 	w.Write([]byte(out))
 }
-func (eq *ExplorersQueries) ViewMiningInfo(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewMiningInfo(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	miningInfo := eq.GetMiningInfo(v["coin"])
 
@@ -132,7 +125,7 @@ func (eq *ExplorersQueries) ViewMiningInfo(w http.ResponseWriter, r *http.Reques
 	}
 	w.Write([]byte(out))
 }
-func (eq *ExplorersQueries) ViewInfo(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewInfo(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	info := eq.GetInfo(v["coin"])
 	out, err := json.Marshal(info)
@@ -142,7 +135,7 @@ func (eq *ExplorersQueries) ViewInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(out))
 }
-func (eq *ExplorersQueries) ViewPeers(w http.ResponseWriter, r *http.Request) {
+func (eq *ExplorerQueries) ViewPeers(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	peers := eq.GetPeers(v["coin"])
 	out, err := json.Marshal(peers)

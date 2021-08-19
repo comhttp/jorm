@@ -24,14 +24,27 @@ func GetExplorers(j *jdb.JDBS, nodeCoins []string) {
 	return
 }
 
-func (eq *ExplorersQueries) GetExplorer(coin string) *BlockchainStatus {
+func (eq *ExplorerQueries) GetExplorer(coin string) *BlockchainStatus {
 	s := &BlockchainStatus{}
-	err := eq.j.Read(coin, "status", &s)
+	err := eq.j.B[coin].Read(coin, "status", &s)
 	utl.ErrorLog(err)
 	return s
 }
 
-func (eq *ExplorersQueries) GetBlock(c, id string) map[string]interface{} {
+func (eq *ExplorerQueries) GetStatus(coin string) (*BlockchainStatus, error) {
+	eq.status = &BlockchainStatus{}
+	err := eq.j.B[coin].Read("info", "status", &eq.status)
+	utl.ErrorLog(err)
+	return eq.status, err
+}
+
+func (eq *ExplorerQueries) GetLastBlock(coin string) int {
+	status, err := eq.GetStatus(coin)
+	utl.ErrorLog(err)
+	return status.Blocks
+}
+
+func (eq *ExplorerQueries) GetBlock(coin, id string) map[string]interface{} {
 	blockHash := ""
 	block := make(map[string]interface{})
 	_, err := strconv.Atoi(id)
@@ -39,16 +52,16 @@ func (eq *ExplorersQueries) GetBlock(c, id string) map[string]interface{} {
 		blockHash = id
 	} else {
 		blockHash = ""
-		err = eq.j.Read(c, "block_"+id, &blockHash)
+		err = eq.j.B[coin].Read("block", id, &blockHash)
 	}
-	err = eq.j.Read(c, "block_"+blockHash, &block)
+	err = eq.j.B[coin].Read("block", blockHash, &block)
 	utl.ErrorLog(err)
 	return block
 }
 
-func (eq *ExplorersQueries) GetBlocks(coin string, per, page int) (blocks []map[string]interface{}) {
+func (eq *ExplorerQueries) GetBlocks(coin string, per, page int) (blocks []map[string]interface{}) {
 	s := &BlockchainStatus{}
-	err := eq.j.Read(coin, "status", &s)
+	err := eq.j.B[coin].Read("info", "status", &s)
 	utl.ErrorLog(err)
 	blockCount := s.Blocks
 	//app.log.Print("blockCount", blockCount)
@@ -63,7 +76,7 @@ func (eq *ExplorersQueries) GetBlocks(coin string, per, page int) (blocks []map[
 	})
 	return blocks
 }
-func (eq *ExplorersQueries) GetBlockShort(coin, blockhash string) map[string]interface{} {
+func (eq *ExplorerQueries) GetBlockShort(coin, blockhash string) map[string]interface{} {
 	b := eq.GetBlock(coin, blockhash)
 	block := make(map[string]interface{})
 	if b["bits"] != nil {
@@ -99,50 +112,50 @@ func (eq *ExplorersQueries) GetBlockShort(coin, blockhash string) map[string]int
 	return block
 }
 
-func (eq *ExplorersQueries) GetTx(c, id string) map[string]interface{} {
+func (eq *ExplorerQueries) GetTx(coin, id string) map[string]interface{} {
 	tx := make(map[string]interface{})
-	err := eq.j.Read(c, "tx_"+id, &tx)
+	err := eq.j.B[coin].Read("tx", id, &tx)
 	utl.ErrorLog(err)
 	return tx
 }
-func (eq *ExplorersQueries) GetAddr(c, id string) map[string]interface{} {
+func (eq *ExplorerQueries) GetAddr(coin, id string) map[string]interface{} {
 	addr := make(map[string]interface{})
-	err := eq.j.Read(c, "addr_"+id, &addr)
+	err := eq.j.B[coin].Read("addr", id, &addr)
 	utl.ErrorLog(err)
 	return addr
 }
 
-func (eq *ExplorersQueries) GetMemPool(c string) []string {
+func (eq *ExplorerQueries) GetMemPool(coin string) []string {
 	mempool := []string{}
-	err := eq.j.Read("info", c+"_mempool", &mempool)
+	err := eq.j.B[coin].Read("info", "mempool", &mempool)
 	utl.ErrorLog(err)
 	return mempool
 }
 
-func (eq *ExplorersQueries) GetMiningInfo(c string) map[string]interface{} {
+func (eq *ExplorerQueries) GetMiningInfo(coin string) map[string]interface{} {
 	mininginfo := make(map[string]interface{})
-	err := eq.j.Read("info", c+"_mining", &mininginfo)
+	err := eq.j.B[coin].Read("info", "mining", &mininginfo)
 	utl.ErrorLog(err)
 	return mininginfo
 }
 
-func (eq *ExplorersQueries) GetInfo(c string) map[string]interface{} {
+func (eq *ExplorerQueries) GetInfo(coin string) map[string]interface{} {
 	info := make(map[string]interface{})
-	err := eq.j.Read("info", c+"_info", &info)
+	err := eq.j.B[coin].Read("info", "info", &info)
 	utl.ErrorLog(err)
 	return info
 }
 
-func (eq *ExplorersQueries) GetNetworkInfo(c string) map[string]interface{} {
+func (eq *ExplorerQueries) GetNetworkInfo(coin string) map[string]interface{} {
 	network := make(map[string]interface{})
-	err := eq.j.Read("info", c+"_network", &network)
+	err := eq.j.B[coin].Read("info", "network", &network)
 	utl.ErrorLog(err)
 	return network
 }
 
-func (eq *ExplorersQueries) GetPeers(c string) []interface{} {
+func (eq *ExplorerQueries) GetPeers(coin string) []interface{} {
 	peers := new([]interface{})
-	err := eq.j.Read("info", c+"_peers", &peers)
+	err := eq.j.B[coin].Read("info", "peers", &peers)
 	utl.ErrorLog(err)
 	return *peers
 }

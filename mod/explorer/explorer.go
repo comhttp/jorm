@@ -2,71 +2,74 @@ package explorer
 
 import (
 	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"strconv"
 )
 
 // GetExplorer updates the data from blockchain of a coin in the database
-func (e Explorers) ExploreCoin(j *jdb.JDB, username, password, coin string) {
+func (eq *ExplorerQueries) ExploreCoin(bn nodes.BitNodes, username, password, coin string) {
 	var b []string
 	log.Print("Coin is BitNode:", coin)
-	if e[coin].BitNodes != nil {
+	if bn != nil {
 		b = append(b, coin)
-		log.Print("bitnodebitnodebitnodebitnodebitnodebitnodebitnode", e[coin].BitNodes)
-		for _, bitnode := range e[coin].BitNodes {
-			log.Print("bitnodebitnodebitnodebitnodebitnodebitnodebitnode", bitnode)
+		for _, bitnode := range bn {
+			log.Print("Bitnode: ", bitnode)
 			bitnode.Jrc = utl.NewClient(username, password, bitnode.IP, bitnode.Port)
+			eq.j.B[coin].Write("info", "info", bitnode.APIGetInfo())
+			eq.j.B[coin].Write("info", "peers", bitnode.APIGetPeerInfo())
+			eq.j.B[coin].Write("info", "mempool", bitnode.APIGetRawMemPool())
+			eq.j.B[coin].Write("info", "mining", bitnode.APIGetMiningInfo())
+			eq.j.B[coin].Write("info", "network", bitnode.APIGetNetworkInfo())
 			log.Print("Get Coin Blockchain:", coin)
-			go e[coin].GetCoinBlockchain(j, &bitnode, coin)
+			eq.blockchain(&bitnode, coin)
 		}
 	}
 }
 
 // GetExplorer returns the full set of information about a block
-func (e *Explorer) GetCoinBlockchain(j *jdb.JDB, b *nodes.BitNode, c string) {
-	if b.Jrc != nil {
-		blockCount := b.APIGetBlockCount()
+func (eq *ExplorerQueries) blockchain(bn *nodes.BitNode, coin string) {
+	if bn.Jrc != nil {
+		blockCount := bn.APIGetBlockCount()
 		log.Print("Block Count from the chain: ", blockCount)
-		log.Print("Status :  :::"+c+" - - ", e.Status.Blocks)
-		if blockCount >= e.Status.Blocks {
-			e.blocks(j, b, blockCount, c)
+		log.Print("Status :  :::"+coin+" - - ", eq.status.Blocks)
+		if blockCount >= eq.status.Blocks {
+			eq.blocks(bn, blockCount, coin)
 		}
 	}
 }
 
-func (e *Explorer) blocks(j *jdb.JDB, b *nodes.BitNode, bc int, c string) {
+func (eq *ExplorerQueries) blocks(b *nodes.BitNode, bc int, coin string) {
 	for {
-		blockRaw := b.APIGetBlockByHeight(e.Status.Blocks)
+		blockRaw := b.APIGetBlockByHeight(eq.status.Blocks)
 		if blockRaw != nil && blockRaw != "" {
 			blockHash := blockRaw.(map[string]interface{})["hash"].(string)
-			j.Write(c, "block_"+strconv.Itoa(e.Status.Blocks), blockHash)
-			j.Write(c, "block_"+blockHash, blockRaw)
+			eq.j.B[coin].Write("block", strconv.Itoa(eq.status.Blocks), blockHash)
+			eq.j.B[coin].Write("block", blockHash, blockRaw)
 			block := (blockRaw).(map[string]interface{})
-			if e.Status.Blocks != 0 {
+			if eq.status.Blocks != 0 {
 				for _, t := range (block["tx"]).([]interface{}) {
-					e.tx(j, b, c, t.(string))
+					eq.tx(b, coin, t.(string))
 				}
 			}
 			bl := blockRaw.(map[string]interface{})
-			e.Status.Blocks = int(bl["height"].(float64))
-			log.Print("Write "+c+" block: "+strconv.Itoa(e.Status.Blocks)+" - ", blockHash)
-			j.Write(c, "status", e.Status)
+			eq.status.Blocks = int(bl["height"].(float64))
+			log.Print("Write "+coin+" block: "+strconv.Itoa(eq.status.Blocks)+" - ", blockHash)
+			eq.j.B[coin].Write("info", "status", eq.status)
 		} else {
 			break
 		}
 		if bc != 0 {
-			e.Status.Blocks++
+			eq.status.Blocks++
 		}
-		log.Print("StatusBlocks   "+c, e.Status.Blocks)
+		log.Print("StatusBlocks   "+coin, eq.status.Blocks)
 	}
 }
 
-func (e *Explorer) tx(j *jdb.JDB, b *nodes.BitNode, c, txid string) {
+func (eq *ExplorerQueries) tx(b *nodes.BitNode, coin, txid string) {
 	txRaw := b.APIGetTx(txid)
-	e.Status.Txs++
-	j.Write(c, "tx_"+txid, txRaw)
+	eq.status.Txs++
+	eq.j.B[coin].Write("tx", txid, txRaw)
 	if txRaw != nil {
 		tx := (txRaw).(map[string]interface{})
 		if tx["vout"] != nil {
@@ -75,35 +78,20 @@ func (e *Explorer) tx(j *jdb.JDB, b *nodes.BitNode, c, txid string) {
 					scriptPubKey := nRaw.(map[string]interface{})["scriptPubKey"].(map[string]interface{})
 					if scriptPubKey["addresses"] != nil {
 						for _, address := range (scriptPubKey["addresses"]).([]interface{}) {
-							e.addr(j, c, address.(string))
+							eq.addr(coin, address.(string))
 						}
 					}
 				}
 			}
 		}
 	}
-	log.Print("Write "+c+" transaction: ", txid)
+	log.Print("Write "+coin+" transaction: ", txid)
 	return
 }
 
-func (e *Explorer) addr(j *jdb.JDB, c, address string) {
-	e.Status.Addresses++
-	j.Write(c, "addr_"+address, address)
-	log.Print("Write "+c+" address: ", address)
+func (eq *ExplorerQueries) addr(coin, address string) {
+	eq.status.Addresses++
+	eq.j.B[coin].Write(coin, "addr_"+address, address)
+	log.Print("Write "+coin+" address: ", address)
 	return
 }
-
-//func (e *explorer.Explorer) status(n *nodes.BitNode) {
-//
-//	log.Print("Mempool: ", n.GetRawMemPool())
-//	log.Print("MiningInfo: ", n.GetMiningInfo())
-//	log.Print("NetworkInfo: ", n.GetNetworkInfo())
-//	log.Print("Info: ", n.GetInfo())
-//	log.Print("PeerInfo: ", n.GetPeerInfo())
-//
-//
-//	//n.addNode(ip string)
-//	//n.GetAddNodeInfo(ip string)
-//}
-//
-//

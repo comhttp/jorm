@@ -4,7 +4,9 @@ import "C"
 import (
 	"github.com/comhttp/jorm/mod/exchange"
 	xsrc "github.com/comhttp/jorm/mod/exchange/src"
+	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/src/cryptocompare"
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
@@ -82,16 +84,21 @@ func (j *JORM) JormSRV() {
 }
 
 func (j *JORM) ExplorerSRV(coin string) {
-	log.Print("coincoincoincoincoin", coin)
+	log.Print("Coin: ", coin)
 	http.HandleFunc("/", status)
-
+	info := explorer.Queries(j.JDBS, "info")
+	//info.status = info.GetStatus()
+	var err error
+	j.Explorers[coin].Status, err = info.GetStatus(coin)
+	utl.ErrorLog(err)
 	ticker := time.NewTicker(12 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-				//j.JDBS.ExploreCoin(j.config.RPC.Username, j.config.RPC.Password, coin)
+
+				info.ExploreCoin(j.Explorers[coin].BitNodes, j.config.RPC.Username, j.config.RPC.Password, coin)
 			case <-quit:
 				ticker.Stop()
 				return

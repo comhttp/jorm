@@ -91,11 +91,11 @@ func (b *BitNode) getNode(j *jdb.JDB, bn *BitNoded, username, password, coin str
 	s := b.GetBitNodeStatus(username, password)
 	j.Write("nodes", coin+"_"+b.IP, s)
 
-	j.Write("info", coin+"_mempool", s.GetRawMemPool)
-	j.Write("info", coin+"_mining", s.GetInfo)
-	j.Write("info", coin+"_info", s.GetInfo)
-	j.Write("info", coin+"_network", s.GetNetworkInfo)
-	j.Write("info", coin+"_peers", s.GetPeerInfo)
+	j.Write("info", "mempool", s.GetRawMemPool)
+	j.Write("info", "mining", s.GetInfo)
+	j.Write("info", "info", s.GetInfo)
+	j.Write("info", "network", s.GetNetworkInfo)
+	j.Write("info", "peers", s.GetPeerInfo)
 
 	log.Print("GetBitNodeStatus: ", coin+"_"+b.IP)
 	nds := GetNodes(s)

@@ -11,7 +11,7 @@ package enso
 //	w.Write([]byte(out))
 //}
 //
-//func (eq *ExplorersQueries) ViewMarket(w http.ResponseWriter, r *http.Request) {
+//func (eq *ExplorerQueries) ViewMarket(w http.ResponseWriter, r *http.Request) {
 //	//v := mux.Vars(r)
 //	//out, err := json.Marshal(e.Explorer.Status[v["coin"]])
 //	//if err != nil {

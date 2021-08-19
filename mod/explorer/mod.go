@@ -9,7 +9,11 @@ import (
 //type Explorer struct {
 //	Status map[string]*BlockchainStatus `json:"status"`
 //}
-
+type ExplorerQueries struct {
+	status *BlockchainStatus
+	j      *jdb.JDBS
+	col    string
+}
 type Explorer struct {
 	Coin     string
 	BitNodes nodes.BitNodes
