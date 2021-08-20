@@ -13,7 +13,7 @@ type COMHTTP struct {
 	ID        string
 	TLD       string
 	Slug      string
-	Titile    string
+	Title     string
 	ProtoURL  string
 	BodyClass string
 	DATA      *Data

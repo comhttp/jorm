@@ -21,7 +21,7 @@
 {{end}}
 
 
-{{define "ga"}}
+{{define "autosuggest"}}
 <amp-state id="autosuggest">
     <script type="application/json">
         {{`{
@@ -35,7 +35,9 @@
         }`}}
     </script>
 </amp-state>
+{{end}}
 
+{{define "ga"}}
 <amp-analytics type="googleanalytics">
     <script type="application/json">
 {{`{

@@ -7,8 +7,8 @@
 
 <div class="container mx-auto px-0 flex flex-1 justify-between">
         <a href="{{ .ProtoURL }}us" class="flex items-center menulogo">
-            <amp-img layout="fixed" width="32" height="32" src="https://img.okno.rs/coins/32/{{ .Slug }}32.png" alt="{{ .Title }} BackGround" alt="navigation"></amp-img>
-            <span class="text-2xl ml-2">{{ .Slug }}</span>
+            <amp-img layout="fixed" width="32" height="32" src="https://img.okno.rs/coins/32/{{ .Slug }}32.png" alt="{{ .Coin.Name }} BackGround" alt="navigation"></amp-img>
+            <span class="text-2xl ml-2">{{ .Coin.Name }}</span>
         </a>
         <div>
         <input name="search" type="search" placeholder="Search" on="change:AMP.setState({{`{

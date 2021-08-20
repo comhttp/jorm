@@ -7,7 +7,45 @@
 {{ template "header" .}}
 {{template "sidebar" .}}
      <div class="flex-1 content justify-between text-center">
-<h1>{{ .Slug }} - {{ .TLD }}</h1>
+<h1>{{ .Coin.Name }} - {{ .TLD }}</h1>
+
+         <div class="col-span-3 flex flex-col pnlbg rounded md:rounded-lg">{{ template "blocks" .}}</div>
      </div>
     {{ template "footer" .}}
 </div>{{end}}
+
+
+
+{{define "blocks"}}
+    <div class="flex-1 flex flex-col">
+        <h3 class="pnlhd pnlh text-xl py-4" title="{{ .Coin.Name }} Explorer"><i class="fas fa-network-wired mr-2 pl-4 text-2xl"></i>Explorer</h3>
+        <div class="flex flex-col px-4 font-mono text-sm">
+        <amp-list class="paged-amp-list" layout="fixed-height" height="640" src="https://enso.okno.rs/explorer/{{.Slug}}/blocks/20/1" [src]="'https://enso.okno.rs/explorer/{{.Slug}}/blocks/20/' + pageNumber" items="blocks" binding="no" reset-on-refresh>
+        <template type="amp-mustache" id="coin-name">
+
+
+
+                    <a href="https://{{ .Slug }}.com-http.tools/block/{{`{{height}}`}}" class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">
+                        <span class="mr-3">{{`{{height}}`}}</span>
+                        <span class="flex-1 truncate">{{`{{hash}}`}}</span>
+                        <span class="ml-2">{{`{{time}}`}}</span></a>
+
+
+
+        </template>
+    </amp-list>
+            <div class="navigation">
+                <button class="prev" hidden [hidden]="pageNumber < 2" on="tap: AMP.setState({{`{ pageNumber: pageNumber - 1 }`}})">
+                    Previous
+                </button>
+                <button class="next" [hidden]="page ? pageNumber >= page.items.pageCount : false" on="tap: AMP.setState({{`{ pageNumber: pageNumber ? pageNumber + 1 : 2 }`}})">
+                    Next
+                </button>
+            </div>
+    </div>
+    </div>
+
+
+    <amp-state id="page" src="https://enso.okno.rs/explorer/{{.Slug}}/blocks/20/1" [src]="'https://enso.okno.rs/explorer/{{.Slug}}/blocks/20/' + pageNumber">
+    </amp-state>
+{{end}}

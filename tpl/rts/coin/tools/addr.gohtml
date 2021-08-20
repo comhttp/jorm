@@ -7,7 +7,7 @@
 {{ template "header" .}}
 {{template "sidebar" .}}
      <div class="flex-1 content justify-between text-center">
-<h1>{{ .Slug }} - {{ .TLD }}</h1>
+<h1>{{ .Coin.Name }} - {{ .TLD }}</h1>
 
          {{ template "tx" .}}
      </div>

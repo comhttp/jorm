@@ -89,7 +89,7 @@ type Link struct {
 type CoinShort struct {
 	Rank   int    `json:"r"`
 	Name   string `json:"n"`
-	Ticker string `json:"t"`
+	Symbol string `json:"y"`
 	Slug   string `json:"s"`
 	Algo   string `json:"a"`
 }

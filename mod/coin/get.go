@@ -8,6 +8,17 @@ func (cq *CoinQueries) GetCoin(slug string) (Coin, error) {
 	c, err := cq.getCoin(slug)
 	return *c, err
 }
+func (cq *CoinQueries) GetCoinShort(slug string) (CoinShort, error) {
+	c, err := cq.getCoin(slug)
+	cs := &CoinShort{
+		Rank:   c.Rank,
+		Name:   c.Name,
+		Symbol: c.Symbol,
+		Slug:   c.Slug,
+		Algo:   c.Algo,
+	}
+	return *cs, err
+}
 
 func (cq *CoinQueries) getCoin(key string) (c *Coin, err error) {
 	err = cq.j.Read("coin", key, &c)

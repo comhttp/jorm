@@ -3,7 +3,7 @@
         <amp-list id="coin-name" layout="fixed-height" height="360" width="auto" src="https://enso.okno.rs/explorer/{{.Slug}}/blocks/10/1" items= "." single-item class="m1">
         <template type="amp-mustache" id="coin-name">
             <div class="flex-1 flex flex-col">
-                <h3 class="pnlhd pnlh text-xl py-4"><i class="fas fa-network-wired mr-2 pl-4 text-2xl"></i>{{ .Slug }} Last blocks</h3>
+                <h3 class="pnlhd pnlh text-xl py-4"><i class="fas fa-network-wired mr-2 pl-4 text-2xl"></i>{{ .Coin.Name }} Last blocks</h3>
                 <div class="flex flex-col px-4 font-mono text-sm">
             {{`{{#blocks}}`}}
 <a href="https://{{ .Slug }}.com-http.tools/block/{{`{{height}}`}}" class="flex flex-row py-1 border-dotted border-dark border-t border-l-0 border-r-0 border-b-0 justify-between">

@@ -1,7 +1,7 @@
-{{define "basics"}}<amp-list id="coin-basics" layout="fixed-height" height="200" width="auto" src="amp-state:coin" items= "." single-item class="m1">
+{{define "basics"}}<amp-list id="coin-basics" layout="responsive" height="120" width="320" src="amp-state:coin" items= "." single-item class="m1">
     <template type="amp-mustache"  id="coin-basics">
         <div class="flex flex-col">
-            <h3 class="pnlhd pnlh text-xl py-4"><i class="fas fa-scroll mr-2 pl-4 text-2xl"></i>{{`{{name}}`}} Basics</h3>
+            <h3 class="pnlhd pnlh text-xl py-4" title="{{ .Coin.Name }} Basics"><i class="fas fa-scroll mr-2 pl-4 text-2xl"></i>Basics</h3>
             <div class="flex flex-col p-4">
             {{`{{#name}}`}}<div class="flex"><span class="w-32 max-w-lg">Name</span><span class="col-span-2">{{`{{name}}`}}</span></div>{{`{{/name}}`}}
 {{`{{#ticker}}`}}<div class="flex"><span class="w-32 max-w-lg">Ticker</span><span class="col-span-2">{{`{{ticker}}`}}</span></div>{{`{{/ticker}}`}}

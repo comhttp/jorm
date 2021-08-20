@@ -58,7 +58,7 @@ func (cq *CoinQueries) ProcessCoins() {
 			algoCoins.C = append(algoCoins.C, CoinShort{
 				Rank:   coin.Rank,
 				Name:   coin.Name,
-				Ticker: coin.Symbol,
+				Symbol: coin.Symbol,
 				Slug:   coin.Slug,
 				Algo:   coin.Algo,
 			})

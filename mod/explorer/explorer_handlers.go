@@ -21,8 +21,8 @@ func (eq *ExplorerQueries) ViewBlocks(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	per, _ := strconv.Atoi(v["per"])
 	page, _ := strconv.Atoi(v["page"])
-	ex := eq.GetExplorer(v["coin"])
-	lastblock := ex.Blocks - 1
+	//ex := eq.GetExplorer(v["coin"])
+	lastblock := eq.GetLastBlock(v["coin"])
 	log.Print("lastblocklastblocklastblock", lastblock)
 
 	lb := map[string]interface{}{

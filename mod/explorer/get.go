@@ -72,7 +72,7 @@ func (eq *ExplorerQueries) GetBlocks(coin string, per, page int) (blocks []map[s
 		ibh--
 	}
 	sort.SliceStable(blocks, func(i, j int) bool {
-		return int(blocks[i]["height"].(int64)) < int(blocks[j]["height"].(int64))
+		return int(blocks[i]["height"].(int64)) > int(blocks[j]["height"].(int64))
 	})
 	return blocks
 }

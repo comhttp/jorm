@@ -38,9 +38,6 @@ h3 {
 .navbar-form .form-control {
     background-color: gray;
     color: #fff;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border: 0;
     -webkit-box-shadow: 1px 1px 0 0 rgba(255, 255, 255, .41), inset 1px 1px 3px 0 rgba(0, 0, 0, .10);
     -moz-box-shadow: 1px 1px 0 0 rgba(255, 255, 255, .41), inset 1px 1px 3px 0 rgba(0, 0, 0, .10);
@@ -162,7 +159,6 @@ h3 {
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25em;
     margin-top: 5px;
 }
 
@@ -224,7 +220,6 @@ h3 {
 
 .data-table {
     table-layout: fixed;
-    border-radius: .25rem;
     background: white;
 }
 
