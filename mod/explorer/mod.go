@@ -10,10 +10,11 @@ import (
 //	Status map[string]*BlockchainStatus `json:"status"`
 //}
 type ExplorerQueries struct {
-	j      *jdb.JDB
+	j      map[string]*jdb.JDB
 	status *BlockchainStatus
 	col    string
 }
+
 type Explorer struct {
 	Coin     string
 	BitNodes nodes.BitNodes

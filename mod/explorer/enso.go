@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Queries(j *jdb.JDB, col string) *ExplorerQueries {
+func Queries(j map[string]*jdb.JDB, col string) *ExplorerQueries {
 	return &ExplorerQueries{
 		j,
 		&BlockchainStatus{},
@@ -13,7 +13,7 @@ func Queries(j *jdb.JDB, col string) *ExplorerQueries {
 	}
 }
 
-func (eq *ExplorerQueries) ENSOroutes(r *mux.Router) *mux.Router {
+func ENSOroutes(eq *ExplorerQueries, r *mux.Router) *mux.Router {
 	//info := Queries(j, "info")
 	//info := Queries(j.JDBclient("explorer"),"info")
 	//r.StrictSlash(true)

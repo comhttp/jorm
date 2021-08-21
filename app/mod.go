@@ -2,7 +2,11 @@ package app
 
 import "C"
 import (
+	"fmt"
 	"github.com/comhttp/jorm/mod/explorer"
+	"github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/pkg/cfg"
+	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"net/http"
@@ -85,11 +89,23 @@ func (j *JORM) ExplorerSRV(coin string) {
 	log.Print("Coin: ", coin)
 	http.HandleFunc("/", status)
 	//info := explorer.Queries(j.JDBS, "info")
-	eq := explorer.Queries(j.JDBclient(coin), "info")
+	jdbs := map[string]*jdb.JDB{
+		coin: j.JDBclient(coin),
+	}
+	c, _ := cfg.NewCFG(j.config.Path, nil)
+	coinBitNodes := nodes.BitNodes{}
+	err := c.Read("nodes", coin, &coinBitNodes)
+	utl.ErrorLog(err)
+	eq := explorer.Queries(jdbs, "info")
+
+	j.Explorers = make(map[string]*explorer.Explorer)
+	j.Explorers[coin] = eq.NewExplorer(coin)
+	j.Explorers[coin].BitNodes = coinBitNodes
+
 	//info.status = info.GetStatus()
-	var err error
 	j.Explorers[coin].Status, err = eq.GetStatus(coin)
 	utl.ErrorLog(err)
+	fmt.Println("ssss", j.Explorers[coin].Status)
 	ticker := time.NewTicker(12 * time.Second)
 	quit := make(chan struct{})
 	go func() {

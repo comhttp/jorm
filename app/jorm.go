@@ -51,15 +51,16 @@ func (j *JORM) setExplorers() {
 	bitNodesCfg, err := c.ReadAll("nodes")
 	utl.ErrorLog(err)
 	j.Explorers = make(map[string]*explorer.Explorer)
-	explorereQueries := make(map[string]*explorer.ExplorerQueries)
+	explorerJDBS := make(map[string]*jdb.JDB)
 	for coin, _ := range bitNodesCfg {
 		//coins[coin] = j.JDBclient(coin)
-		explorereQueries[coin] = explorer.Queries(j.JDBclient(coin), "info")
+		explorerJDBS[coin] = j.JDBclient(coin)
 		j.NodeCoins = append(j.NodeCoins, coin)
 		coinBitNodes := nodes.BitNodes{}
 		err = c.Read("nodes", coin, &coinBitNodes)
 		utl.ErrorLog(err)
-		j.Explorers[coin] = explorereQueries[coin].NewExplorer(coin)
+		eq := explorer.Queries(explorerJDBS, "info")
+		j.Explorers[coin] = eq.NewExplorer(coin)
 		j.Explorers[coin].BitNodes = coinBitNodes
 	}
 	//eq := explorer.Queries(coins, "info")
@@ -77,7 +78,19 @@ func (j *JORM) JDBclient(jdbId string) *jdb.JDB {
 func (j *JORM) ENSOhandlers() http.Handler {
 	//coinsCollection := Queries(j.B["coins"],"coin")
 	cq := coin.Queries(j.JDBclient("coins"), "coin")
+
 	eq := exchange.Queries(j.JDBclient("exchanges"), "exchange")
+
+	explorerJDBS := make(map[string]*jdb.JDB)
+
+	for _, coin := range j.Explorers {
+		explorerJDBS[coin.Coin] = j.JDBclient(coin.Coin)
+
+	}
+
+	exq := explorer.Queries(explorerJDBS, "info")
+
+	//exq := exchange.Queries(j.JDBclient("exchanges"), "exchange")
 	//exq := exchange.Queries(j.JDBclient("explorers"),"explorer")
 	r := mux.NewRouter()
 	//s := r.Host("enso.okno.rs").Subrouter()
@@ -85,7 +98,7 @@ func (j *JORM) ENSOhandlers() http.Handler {
 	//n := r.PathPrefix("/n").Subrouter()
 	coin.ENSOroutes(cq, r)
 	exchange.ENSOroutes(eq, r)
-	//explorer.ENSOroutes(exq, r)
+	explorer.ENSOroutes(exq, r)
 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 }
 

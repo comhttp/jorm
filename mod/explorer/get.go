@@ -25,13 +25,13 @@ import (
 
 func (eq *ExplorerQueries) GetExplorer(coin string) *BlockchainStatus {
 	s := &BlockchainStatus{}
-	err := eq.j.Read(coin, "status", &s)
+	err := eq.j[coin].Read(coin, "status", &s)
 	utl.ErrorLog(err)
 	return s
 }
 
 func (eq *ExplorerQueries) GetStatus(coin string) (*BlockchainStatus, error) {
-	err := eq.j.Read("info", "status", &eq.status)
+	err := eq.j[coin].Read("info", "status", &eq.status)
 	utl.ErrorLog(err)
 	return eq.status, err
 }
@@ -50,16 +50,16 @@ func (eq *ExplorerQueries) GetBlock(coin, id string) map[string]interface{} {
 		blockHash = id
 	} else {
 		blockHash = ""
-		err = eq.j.Read("block", id, &blockHash)
+		err = eq.j[coin].Read("block", id, &blockHash)
 	}
-	err = eq.j.Read("block", blockHash, &block)
+	err = eq.j[coin].Read("block", blockHash, &block)
 	utl.ErrorLog(err)
 	return block
 }
 
 func (eq *ExplorerQueries) GetBlocks(coin string, per, page int) (blocks []map[string]interface{}) {
 	s := &BlockchainStatus{}
-	err := eq.j.Read("info", "status", &s)
+	err := eq.j[coin].Read("info", "status", &s)
 	utl.ErrorLog(err)
 	blockCount := s.Blocks
 	//app.log.Print("blockCount", blockCount)
@@ -112,48 +112,48 @@ func (eq *ExplorerQueries) GetBlockShort(coin, blockhash string) map[string]inte
 
 func (eq *ExplorerQueries) GetTx(coin, id string) map[string]interface{} {
 	tx := make(map[string]interface{})
-	err := eq.j.Read("tx", id, &tx)
+	err := eq.j[coin].Read("tx", id, &tx)
 	utl.ErrorLog(err)
 	return tx
 }
 func (eq *ExplorerQueries) GetAddr(coin, id string) map[string]interface{} {
 	addr := make(map[string]interface{})
-	err := eq.j.Read("addr", id, &addr)
+	err := eq.j[coin].Read("addr", id, &addr)
 	utl.ErrorLog(err)
 	return addr
 }
 
 func (eq *ExplorerQueries) GetMemPool(coin string) []string {
 	mempool := []string{}
-	err := eq.j.Read("info", "mempool", &mempool)
+	err := eq.j[coin].Read("info", "mempool", &mempool)
 	utl.ErrorLog(err)
 	return mempool
 }
 
 func (eq *ExplorerQueries) GetMiningInfo(coin string) map[string]interface{} {
 	mininginfo := make(map[string]interface{})
-	err := eq.j.Read("info", "mining", &mininginfo)
+	err := eq.j[coin].Read("info", "mining", &mininginfo)
 	utl.ErrorLog(err)
 	return mininginfo
 }
 
 func (eq *ExplorerQueries) GetInfo(coin string) map[string]interface{} {
 	info := make(map[string]interface{})
-	err := eq.j.Read("info", "info", &info)
+	err := eq.j[coin].Read("info", "info", &info)
 	utl.ErrorLog(err)
 	return info
 }
 
 func (eq *ExplorerQueries) GetNetworkInfo(coin string) map[string]interface{} {
 	network := make(map[string]interface{})
-	err := eq.j.Read("info", "network", &network)
+	err := eq.j[coin].Read("info", "network", &network)
 	utl.ErrorLog(err)
 	return network
 }
 
 func (eq *ExplorerQueries) GetPeers(coin string) []interface{} {
 	peers := new([]interface{})
-	err := eq.j.Read("info", "peers", &peers)
+	err := eq.j[coin].Read("info", "peers", &peers)
 	utl.ErrorLog(err)
 	return *peers
 }

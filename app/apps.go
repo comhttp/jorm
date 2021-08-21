@@ -25,6 +25,7 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "enso":
 		log.Print("enso")
+		j.setExplorers()
 		j.WWW.Handler = j.ENSOhandlers()
 		j.WWW.Addr = ":" + j.config.Port["enso"]
 		log.Fatal().Err(j.WWW.ListenAndServe())
