@@ -22,7 +22,7 @@ type Coin struct {
 	Updated         int     `json:"updated"`
 }
 
-func GetAllCoins(coinQueries *coin.CoinQueries) {
+func GetAllCoins(coinQueries *coin.CoinsQueries) {
 	allCoins := []Coin{}
 	utl.GetSource("https://api.minerstat.com/v2/coins", &allCoins)
 	fmt.Println("::::::::::::::::::::::::::::::::START minerstat COINS:::::::::::::::::::::::::::::: ")

@@ -55,7 +55,7 @@ type Coin struct {
 	IsUsedInNft        int     `json:"IsUsedInNft"`
 }
 
-func (c *cryptocompare) GetAllCoins(coinQueries *coin.CoinQueries) {
+func (c *cryptocompare) GetAllCoins(coinQueries *coin.CoinsQueries) {
 	allCoins := &rawAllCoins{}
 	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/all/coinlist", allCoins)
 	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare COINS:::::::::::::::::::::::::::::: ")

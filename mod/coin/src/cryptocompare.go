@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func getCryptoCompare(cq *coin.CoinQueries) {
+func getCryptoCompare(cq *coin.CoinsQueries) {
 	log.Print("Get Crypto Compare Start")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
 	utl.ErrorLog(err)
@@ -44,11 +44,11 @@ func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *c
 			}
 		}
 		c.SetName(coinSrc["CoinName"])
-		c.SetTicker(coinSrc["Symbol"])
+		c.SetSymbol(coinSrc["Symbol"])
 		c.SetDescription(coinSrc["Description"])
 		c.SetAlgo(coinSrc["Algorithm"])
 		c.SetProof(coinSrc["ProofType"])
-		c.SetStart(coinSrc["AssetLaunchDate"])
+		c.SetStart(coinSrc["AssetLaunchDate"].(string))
 
 	}
 }

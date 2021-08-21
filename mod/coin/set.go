@@ -13,7 +13,7 @@ func NewCoin(slug string) (c *Coin) {
 	return c
 }
 
-func (cq *CoinQueries) SetCoin(src, slug string, get func(c *Coin)) {
+func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
 	c, err := cq.getCoin(slug)
 	if err != nil {
 		c = NewCoin(slug)
@@ -42,11 +42,11 @@ func (cq *CoinQueries) SetCoin(src, slug string, get func(c *Coin)) {
 	return
 }
 
-func (cq *CoinQueries) WriteCoin(slug string, c interface{}) error {
+func (cq *CoinsQueries) WriteCoin(slug string, c interface{}) error {
 	return cq.j.Write("coin", slug, c)
 }
 
-func (cq *CoinQueries) WriteInfo(slug string, c interface{}) error {
+func (cq *CoinsQueries) WriteInfo(slug string, c interface{}) error {
 	return cq.j.Write("info", slug, c)
 }
 

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func getCoinGecko(cq *coin.CoinQueries) {
+func getCoinGecko(cq *coin.CoinsQueries) {
 	log.Print("GetCoinGeckoStart")
 	var coinsRaw []map[string]interface{}
 	respcs, err := http.Get("https://api.coingecko.com/api/v3/coins/list")

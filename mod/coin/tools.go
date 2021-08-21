@@ -32,7 +32,7 @@ import (
 //	j.Write("info", "nodecoins", nodeCoins)
 //}
 
-func (cq *CoinQueries) ProcessCoins() {
+func (cq *CoinsQueries) ProcessCoins() {
 	log.Print("Start ProcessCoins")
 
 	usableCoins := Coins{N: 0}

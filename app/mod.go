@@ -2,10 +2,7 @@ package app
 
 import "C"
 import (
-	"github.com/comhttp/jorm/mod/exchange"
-	xsrc "github.com/comhttp/jorm/mod/exchange/src"
 	"github.com/comhttp/jorm/mod/explorer"
-	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"net/http"
@@ -25,10 +22,11 @@ func (j *JORM) JormSRV() {
 	//log.Print("nodessss: ", j.NodeCoins)
 	//go j.Tickers()
 	//cq := coin.Queries(j.JDBS.B["coins"], "coin")
-	eq := exchange.Queries(j.JDBS.B["exchanges"], "exchange")
 
-	xsrc.GetPoloniexExchange(eq)
-	xsrc.GetDexTradeExchange(eq)
+	//eq := exchange.Queries(j.JDBS.B["exchanges"], "exchange")
+	//xsrc.GetPoloniexExchange(eq)
+	//xsrc.GetDexTradeExchange(eq)
+
 	//for _, t := range ttt {
 	//	if t["slug"] != "" {
 	//	} else {
@@ -37,9 +35,9 @@ func (j *JORM) JormSRV() {
 	//
 	//}
 
-	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	//cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
 	//cc.GetAllCoins(cq)
-	cc.GetAllExchanges(eq)
+	//cc.GetAllExchanges(eq)
 	//minerstat.GetAllCoins(cq)
 
 	//cm := coinmarketcap.NewCoinMarketCapAPI(j.config.ApiKeys["coinmarketcap"])
@@ -86,10 +84,11 @@ func (j *JORM) JormSRV() {
 func (j *JORM) ExplorerSRV(coin string) {
 	log.Print("Coin: ", coin)
 	http.HandleFunc("/", status)
-	info := explorer.Queries(j.JDBS, "info")
+	//info := explorer.Queries(j.JDBS, "info")
+	eq := explorer.Queries(j.JDBclient(coin), "info")
 	//info.status = info.GetStatus()
 	var err error
-	j.Explorers[coin].Status, err = info.GetStatus(coin)
+	j.Explorers[coin].Status, err = eq.GetStatus(coin)
 	utl.ErrorLog(err)
 	ticker := time.NewTicker(12 * time.Second)
 	quit := make(chan struct{})
@@ -98,7 +97,7 @@ func (j *JORM) ExplorerSRV(coin string) {
 			select {
 			case <-ticker.C:
 
-				info.ExploreCoin(j.Explorers[coin].BitNodes, j.config.RPC.Username, j.config.RPC.Password, coin)
+				eq.ExploreCoin(j.Explorers[coin].BitNodes, j.config.RPC.Username, j.config.RPC.Password, coin)
 			case <-quit:
 				ticker.Stop()
 				return

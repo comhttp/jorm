@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type CoinQueries struct {
+type CoinsQueries struct {
 	j   *jdb.JDB
 	col string
 }

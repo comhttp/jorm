@@ -31,7 +31,7 @@ type home struct {
 //}
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) CoinHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) CoinHandler(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	coin, err := cq.GetCoin(v["coin"])
 	out, err := json.Marshal(coin)
@@ -43,7 +43,7 @@ func (cq *CoinQueries) CoinHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) CoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) CoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetCoins())
 	if err != nil {
@@ -54,7 +54,7 @@ func (cq *CoinQueries) CoinsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) restCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) restCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetRestCoins())
 	if err != nil {
@@ -65,7 +65,7 @@ func (cq *CoinQueries) restCoinsHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) algoCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) algoCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetAlgoCoins())
 	if err != nil {
@@ -76,7 +76,7 @@ func (cq *CoinQueries) algoCoinsHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) coinsWordsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) coinsWordsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetCoinsWords())
 	if err != nil {
@@ -87,7 +87,7 @@ func (cq *CoinQueries) coinsWordsHandler(w http.ResponseWriter, r *http.Request)
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) usableCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) usableCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetUsableCoins())
 	if err != nil {
@@ -98,7 +98,7 @@ func (cq *CoinQueries) usableCoinsHandler(w http.ResponseWriter, r *http.Request
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	//out, err := json.Marshal(coin.LoadCoinsBase())
 	out, err := json.Marshal(cq.GetAllCoins())
 	if err != nil {
@@ -109,7 +109,7 @@ func (cq *CoinQueries) allCoinsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := json.Marshal(cq.GetNodeCoins())
 	if err != nil {
 		log.Print("Error encoding JSON")
@@ -119,7 +119,7 @@ func (cq *CoinQueries) nodeCoinsHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 // CoinsHandler handles a request for coin data
-func (cq *CoinQueries) coinsBinHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) coinsBinHandler(w http.ResponseWriter, r *http.Request) {
 	out, err := json.Marshal(cq.GetCoinsBin())
 	if err != nil {
 		log.Print("Error encoding JSON")
@@ -129,12 +129,12 @@ func (cq *CoinQueries) coinsBinHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // CoinNodesHandler handles a request for (?)
-func (cq *CoinQueries) CoinNodesHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) CoinNodesHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
 // NodeHandler handles a request for (?)
-func (cq *CoinQueries) nodeHandler(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) nodeHandler(w http.ResponseWriter, r *http.Request) {
 	//v := mux.Vars(r)
 	//out, err := json.Marshal(nodes.GetNode(j.JDB, v["coin"], v["nodeip"]))
 	//if err != nil {
@@ -145,7 +145,7 @@ func (cq *CoinQueries) nodeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 //// NodeHandler handles a request for (?)
-//func (cq *CoinQueries) ViewJSON() http.Handler {
+//func (cq *CoinsQueries) ViewJSON() http.Handler {
 //	m := minify.New()
 //	m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 //
@@ -153,7 +153,7 @@ func (cq *CoinQueries) nodeHandler(w http.ResponseWriter, r *http.Request) {
 //}
 
 // NodeHandler handles a request for (?)
-func (cq *CoinQueries) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
+func (cq *CoinsQueries) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//v := mux.Vars(r)
 	//m := minify.New()
 	//height, err := strconv.ParseUint(v["file"], 10, 64)

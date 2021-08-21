@@ -19,7 +19,7 @@ func NewCoinMarketCapAPI(apiKey string) *coinmarketcap {
 	}
 }
 
-func (cm *coinmarketcap) GetAllCoins(coinQueries *coin.CoinQueries) {
+func (cm *coinmarketcap) GetAllCoins(coinQueries *coin.CoinsQueries) {
 	listings, err := cm.Cryptocurrency.Map(&cmc.MapOptions{
 		//Limit: 999,
 	})

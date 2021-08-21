@@ -24,7 +24,7 @@ type (
 	}
 	// Driver is what is used to interact with the scribble database. It runs
 	// transactions, and provides log output
-	jdb struct {
+	cfgdb struct {
 		col     string
 		mutex   sync.Mutex
 		mutexes map[string]*sync.Mutex
@@ -40,10 +40,9 @@ type Options struct {
 
 // New creates a new scribble database at the desired directory location, and
 // returns a *Driver to then use for interacting with the database
-func NewCFG(path string, options *Options) (*jdb, error) {
+func NewCFG(path string, options *Options) (*cfgdb, error) {
 	// a new javazac database, providing the directory where it will be writing to,
 	// and a qualified logger if desired
-
 	path = filepath.Clean(path)
 
 	// create default options
@@ -59,7 +58,7 @@ func NewCFG(path string, options *Options) (*jdb, error) {
 		opts.Logger = lumber.NewConsoleLogger(lumber.INFO)
 	}
 
-	j := jdb{
+	j := cfgdb{
 		path:    path,
 		mutexes: make(map[string]*sync.Mutex),
 		log:     opts.Logger,
@@ -78,7 +77,7 @@ func NewCFG(path string, options *Options) (*jdb, error) {
 
 // Write locks the database and attempts to write the record to the database under
 // the [collection] specified with the [resource] name given
-func (j *jdb) Write(collection, resource string, v interface{}) error {
+func (j *cfgdb) Write(collection, resource string, v interface{}) error {
 
 	// ensure there is a place to save record
 	if collection == "" {
@@ -120,7 +119,7 @@ func (j *jdb) Write(collection, resource string, v interface{}) error {
 }
 
 // Read a record from the database
-func (j *jdb) Read(collection, resource string, v interface{}) error {
+func (j *cfgdb) Read(collection, resource string, v interface{}) error {
 
 	// ensure there is a place to save record
 	if collection == "" {
@@ -152,7 +151,7 @@ func (j *jdb) Read(collection, resource string, v interface{}) error {
 
 // ReadAll records from a collection; this is returned as a slice of strings because
 // there is no way of knowing what type the record is.
-func (j *jdb) ReadAll(collection string) (map[string]interface{}, error) {
+func (j *cfgdb) ReadAll(collection string) (map[string]interface{}, error) {
 
 	// ensure there is a collection to read
 	if collection == "" {
@@ -193,7 +192,7 @@ func (j *jdb) ReadAll(collection string) (map[string]interface{}, error) {
 
 // Delete locks that database and then attempts to remove the collection/resource
 // specified by [path]
-func (j *jdb) Delete(collection, resource string) error {
+func (j *cfgdb) Delete(collection, resource string) error {
 	path := filepath.Join(collection, resource)
 	//
 	mutex := j.getOrCreateMutex(collection)
@@ -234,7 +233,7 @@ func stat(path string) (fi os.FileInfo, err error) {
 
 // getOrCreateMutex creates a new collection specific mutex any time a collection
 // is being modfied to avoid unsafe operations
-func (j *jdb) getOrCreateMutex(collection string) *sync.Mutex {
+func (j *cfgdb) getOrCreateMutex(collection string) *sync.Mutex {
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
 	m, ok := j.mutexes[collection]

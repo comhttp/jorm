@@ -5,15 +5,15 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func Queries(j *jdb.JDB, col string) *CoinQueries {
-	return &CoinQueries{
-		j:   j,
-		col: col,
+func Queries(j *jdb.JDB, col string) *CoinsQueries {
+	return &CoinsQueries{
+		j,
+		col,
 	}
 }
 
-func ENSOroutes(cq *CoinQueries, r *mux.Router) *mux.Router {
-	//cq := j.CollectionQueries("coin").(CoinQueries)
+func ENSOroutes(cq *CoinsQueries, r *mux.Router) *mux.Router {
+	//cq := j.CollectionQueries("coin").(CoinsQueries)
 	//s := r.Host("enso.okno.rs").Subrouter()
 	r.StrictSlash(true)
 

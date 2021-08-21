@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func GetAllCoins(coinQueries *coin.CoinQueries) {
+func GetAllCoins(coinQueries *coin.CoinsQueries) {
 	cg := gecko.NewClient(nil)
 	cgCoins, err := cg.CoinsList()
 	if err != nil {

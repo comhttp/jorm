@@ -10,7 +10,7 @@ import (
 )
 
 func ENSOroutes(eq *ExchangeQueries, r *mux.Router) *mux.Router {
-	//cq := j.CollectionQueries("coin").(CoinQueries)
+	//cq := j.CollectionQueries("coin").(CoinsQueries)
 	//s := r.Host("enso.okno.rs").Subrouter()
 	r.StrictSlash(true)
 
