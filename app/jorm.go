@@ -105,7 +105,7 @@ func NewJORM(service, path, singleCoin string) (j *JORM) {
 	utl.ErrorLog(err)
 
 	//ttt := j.JDBS.B["coins"].ReadAllPerPages("coin", 10, 1)
-	j.setExplorers()
+
 	j.WWW = &http.Server{
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

@@ -18,6 +18,7 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "jorm":
 		log.Print("jorm")
+		j.setExplorers()
 		j.JormSRV()
 		j.WWW.Handler = j.JORMhandlers()
 		j.WWW.Addr = ":" + j.config.Port["jorm"]
