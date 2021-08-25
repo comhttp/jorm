@@ -10,9 +10,12 @@ import (
 
 var (
 	hostTarget = map[string]string{
-		"jorm.okno.rs": "http://localhost:14411",
-		"our.okno.rs":  "http://localhost:14422",
-		"enso.okno.rs": "http://localhost:14433",
+		"okno.rs":                    "http://localhost:4433",
+		"parallelcoin.info":          "http://localhost:4433",
+		"explorer.parallelcoin.info": "http://localhost:4433",
+		"jorm.okno.rs":               "http://localhost:14411",
+		"our.okno.rs":                "http://localhost:14422",
+		"enso.okno.rs":               "http://localhost:14433",
 	}
 )
 
