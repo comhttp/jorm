@@ -96,7 +96,9 @@ func (j *JORM) appHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if d.Slug != "" {
-		cq := coin.Queries(j.JDBclient("coins"), "coin")
+		c, err := j.JDBclient("coins")
+		utl.ErrorLog(err)
+		cq := coin.Queries(c, "coin")
 		coin, err := cq.GetCoinShort(d.Slug)
 		utl.ErrorLog(err)
 		d.Coin = coin

@@ -13,7 +13,7 @@ var (
 	delimiter = "_"
 )
 
-func NewJDB(url string) *JDB {
+func NewJDB(url string) (*JDB, error) {
 	auth := ""
 	if auth != "" {
 		headers.Add("Authorization", "Bearer "+auth)
@@ -24,5 +24,5 @@ func NewJDB(url string) *JDB {
 		mutexes:   make(map[string]*sync.Mutex),
 		client:    client,
 		delimiter: delimiter,
-	}
+	}, err
 }

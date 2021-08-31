@@ -54,37 +54,56 @@ func (j *JORM) setExplorers() {
 	explorerJDBS := make(map[string]*jdb.JDB)
 	for coin, _ := range bitNodesCfg {
 		//coins[coin] = j.JDBclient(coin)
-		explorerJDBS[coin] = j.JDBclient(coin)
-		j.NodeCoins = append(j.NodeCoins, coin)
-		coinBitNodes := nodes.BitNodes{}
-		err = c.Read("nodes", coin, &coinBitNodes)
-		utl.ErrorLog(err)
-		eq := explorer.Queries(explorerJDBS, "info")
-		j.Explorers[coin] = eq.NewExplorer(coin)
-		j.Explorers[coin].BitNodes = coinBitNodes
+		jdbCl, err := j.JDBclient(coin)
+		if err != nil {
+			utl.ErrorLog(err)
+		} else {
+			explorerJDBS[coin] = jdbCl
+			j.NodeCoins = append(j.NodeCoins, coin)
+			coinBitNodes := nodes.BitNodes{}
+			err = c.Read("nodes", coin, &coinBitNodes)
+			utl.ErrorLog(err)
+			eq := explorer.Queries(explorerJDBS, "info")
+			j.Explorers[coin] = eq.NewExplorer(coin)
+			j.Explorers[coin].BitNodes = coinBitNodes
+		}
 	}
 	//eq := explorer.Queries(coins, "info")
-	cq := coin.Queries(j.JDBclient("coins"), "info")
-	cq.WriteInfo("nodecoins", &coin.Coins{
-		N: len(j.NodeCoins),
-		C: j.NodeCoins,
-	})
+	jdbCl, err := j.JDBclient("coins")
+	if err != nil {
+		utl.ErrorLog(err)
+	} else {
+		cq := coin.Queries(jdbCl, "info")
+		cq.WriteInfo("nodecoins", &coin.Coins{
+			N: len(j.NodeCoins),
+			C: j.NodeCoins,
+		})
+	}
 	return
 }
-func (j *JORM) JDBclient(jdbId string) *jdb.JDB {
+func (j *JORM) JDBclient(jdbId string) (*jdb.JDB, error) {
 	return jdb.NewJDB(j.jdbServers[jdbId])
 }
 
 func (j *JORM) ENSOhandlers() http.Handler {
 	//coinsCollection := Queries(j.B["coins"],"coin")
-	cq := coin.Queries(j.JDBclient("coins"), "coin")
+	c, err := j.JDBclient("coins")
+	utl.ErrorLog(err)
+	cq := coin.Queries(c, "coin")
 
-	eq := exchange.Queries(j.JDBclient("exchanges"), "exchange")
+	e, err := j.JDBclient("exchanges")
+	utl.ErrorLog(err)
+	eq := exchange.Queries(e, "exchange")
 
 	explorerJDBS := make(map[string]*jdb.JDB)
 
 	for _, coin := range j.Explorers {
-		explorerJDBS[coin.Coin] = j.JDBclient(coin.Coin)
+		jdbCl, err := j.JDBclient(coin.Coin)
+		if err != nil {
+			utl.ErrorLog(err)
+		} else {
+			explorerJDBS[coin.Coin] = jdbCl
+		}
 
 	}
 

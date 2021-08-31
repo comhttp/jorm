@@ -89,12 +89,14 @@ func (j *JORM) ExplorerSRV(coin string) {
 	log.Print("Coin: ", coin)
 	http.HandleFunc("/", status)
 	//info := explorer.Queries(j.JDBS, "info")
+	jdbCl, err := j.JDBclient(coin)
+	utl.ErrorLog(err)
 	jdbs := map[string]*jdb.JDB{
-		coin: j.JDBclient(coin),
+		coin: jdbCl,
 	}
 	c, _ := cfg.NewCFG(j.config.Path, nil)
 	coinBitNodes := nodes.BitNodes{}
-	err := c.Read("nodes", coin, &coinBitNodes)
+	err = c.Read("nodes", coin, &coinBitNodes)
 	utl.ErrorLog(err)
 	eq := explorer.Queries(jdbs, "info")
 
