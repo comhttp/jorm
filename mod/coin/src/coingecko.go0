@@ -23,8 +23,8 @@ func getCoinGecko(cq *coin.CoinsQueries) {
 		for _, coinSrc := range coinsRaw {
 			if coinSrc["id"] != nil {
 				if coinSrc["id"] != nil && coinSrc["id"].(string) != "" {
-					slug := utl.MakeSlug(coinSrc["id"].(string))
-					cq.SetCoin("cg", slug, getCoinGeckoCoin(slug, coinSrc))
+					//slug := utl.MakeSlug(coinSrc["id"].(string))
+					//cq.SetCoin("cg", slug, getCoinGeckoCoin(slug, coinSrc))
 				}
 			}
 		}

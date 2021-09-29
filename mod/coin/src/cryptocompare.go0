@@ -10,32 +10,42 @@ import (
 	"net/http"
 )
 
-func getCryptoCompare(cq *coin.CoinsQueries) {
+func getCryptoCompare() {
 	log.Print("Get Crypto Compare Start")
 	respcs, err := http.Get("https://min-api.cryptocompare.com/data/all/coinlist")
 	utl.ErrorLog(err)
 	defer respcs.Body.Close()
+	//algos := make(map[string]string)
+	//proofs := make(map[string]string)
 	if respcs != nil {
 		coinsRaw := make(map[string]interface{})
 		mapBody, err := ioutil.ReadAll(respcs.Body)
 		utl.ErrorLog(err)
 		json.Unmarshal(mapBody, &coinsRaw)
+
+
+
 		if coinsRaw["Data"] != nil {
 			for _, coinSrc := range coinsRaw["Data"].(map[string]interface{}) {
 				if coinSrc != nil {
 					cs := coinSrc.(map[string]interface{})
 					if cs["CoinName"] != nil {
+						//algos[cs["Algorithm"].(string)] = cs["Algorithm"].(string)
+						//proofs[cs["ProofType"].(string)] = cs["ProofType"].(string)
 						slug := utl.MakeSlug(cs["CoinName"].(string))
-						cq.SetCoin("cc", slug, getCryptoCompareCoin(slug, cs))
+						coin.SetCoin("cryptocompare", slug, getCryptoCompareCoin(cs))
 					}
 				}
 			}
 		}
 	}
+	//for aa, _ := range proofs{
+	//	fmt.Println(aa)
+	//}
 	log.Print("Get Crypto Compare Done")
 }
 
-func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *coin.Coin) {
+func getCryptoCompareCoin(coinSrc map[string]interface{}) func(c *coin.Coin) {
 	return func(c *coin.Coin) {
 		if coinSrc["ImageUrl"] != nil {
 			imgurl := fmt.Sprint(coinSrc["ImageUrl"].(string))
@@ -48,7 +58,17 @@ func getCryptoCompareCoin(slug string, coinSrc map[string]interface{}) func(c *c
 		c.SetDescription(coinSrc["Description"])
 		c.SetAlgo(coinSrc["Algorithm"])
 		c.SetProof(coinSrc["ProofType"])
-		c.SetStart(coinSrc["AssetLaunchDate"].(string))
+		c.SetGenesisDate(coinSrc["AssetLaunchDate"])
+
+
+		c.SetMaxSupply(coinSrc["MaxSupply"])
+		c.SetTotalCoinsMined(coinSrc["TotalCoinsMined"])
+		c.SetBlockHeight(coinSrc["BlockNumber"])
+		c.SetNetworkHashrate(coinSrc["NetHashesPerSecond"])
+		c.SetBlockReward(coinSrc["BlockReward"])
+		c.SetBlockTime(coinSrc["BlockTime"])
+		c.SetDifficulty(coinSrc["Difficulty"])
+		c.SetBuiltOn(coinSrc["BuiltOn"])
 
 	}
 }

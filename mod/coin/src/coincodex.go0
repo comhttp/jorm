@@ -31,10 +31,10 @@ func getCoinCodex(j *jdb.JDB) {
 						coin.Checked = make(map[string]bool)
 						if !coin.Checked["cx"] {
 							//coin.Name = coinSrc["name"].(string)
-							coin.Ticker = coinSrc["symbol"].(string)
+							coin.Symbol = coinSrc["symbol"].(string)
 							//coin.Slug = slug
 							coinDetails := make(map[string]interface{})
-							respcCoin, err := http.Get("https://coincodex.com/api/coincodex/get_coin/" + coin.Ticker)
+							respcCoin, err := http.Get("https://coincodex.com/api/coincodex/get_coin/" + coin.Symbol)
 							utl.ErrorLog(err)
 							defer respcCoin.Body.Close()
 							mapBodyCoin, err := ioutil.ReadAll(respcCoin.Body)
@@ -46,10 +46,10 @@ func getCoinCodex(j *jdb.JDB) {
 							}
 							//coin.WebSite = insertStringSlice(coinDetails["Website"], coin.WebSite)
 							if coinDetails["totalsupply"] != nil {
-								coin.TotalCoinSupply = insertFloat(coinDetails["totalsupply"].(float64), coin.TotalCoinSupply)
+								//coinTotalCoinSupply = insertFloat(coinDetails["totalsupply"].(float64), coin.TotalCoinSupply)
 							}
 							if coinDetails["whitepaper"] != nil {
-								coin.WhitePaper = insertString(coinDetails["whitepaper"].(string), coin.WhitePaper)
+								//coin.WhitePaper = insertString(coinDetails["whitepaper"].(string), coin.WhitePaper)
 							}
 
 							if coinDetails["ico_price"] != nil {
