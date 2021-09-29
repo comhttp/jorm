@@ -18,6 +18,8 @@ var (
 		"our.okno.rs":                "http://localhost:14422",
 		"enso.okno.rs":               "http://localhost:14433",
 		"p9c.okno.rs":                "http://localhost:1337",
+		"api.parallelcoin.io":        "http://localhost:11121",
+		"admin.parallelcoin.io":      "http://localhost:11121",
 	}
 )
 
