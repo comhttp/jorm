@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
+	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
@@ -14,8 +15,20 @@ import (
 )
 
 func (j *JORM) JormSRV() {
+
+	//s:= strapi.New("http://127.0.0.1:1337")
+
+	//c, err := s.GetCoin("parallelcoin")
+	//if err != nil{
+	//	fmt.Println(err)
+	//}
+	//s.DelAll("coins")
+	//fmt.Println("Coin: ",c)
+	//c, err := j.JDBclient("coins")
+	//utl.ErrorLog(err)
+	//cq := coin.Queries(c, "coin")
 	//exchanges.GetAllExchanges(j.JDB)
-	//go csrc.GetCoinSources(j.JDB)
+	//go csrc.GetCoinSources()
 	//coin.ProcessCoins(j.JDB)
 	//coins.BitNodeCoins(j.NodeCoins, j.JDB)
 	//cloudflare.CloudFlare(j.config, j.JDB)
@@ -39,8 +52,8 @@ func (j *JORM) JormSRV() {
 	//
 	//}
 
-	//cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
-	//cc.GetAllCoins(cq)
+	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	cc.GetAllCoins()
 	//cc.GetAllExchanges(eq)
 	//minerstat.GetAllCoins(cq)
 

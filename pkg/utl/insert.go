@@ -22,7 +22,7 @@ func InsertFloat(i interface{}) (f float64) {
 
 func InsertString(s string, i interface{}) string {
 	if s == "" {
-		if i != nil {
+		if i != nil && i.(string) != "N/A"{
 			s = i.(string)
 		}
 	}

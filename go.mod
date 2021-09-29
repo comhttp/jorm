@@ -7,6 +7,7 @@ require (
 	github.com/comhttp/jdbc v0.0.0-20210617223700-b69aee42434e
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/disintegration/imaging v1.6.2
+	github.com/fatih/structs v1.1.0 // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.4.2
@@ -16,6 +17,7 @@ require (
 	github.com/muesli/smartcrop v0.3.0
 	github.com/rs/zerolog v1.23.0 // indirect
 	github.com/rwcarlsen/goexif v0.0.0-20190401172101-9e8deecbddbd
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/sensepost/gowitness v0.0.0-20210807140749-38b57db38ae5
 	github.com/sirupsen/logrus v1.8.1
 	github.com/superoo7/go-gecko v1.0.0 // indirect

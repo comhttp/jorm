@@ -1,6 +1,7 @@
 package coin
 
 import (
+	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 	"strings"
@@ -9,23 +10,19 @@ import (
 
 func NewCoin(slug string) (c *Coin) {
 	c = new(Coin)
+
 	c.Slug = slug
 	return c
 }
 
-func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
-	c, err := cq.getCoin(slug)
-	if err != nil {
-		c = NewCoin(slug)
-		log.Print("Insert Coin: ", slug)
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		get(c)
-		c.Checked[src] = true
-		cq.WriteCoin(slug, c)
-		//utl.ErrorLog(err)
-	} else {
+
+func SetCoin(src, slug string, get func(c *Coin)) {
+	s:= strapi.New("http://127.0.0.1:1337")
+	var cc []*Coin
+	err := s.Get("coins",slug, &cc)
+	utl.ErrorLog(err)
+	if len(cc) != 0 {
+		c := cc[0]
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
@@ -37,10 +34,49 @@ func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
 			get(c)
 			log.Print("Already checked Coin: ", c.Slug)
 		}
-		cq.WriteCoin(slug, c)
+		s.Put("coins", c)
+	} else {
+		c := NewCoin(slug)
+		log.Print("Insert Coin: ", slug)
+		if c.Checked == nil {
+			c.Checked = make(map[string]bool)
+		}
+		get(c)
+		c.Checked[src] = true
+		s.Post("coins", c)
 	}
 	return
 }
+
+//func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
+//	c, err := cq.getCoin(slug)
+//	if err != nil {
+//		c = NewCoin(slug)
+//		log.Print("Insert Coin: ", slug)
+//		if c.Checked == nil {
+//			c.Checked = make(map[string]bool)
+//		}
+//		get(c)
+//		c.Checked[src] = true
+//		//cq.WriteCoin(slug, c)
+//		//utl.ErrorLog(err)
+//	} else {
+//		if c.Checked == nil {
+//			c.Checked = make(map[string]bool)
+//		}
+//		if !c.Checked[src] {
+//			log.Print("Check Coin: ", c.Slug)
+//			get(c)
+//			c.Checked[src] = true
+//		} else {
+//			get(c)
+//			log.Print("Already checked Coin: ", c.Slug)
+//		}
+//		//cq.WriteCoin(slug, c)
+//
+//	}
+//	return
+//}
 
 func (cq *CoinsQueries) WriteCoin(slug string, c interface{}) error {
 	return cq.j.Write("coin", slug, c)
@@ -51,10 +87,10 @@ func (cq *CoinsQueries) WriteInfo(slug string, c interface{}) error {
 }
 
 func (c *Coin) SetSrcID(src, id string) {
-	if c.SrcIDs == nil {
-		c.SrcIDs = make(map[string]string)
+	if c.SrcID == nil {
+		c.SrcID = make(map[string]string)
 	}
-	c.SrcIDs[src] = id
+	c.SrcID[src] = id
 }
 func (c *Coin) SetName(name interface{}) {
 	c.Name = utl.InsertString(c.Name, name)
@@ -67,8 +103,7 @@ func (c *Coin) SetSymbol(ticker interface{}) {
 }
 
 func (c *Coin) SetAlgo(algo interface{}) {
-	//c.Algo = utl.InsertString(c.Algo, algo)
-	c.Algo = algo.(string)
+	c.Algo = utl.InsertString(c.Algo, algo)
 	return
 }
 
@@ -82,8 +117,13 @@ func (c *Coin) SetProof(proof interface{}) {
 	return
 }
 
-func (c *Coin) SetStart(start string) {
-	s, err := time.Parse("2017-07-01", start)
+func (c *Coin) SetBuiltOn(proof interface{}) {
+	c.Proof = utl.InsertString(c.Proof, proof)
+	return
+}
+
+func (c *Coin) SetGenesisDate(start interface{}) {
+	s, err := time.Parse("2017-07-01", start.(string))
 	log.Log().Err(err)
 	c.GenesisDate = s
 	return
@@ -139,7 +179,7 @@ func (c *Coin) SetLogo(logo interface{}) {
 		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "128", imgs.Img128)
 		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "256", imgs.Img256)
 		//Create a empty file
-		//c.Logo = true
+		c.LogoBase64 = utl.GetIMG(logo.(string),c.Slug)
 	}
 	return
 }

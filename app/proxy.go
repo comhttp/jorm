@@ -2,10 +2,11 @@ package app
 
 import (
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -16,6 +17,7 @@ var (
 		"jorm.okno.rs":               "http://localhost:14411",
 		"our.okno.rs":                "http://localhost:14422",
 		"enso.okno.rs":               "http://localhost:14433",
+		"p9c.okno.rs":                "http://localhost:1337",
 	}
 )
 

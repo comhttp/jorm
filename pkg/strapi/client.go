@@ -1,82 +1,88 @@
 package strapi
 
 import (
+	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
+	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
+	"log"
 	"net/http"
-	"os"
-	"strconv"
 )
 
 type StrapiRestClient struct {
 	BaseUrl string
 }
 
-func New() StrapiRestClient {
-	return NewWithUlr(os.Getenv("STRAPI_BASE_URL"))
+func New(url string) StrapiRestClient {
+	return NewWithUlr(url)
 }
 
 func NewWithUlr(baseUrl string) (src StrapiRestClient) {
-
 	if baseUrl == "" {
 		panic("STRAPI BASE URL IS MANDATORY")
 	}
-
 	src.BaseUrl = baseUrl
 	return
-
 }
 
-type callback func(map[string]interface{})
-
-func call(method, url string, callback callback) error {
-
+func call(method, url,contentType string, post []byte,response interface{}) error {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-
 	client := &http.Client{Transport: tr}
-
-	req, err := http.NewRequest(method, url, nil)
-
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(post))
 	if err != nil {
 		return err
 	}
-
+	req.Header.Set("Content-Type", contentType)
 	res, err := client.Do(req)
 	if err != nil {
 		return err
 	}
-
 	defer res.Body.Close()
-
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
-
-	var bodyMap map[string]interface{}
-	err = json.Unmarshal(body, &bodyMap)
-
+	err = json.Unmarshal(body, &response)
 	if err != nil {
 		return err
 	}
-
-	callback(bodyMap)
-
 	return nil
-
 }
 
-func (src StrapiRestClient) GetUser(id int) (*StrapiUser, error) {
-	var result StrapiUser
-	err := call("GET", src.BaseUrl+"/users/"+strconv.Itoa(id), result.New)
-	return &result, err
+func  (s StrapiRestClient)Put(col string,data interface{}) error {
+	var res interface{}
+	putRest, _ := json.Marshal(data)
+	log.Println("Reponse: ",&res)
+	return call(http.MethodPut, "application/json",s.BaseUrl + "/" + col,putRest, &res)
 }
 
-func (src StrapiRestClient) GetProduct(id int) (*StrapiProduct, error) {
-	var result StrapiProduct
-	err := call("GET", src.BaseUrl+"/products/"+strconv.Itoa(id), result.New)
-	return &result, err
+func (s StrapiRestClient)Get(col,slug string, data interface{})  error {
+	return call(http.MethodGet, s.BaseUrl+"/"+col+"?slug="+slug,"application/json",nil, &data)
+}
+
+func (s StrapiRestClient)Post(col string,data interface{}) error {
+	var res interface{}
+	postRest, _ := json.Marshal(data)
+	log.Println("Reponse: ",&res)
+	return call(http.MethodPost, "application/json",s.BaseUrl + "/" + col,postRest, &res)
+}
+
+func (s StrapiRestClient) DelAll(col string) (error) {
+	var all []map[string]interface{}
+	err := call(http.MethodGet, s.BaseUrl + "/" + col ,"application/json", nil,&all)
+	utl.ErrorLog(err)
+	for _, entry := range all{
+		go s.Del(col,fmt.Sprint(entry["id"]))
+	}
+	return nil
+}
+
+func (s StrapiRestClient) Del(col, id string) (error) {
+	var res interface{}
+	log.Println("Reponse: ",&res)
+	return call(http.MethodDelete, s.BaseUrl+"/"+ col +"/"+ id,"application/json",nil, &res)
 }

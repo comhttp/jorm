@@ -1,12 +1,8 @@
 package csrc
 
-import (
-	"github.com/comhttp/jorm/pkg/jdb"
-)
-
 // GetCoinSources updates the available coin information sources
-func GetCoinSources(j *jdb.JDB) {
-	//go getCryptoCompare(j)
+func GetCoinSources() {
+	//go getCryptoCompare()
 	//go getCoinCodex(j)
 	//go getCoinGecko(j)
 	return

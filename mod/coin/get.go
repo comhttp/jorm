@@ -21,7 +21,7 @@ func (cq *CoinsQueries) GetCoinShort(slug string) (CoinShort, error) {
 }
 
 func (cq *CoinsQueries) getCoin(key string) (c *Coin, err error) {
-	err = cq.j.Read("coin", key, &c)
+	//err = cq.j.Read("coin", key, &c)
 	//utl.ErrorLog(err)
 	return c, err
 }
