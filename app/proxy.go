@@ -11,15 +11,15 @@ import (
 
 var (
 	hostTarget = map[string]string{
-		"okno.rs":                    "http://localhost:4433",
-		"parallelcoin.info":          "http://localhost:4433",
-		"explorer.parallelcoin.info": "http://localhost:4433",
-		"jorm.okno.rs":               "http://localhost:14411",
-		"our.okno.rs":                "http://localhost:14422",
-		"enso.okno.rs":               "http://localhost:14433",
-		"p9c.okno.rs":                "http://localhost:1337",
-		"api.parallelcoin.io":        "http://localhost:11121",
-		"admin.parallelcoin.io":      "http://localhost:11121",
+		"okno.rs":                    "http://127.0.0.1:4433",
+		"parallelcoin.info":          "http://127.0.0.1:4433",
+		"explorer.parallelcoin.info": "http://127.0.0.1:4433",
+		"jorm.okno.rs":               "http://127.0.0.1:14411",
+		"our.okno.rs":                "http://127.0.0.1:14422",
+		"enso.okno.rs":               "http://127.0.0.1:14433",
+		"p9c.okno.rs":                "http://127.0.0.1:1337",
+		"api.parallelcoin.io":        "http://127.0.0.1:11121",
+		"admin.parallelcoin.io":      "http://127.0.0.1:11122",
 	}
 )
 

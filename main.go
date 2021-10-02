@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"flag"
+
 	"github.com/comhttp/jorm/app"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -66,4 +67,5 @@ jdbs -bind 192.168.192.99:15502 -dbdir jdbparallelcoin -loglevel info
 //systemctl restart jorm && systemctl restart enso && systemctl restart comhttp && systemctl restart our && systemctl restart reverseproxy
 
 //systemctl stop jdbparallelcoin && systemctl stop jdbcoins && systemctl stop jdbnodes && systemctl stop jdbexchanges && systemctl stop jdbinfo
-//systemctl stop jorm && systemctl stop enso && systemctl stop our && systemctl stop comhttp  && systemctl stop reverseproxy
+//systemctl stop jorm && systemctl stop enso && systemctl stop our && systemctl stop comhttp  && systemctl stop reverseproxy  && systemctl stop parallelcoinexplorer.service  && systemctl stop okno.service
+//systemctl restart jorm && systemctl restart enso && systemctl restart our && systemctl restart comhttp  && systemctl restart reverseproxy  && systemctl restart parallelcoinexplorer.service  && systemctl restart okno.service
