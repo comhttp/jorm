@@ -20,6 +20,8 @@ var (
 		"p9c.okno.rs":                "http://127.0.0.1:1337",
 		"api.parallelcoin.io":        "http://127.0.0.1:11121",
 		"admin.parallelcoin.io":      "http://127.0.0.1:11121",
+		"api.parallelcoin.info":      "http://127.0.0.1:11121",
+		"admin.parallelcoin.info":    "http://127.0.0.1:11121",
 	}
 )
 
