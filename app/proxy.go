@@ -35,10 +35,6 @@ func (h *baseHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		reverseproxy(w, r, "http://localhost:14444")
 	}
 	w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
-	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
-
 	w.Write([]byte("403: Host forbidden " + host))
 }
 
@@ -50,6 +46,9 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
+	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
 	proxy.ServeHTTP(w, r)
 	return
 }
