@@ -1,10 +1,11 @@
 package app
 
 import (
+	"net/http"
+
 	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/rs/zerolog/log"
-	"net/http"
 )
 
 func (j *JORM) srvJORM(service, path, singleCoin string) {
