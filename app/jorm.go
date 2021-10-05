@@ -86,6 +86,16 @@ func (j *JORM) JDBclient(jdbId string) (*jdb.JDB, error) {
 	return jdb.NewJDB(j.jdbServers[jdbId])
 }
 
+func (j *JORM) STRAPIhandler() http.Handler {
+	r := mux.NewRouter()
+	r.StrictSlash(true)
+	r.Headers()
+	n := r.PathPrefix("/n").Subrouter()
+	//n.HandleFunc("/{coin}/nodes", cq.CoinNodesHandler).Methods("GET")
+	n.HandleFunc("/{coin}/{nodeip}", cq.nodeHandler).Methods("GET")
+
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+}
 func (j *JORM) ENSOhandlers() http.Handler {
 	//coinsCollection := Queries(j.B["coins"],"coin")
 	c, err := j.JDBclient("coins")
