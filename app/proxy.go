@@ -20,8 +20,8 @@ var (
 		"p9c.okno.rs":                "http://127.0.0.1:1337",
 		"api.parallelcoin.io":        "http://127.0.0.1:11121",
 		"admin.parallelcoin.io":      "http://127.0.0.1:11121",
-		"api.parallelcoin.info":      "http://127.0.0.1:14455",
-		"admin.parallelcoin.info":    "http://127.0.0.1:14455",
+		"api.parallelcoin.info":      "http://127.0.0.1:11121",
+		"admin.parallelcoin.info":    "http://127.0.0.1:11121",
 	}
 )
 
@@ -48,7 +48,7 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 
 	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
 	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
-	w.Header().Set("Access-Control-Expose-Headers", "AMP-Redirect-To")
+	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
 	proxy.ServeHTTP(w, r)
 	return
 }
