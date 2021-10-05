@@ -16,10 +16,8 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 		log.Print("reverse proxy")
 		h := &baseHandle{}
 		http.Handle("/", h)
-		// j.WWW.Handler = h
 		j.WWW.Handler = handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(h, utl.DefaultErrorHandler)))
 		j.WWW.Addr = ":" + j.config.Port["proxy"]
-
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "jorm":
 		log.Print("jorm")
