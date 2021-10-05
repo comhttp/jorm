@@ -50,6 +50,8 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
 	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
 	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
+	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
+	w.Header().Del("x-frame-options")
 	proxy.ServeHTTP(w, r)
 	return
 }
