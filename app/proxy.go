@@ -51,7 +51,7 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
 	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
 	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
-	w.Header().Del("x-frame-options")
+	w.Header().Del("X-Frame-Options")
 	proxy.ServeHTTP(w, r)
 	return
 }
