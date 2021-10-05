@@ -5,8 +5,6 @@ import (
 
 	"github.com/comhttp/jorm/mod/cloudflare"
 	"github.com/comhttp/jorm/mod/coin"
-	"github.com/comhttp/jorm/pkg/utl"
-	"github.com/gorilla/handlers"
 	"github.com/rs/zerolog/log"
 )
 
@@ -16,7 +14,7 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 		log.Print("reverse proxy")
 		h := &baseHandle{}
 		http.Handle("/", h)
-		j.WWW.Handler = handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(h, utl.DefaultErrorHandler)))
+		j.WWW.Handler = h
 		j.WWW.Addr = ":" + j.config.Port["proxy"]
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "jorm":
