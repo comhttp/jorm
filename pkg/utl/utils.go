@@ -54,4 +54,3 @@ func InterceptHandler(next http.Handler, errH ErrorHandler) http.Handler {
 		next.ServeHTTP(&interceptResponseWriter{w, errH}, r)
 	})
 }
-

@@ -2,6 +2,10 @@ package app
 
 import (
 	"crypto/tls"
+	"net/http"
+	"text/template"
+	"time"
+
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/mod/exchange"
 	"github.com/comhttp/jorm/mod/explorer"
@@ -11,9 +15,6 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"net/http"
-	"text/template"
-	"time"
 )
 
 //const (
@@ -118,7 +119,7 @@ func (j *JORM) ENSOhandlers() http.Handler {
 	coin.ENSOroutes(cq, r)
 	exchange.ENSOroutes(eq, r)
 	explorer.ENSOroutes(exq, r)
-	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(utl.CommonMiddleware(r), utl.DefaultErrorHandler)))
 }
 
 func NewJORM(service, path, singleCoin string) (j *JORM) {
