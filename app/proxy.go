@@ -45,10 +45,16 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 		log.Print("target parse fail:", err)
 		return
 	}
-
+w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
 	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
 	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
 	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token")
+	w.Header().Set("Access-Control-Allow-Credentials","true")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods","POST, GET, OPTIONS")
+
+
 	proxy.ServeHTTP(w, r)
 	return
 }
