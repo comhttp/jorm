@@ -3,6 +3,9 @@ package app
 import "C"
 import (
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/mod/src/cryptocompare"
@@ -10,8 +13,6 @@ import (
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
-	"net/http"
-	"time"
 )
 
 func (j *JORM) JormSRV() {
@@ -107,7 +108,8 @@ func (j *JORM) ExplorerSRV(coin string) {
 	jdbs := map[string]*jdb.JDB{
 		coin: jdbCl,
 	}
-	c, _ := cfg.NewCFG(j.config.Path, nil)
+
+	c, _ := cfg.NewCFG("/var/db/jorm", nil)
 	coinBitNodes := nodes.BitNodes{}
 	err = c.Read("nodes", coin, &coinBitNodes)
 	utl.ErrorLog(err)

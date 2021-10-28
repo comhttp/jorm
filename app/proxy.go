@@ -47,19 +47,18 @@ func reverseproxy(w http.ResponseWriter, r *http.Request, target string) {
 	}
 
 	proxy := httputil.NewSingleHostReverseProxy(remoteUrl)
-	w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
-	w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
-	
-	w.Header().Set("Access-Control-Allow-Credentials","true")
-	
-	w.Header().Set("AMP-Same-Origin","true")
+	// w.Header().Set("AMP-Access-Control-Allow-Source-Origin", "*")
+	// w.Header().Set("Access-Control-Expose-Headers", "AMP-Access-Control-Allow-Source-Origin")
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods","POST, GET, OPTIONS")
+	// w.Header().Set("Access-Control-Allow-Credentials","true")
 
-    w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	// w.Header().Set("AMP-Same-Origin","true")
 
-	
+	// w.Header().Set("Access-Control-Allow-Origin", "*")
+	// w.Header().Set("Access-Control-Allow-Methods","POST, GET, OPTIONS")
+
+	// w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
 	proxy.ServeHTTP(w, r)
 	return
 }

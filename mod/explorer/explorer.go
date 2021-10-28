@@ -1,10 +1,12 @@
 package explorer
 
 import (
+	"fmt"
+	"strconv"
+
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
-	"strconv"
 )
 
 // GetExplorer updates the data from blockchain of a coin in the database
@@ -31,11 +33,33 @@ func (eq *ExplorerQueries) ExploreCoin(bn nodes.BitNodes, username, password, co
 func (eq *ExplorerQueries) blockchain(bn *nodes.BitNode, coin string) {
 	if bn.Jrc != nil {
 		blockCount := bn.APIGetBlockCount()
+
+		fmt.Println("-------------------------------------")
+		fmt.Println("blockCount", blockCount)
+		fmt.Println("eq.status.Blocks", eq.status.Blocks)
+		fmt.Println("-------------------------------------")
 		log.Print("Block Count from the chain: ", blockCount)
-		log.Print("Status :  :::"+coin+" - - ", eq.status.Blocks)
+		log.Print("Status ::: "+coin+" ::: ", eq.status.Blocks)
 		if blockCount >= eq.status.Blocks {
+			eq.block(bn, coin)
 			eq.blocks(bn, blockCount, coin)
 		}
+	}
+}
+func (eq *ExplorerQueries) block(b *nodes.BitNode, coin string) {
+	blockRaw := b.APIGetBlockByHeight(eq.status.Blocks - 1)
+	if blockRaw != nil && blockRaw != "" {
+		blockHash := blockRaw.(map[string]interface{})["hash"].(string)
+		eq.j[coin].Write("block", strconv.Itoa(eq.status.Blocks), blockHash)
+		eq.j[coin].Write("block", blockHash, blockRaw)
+		block := (blockRaw).(map[string]interface{})
+		for _, t := range (block["tx"]).([]interface{}) {
+			eq.tx(b, coin, t.(string))
+		}
+		bl := blockRaw.(map[string]interface{})
+		eq.status.Blocks = int(bl["height"].(float64))
+		log.Print("Write "+coin+" block: "+strconv.Itoa(eq.status.Blocks)+" - ", blockHash)
+		eq.j[coin].Write("info", "status", eq.status)
 	}
 }
 

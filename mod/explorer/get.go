@@ -1,10 +1,12 @@
 package explorer
 
 import (
-	"github.com/comhttp/jorm/pkg/utl"
+	"fmt"
 	"sort"
 	"strconv"
 	"time"
+
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 //
@@ -33,6 +35,8 @@ func (eq *ExplorerQueries) GetExplorer(coin string) *BlockchainStatus {
 func (eq *ExplorerQueries) GetStatus(coin string) (*BlockchainStatus, error) {
 	err := eq.j[coin].Read("info", "status", &eq.status)
 	utl.ErrorLog(err)
+	fmt.Println("eq.status", eq.status)
+
 	return eq.status, err
 }
 
