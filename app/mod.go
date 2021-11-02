@@ -19,13 +19,13 @@ import (
 
 func (j *JORM) JormSRV() {
 
-	//s:= strapi.New("http://127.0.0.1:1337")
+	s := strapi.New(j.config.Strapi)
 
 	//c, err := s.GetCoin("parallelcoin")
 	//if err != nil{
 	//	fmt.Println(err)
 	//}
-	//s.DelAll("coins")
+	s.DelAll("coins")
 	//fmt.Println("Coin: ",c)
 	// c, err := j.JDBclient("coins")
 	// utl.ErrorLog(err)
