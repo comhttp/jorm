@@ -54,7 +54,6 @@ func (j *JORM) JormSRV() {
 	//	}
 	//
 	//}
-	s := strapi.New(j.config.Strapi)
 
 	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
 
