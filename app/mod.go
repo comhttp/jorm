@@ -25,7 +25,7 @@ func (j *JORM) JormSRV() {
 	//if err != nil{
 	//	fmt.Println(err)
 	//}
-	s.DelAll("coins")
+	// s.DelAll("coins")
 	//fmt.Println("Coin: ",c)
 	// c, err := j.JDBclient("coins")
 	// utl.ErrorLog(err)
