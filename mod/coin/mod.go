@@ -167,8 +167,8 @@ type CoinUser struct {
 }
 
 type Logo struct {
-	Name      string `json:"n"`
-	Slug      string `json:"s"`
-	Extension string `json:"e"`
-	Data      []byte `json:"d"`
+	Name      string `json:"name"`
+	Slug      string `json:"slug"`
+	Extension string `json:"ext"`
+	Data      []byte `json:"data"`
 }
