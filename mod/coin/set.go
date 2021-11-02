@@ -1,6 +1,7 @@
 package coin
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -17,37 +18,45 @@ func NewCoin(slug string) (c *Coin) {
 }
 
 func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
-	var cc []*Coin
-	err := s.Get("coins", slug, &cc)
-	utl.ErrorLog(err)
-	if len(cc) != 0 {
-		c := cc[0]
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		if !c.Checked[src] {
-			log.Print("Check Coin: ", c.Slug)
-			get(c)
-			c.Checked[src] = true
-		} else {
-			get(c)
-			log.Print("Already checked Coin: ", c.Slug)
-		}
-		s.Put("coins", c)
-	} else {
-		c := NewCoin(slug)
-		log.Print("Insert Coin: ", slug)
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		get(c)
-		c.Checked[src] = true
-		s.Post("coins", c)
-	}
+	// var cc []*Coin
+	// err := s.Get("coins", slug, &cc)
+	// utl.ErrorLog(err)
+	// if len(cc) != 0 {
+	// c := cc[0]
+	// if c.Checked == nil {
+	// 	c.Checked = make(map[string]bool)
+	// }
+	// if !c.Checked[src] {
+	// 	log.Print("Check Coin: ", c.Slug)
+	// 	get(c)
+	// 	c.Checked[src] = true
+	// } else {
+	// 	get(c)
+	// 	log.Print("Already checked Coin: ", c.Slug)
+	// }
+	// s.Put("coins", c)
+
+	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+	// } else {
+
+	c := NewCoin(slug)
+	// log.Print("Insert Coin: ", slug)
+	// if c.Checked == nil {
+	// 	c.Checked = make(map[string]bool)
+	// }
+	get(c)
+
+	fmt.Println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+	fmt.Println("cccccc", c.Name)
+	fmt.Println("cccccc", c.Algo)
+	// c.Checked[src] = true
+	s.Post("coins", c)
+	// }
 	return
 }
 
-func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
+func (cq *CoinsQueries) SetCoin(src, slug string, get func(c Coin)) {
 	c, err := cq.getCoin(slug)
 	if err != nil {
 		c = NewCoin(slug)
@@ -55,7 +64,7 @@ func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
-		get(c)
+		get(*c)
 		c.Checked[src] = true
 		//cq.WriteCoin(slug, c)
 		//utl.ErrorLog(err)
@@ -65,10 +74,10 @@ func (cq *CoinsQueries) SetCoin(src, slug string, get func(c *Coin)) {
 		}
 		if !c.Checked[src] {
 			log.Print("Check Coin: ", c.Slug)
-			get(c)
+			get(*c)
 			c.Checked[src] = true
 		} else {
-			get(c)
+			get(*c)
 			log.Print("Already checked Coin: ", c.Slug)
 		}
 		//cq.WriteCoin(slug, c)
