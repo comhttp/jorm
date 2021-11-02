@@ -1,8 +1,6 @@
 package coin
 
 import (
-	"fmt"
-
 	"github.com/rs/zerolog/log"
 )
 
@@ -73,7 +71,9 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 			for _, a := range algoCoins.A {
 				if a != coin.Algo {
 					algoCoins.A = append(algoCoins.A, coin.Algo)
+					return
 				}
+				return
 			}
 		} else {
 			if coin.Description != "" {
@@ -93,9 +93,6 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
-
-		fmt.Println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii:", i)
-
 	}
 
 	cq.WriteInfo("restcoins", restCoins)
