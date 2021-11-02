@@ -11,15 +11,15 @@ import (
 
 func NewCoin(slug string) (c *Coin) {
 	c = new(Coin)
-
 	c.Slug = slug
 	return c
 }
 
-func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
+func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, logo *Logo)) {
 	var cc []*Coin
 	err := s.Get("coins", slug, &cc)
 	utl.ErrorLog(err)
+	logo := &Logo{}
 	if len(cc) != 0 {
 		c := cc[0]
 		if c.Checked == nil {
@@ -27,10 +27,10 @@ func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
 		}
 		if !c.Checked[src] {
 			log.Print("Check Coin: ", c.Slug)
-			get(c)
+			get(c, logo)
 			c.Checked[src] = true
 		} else {
-			get(c)
+			get(c, logo)
 			log.Print("Already checked Coin: ", c.Slug)
 		}
 		s.Put("coins", c)
@@ -40,9 +40,10 @@ func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
-		get(c)
+		get(c, logo)
 		c.Checked[src] = true
 		s.Post("coins", c)
+		s.Post("logos", logo)
 	}
 	return
 }
@@ -168,19 +169,17 @@ func (c *Coin) SetChat(chat interface{}) {
 	return
 }
 
-func (c *Coin) SetLogo(logo interface{}) {
-	if logo.(string) != "" && logo.(string) != "missing_large.png" {
-		//imgs := utl.GetIMG(logo.(string), cfg.Path+cfg.C.Out+"/imgs/", c.Slug)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "all", imgs)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "16", imgs.Img16)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "32", imgs.Img32)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "64", imgs.Img64)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "128", imgs.Img128)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "256", imgs.Img256)
-		//Create a empty file
-		c.LogoBase64 = utl.GetIMG(logo.(string), c.Slug)
+func (c *Coin) SetLogo(logoSrc interface{}) (logo *Logo) {
+	if logoSrc.(string) != "" && logoSrc.(string) != "missing_large.png" {
+		logoRaw, _ := utl.GetIMGdata(logoSrc.(string), c.Slug)
+		logo = &Logo{
+			Name: c.Name,
+			Slug: c.Slug,
+			Data: logoRaw,
+		}
+		return
 	}
-	return
+	return logo
 }
 
 func (c *Coin) SetNetworkHashrate(supply interface{}) {

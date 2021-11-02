@@ -36,7 +36,7 @@ func ENSOroutes(cq *CoinsQueries, r *mux.Router) *mux.Router {
 	i.HandleFunc("/usable", cq.usableCoinsHandler).Methods("GET")
 	i.HandleFunc("/bin", cq.coinsBinHandler).Methods("GET")
 
-	n := r.PathPrefix("/n").Subrouter()
+	n := r.PathPrefix("/nodes").Subrouter()
 	//n.HandleFunc("/{coin}/nodes", cq.CoinNodesHandler).Methods("GET")
 	n.HandleFunc("/{coin}/{nodeip}", cq.nodeHandler).Methods("GET")
 

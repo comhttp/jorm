@@ -37,7 +37,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 	log.Print("Start ProcessCoins")
 
 	usableCoins := Coins{N: 0}
-	algoCoins := CoinsShort{N: 0}
+	algoCoins := AlgoCoins{N: 0}
 
 	coinsWords := Coins{N: 0}
 	restCoins := Coins{N: 0}
@@ -70,7 +70,11 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 			// 		algoCoins.C = append(algoCoins.C, coin)
 			// 	}
 			// }
-
+			for _, a := range algoCoins.A {
+				if a != coin.Algo {
+					algoCoins.A = append(algoCoins.A, coin.Algo)
+				}
+			}
 		} else {
 			if coin.Description != "" {
 				//len(c[i].WebSite) > 0 &&

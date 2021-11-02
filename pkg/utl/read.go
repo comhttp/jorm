@@ -3,9 +3,10 @@ package utl
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/rs/zerolog/log"
 )
 
 // Images is the list of differently scaled logo images for each coin
@@ -40,8 +41,6 @@ func GetIMG(url, slug string) Images {
 		log.Print("Problem Insert", err)
 	}
 	defer res.Body.Close()
-
-
 
 	content, err := ioutil.ReadAll(res.Body)
 
@@ -84,4 +83,13 @@ func GetIMG(url, slug string) Images {
 	//defer resp.Body.Close()
 	//log.Print(resp.Status)
 	return *i
+}
+
+func GetIMGdata(url, slug string) ([]byte, error) {
+	res, err := http.Get(url)
+	if err != nil {
+		log.Print("Problem Insert", err)
+	}
+	defer res.Body.Close()
+	return ioutil.ReadAll(res.Body)
 }
