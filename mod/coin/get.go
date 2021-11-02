@@ -5,7 +5,7 @@ import (
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
-func GetCoins(s strapi.StrapiRestClient, cc interface{}) {
+func GetCoins(s strapi.StrapiRestClient) (cc []*Coin) {
 	err := s.GetAll("coins", &cc)
 	utl.ErrorLog(err)
 	// if len(cc) != 0 {
@@ -32,7 +32,7 @@ func GetCoins(s strapi.StrapiRestClient, cc interface{}) {
 	// 	c.Checked[src] = true
 	// 	s.Post("coins", c)
 	// }
-	return
+	return cc
 }
 
 func (cq *CoinsQueries) GetCoin(slug string) (Coin, error) {

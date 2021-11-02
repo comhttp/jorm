@@ -111,8 +111,7 @@ func (j *JORM) OurSRV() {
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccc:", s)
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	coins := []*coin.Coin{}
-	coin.GetCoins(s, &coins)
+	coins := coin.GetCoins(s)
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)

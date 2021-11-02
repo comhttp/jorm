@@ -56,7 +56,19 @@ func call(method, url, contentType string, post []byte, response interface{}) er
 }
 
 func (s StrapiRestClient) GetAll(col string, data interface{}) error {
-	return call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=99999", "application/json", nil, &data)
+	var count int
+	call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
+	times := count / 300
+	start := 0
+	var allDataRaw []interface{}
+	for i := 0; i < times; i++ {
+		var dataRaw interface{}
+		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=300", "application/json", nil, &dataRaw)
+		start = start + 300
+		fmt.Println("Times: ", i)
+		allDataRaw = append(allDataRaw, dataRaw)
+	}
+	return nil
 }
 
 func (s StrapiRestClient) Get(col, slug string, data interface{}) error {
