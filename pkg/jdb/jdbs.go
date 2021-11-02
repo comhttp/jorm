@@ -1,9 +1,10 @@
 package jdb
 
 import (
-	"github.com/comhttp/jorm/pkg/utl"
 	"net/http"
 	"sync"
+
+	"github.com/comhttp/jorm/pkg/utl"
 
 	"github.com/comhttp/jdbc"
 )

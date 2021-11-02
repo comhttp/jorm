@@ -5,10 +5,11 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/comhttp/jorm/pkg/utl"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/comhttp/jorm/pkg/utl"
 )
 
 type StrapiRestClient struct {
@@ -27,7 +28,7 @@ func NewWithUlr(baseUrl string) (src StrapiRestClient) {
 	return
 }
 
-func call(method, url,contentType string, post []byte,response interface{}) error {
+func call(method, url, contentType string, post []byte, response interface{}) error {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -53,36 +54,40 @@ func call(method, url,contentType string, post []byte,response interface{}) erro
 	return nil
 }
 
-func  (s StrapiRestClient)Put(col string,data interface{}) error {
+func (s StrapiRestClient) GetAll(col string, data interface{}) error {
+	return call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=99", "application/json", nil, &data)
+}
+
+func (s StrapiRestClient) Get(col, slug string, data interface{}) error {
+	return call(http.MethodGet, s.BaseUrl+"/"+col+"?slug="+slug, "application/json", nil, &data)
+}
+
+func (s StrapiRestClient) Put(col string, data interface{}) error {
 	var res interface{}
 	putRest, _ := json.Marshal(data)
-	log.Println("Reponse: ",&res)
-	return call(http.MethodPut, "application/json",s.BaseUrl + "/" + col,putRest, &res)
+	log.Println("Reponse: ", &res)
+	return call(http.MethodPut, "application/json", s.BaseUrl+"/"+col, putRest, &res)
 }
 
-func (s StrapiRestClient)Get(col,slug string, data interface{})  error {
-	return call(http.MethodGet, s.BaseUrl+"/"+col+"?slug="+slug,"application/json",nil, &data)
-}
-
-func (s StrapiRestClient)Post(col string,data interface{}) error {
+func (s StrapiRestClient) Post(col string, data interface{}) error {
 	var res interface{}
 	postRest, _ := json.Marshal(data)
-	log.Println("Reponse: ",&res)
-	return call(http.MethodPost, "application/json",s.BaseUrl + "/" + col,postRest, &res)
+	log.Println("Reponse: ", &res)
+	return call(http.MethodPost, "application/json", s.BaseUrl+"/"+col, postRest, &res)
 }
 
-func (s StrapiRestClient) DelAll(col string) (error) {
+func (s StrapiRestClient) DelAll(col string) error {
 	var all []map[string]interface{}
-	err := call(http.MethodGet, s.BaseUrl + "/" + col ,"application/json", nil,&all)
+	err := call(http.MethodGet, s.BaseUrl+"/"+col, "application/json", nil, &all)
 	utl.ErrorLog(err)
-	for _, entry := range all{
-		go s.Del(col,fmt.Sprint(entry["id"]))
+	for _, entry := range all {
+		go s.Del(col, fmt.Sprint(entry["id"]))
 	}
 	return nil
 }
 
-func (s StrapiRestClient) Del(col, id string) (error) {
+func (s StrapiRestClient) Del(col, id string) error {
 	var res interface{}
-	log.Println("Reponse: ",&res)
-	return call(http.MethodDelete, s.BaseUrl+"/"+ col +"/"+ id,"application/json",nil, &res)
+	log.Println("Reponse: ", &res)
+	return call(http.MethodDelete, s.BaseUrl+"/"+col+"/"+id, "application/json", nil, &res)
 }

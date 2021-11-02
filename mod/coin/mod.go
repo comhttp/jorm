@@ -1,9 +1,10 @@
 package coin
 
 import (
+	"time"
+
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"time"
 )
 
 type CoinsQueries struct {
@@ -12,41 +13,41 @@ type CoinsQueries struct {
 }
 
 type Coin struct {
-	Id        int          `json:"id" form:"id"`
-	Name        string          `json:"name" form:"name"`
-	Slug        string          `json:"slug" form:"slug"`
-	Description string          `json:"description" form:"description"`
-	Published   bool            `json:"published" form:"published"`
-	Selected    bool            `json:"selected" form:"selected"`
-	Favorite    bool            `json:"fav" form:"favorite"`
-	Checked     map[string]bool `json:"checked"`
-	CreatedAt   time.Time       `json:"created"`
-	UpdatedAt   time.Time       `json:"updated"`
-	Order       int             `json:"order" form:"order"`
-	SubDomain   []string        `json:"subdomain" form:"subdomain"`
-	Symbol string `json:"symbol" form:"symbol"`
-	Token  string `json:"token" form:"token"`
-	Algo   string `json:"algo" form:"algo"`
-	Proof  string `json:"proof" form:"proof"`
-	Ico     bool   `json:"ico" form:"ico"`
-	BuiltOn string `json:"builton"`
-	GenesisDate          time.Time `json:"genesis"`
-	NetworkHashrate      float64   `json:"hashrate"`
-	MaxSupply            float64   `json:"supply"`
-	TotalCoinsMined      float64   `json:"mined"`
-	BlockHeight          int       `json:"blockheight"`
-	BlockTime            int       `json:"blocktime"`
-	Difficulty           float64   `json:"difficulty"`
-	DifficultyAdjustment string    `json:"difficultyadjustment"`
-	BlockReward          float64   `json:"blockreward"`
-	BlockRewardReduction string    `json:"blockrewardreduction"`
-	Rank     int    `json:"rank" form:"rank"`
-	Platform string `json:"platform" form:"platform"`
-	BitNode  bool   `json:"bitnode" form:"bitnode"`
-	SrcID map[string]string `json:"srcid"`
-	Logo       []byte     `json:"logo" form:"logo"`
-	LogoBase64 utl.Images `json:"logobase64" form:"logobase64"`
-	Links Links `json:"links" form:"links"`
+	Id                   int               `json:"id" form:"id"`
+	Name                 string            `json:"name" form:"name"`
+	Slug                 string            `json:"slug" form:"slug"`
+	Description          string            `json:"description" form:"description"`
+	Published            bool              `json:"published" form:"published"`
+	Selected             bool              `json:"selected" form:"selected"`
+	Favorite             bool              `json:"fav" form:"favorite"`
+	Checked              map[string]bool   `json:"checked"`
+	CreatedAt            time.Time         `json:"created"`
+	UpdatedAt            time.Time         `json:"updated"`
+	Order                int               `json:"order" form:"order"`
+	SubDomain            []string          `json:"subdomain" form:"subdomain"`
+	Symbol               string            `json:"symbol" form:"symbol"`
+	Token                string            `json:"token" form:"token"`
+	Algo                 string            `json:"algo" form:"algo"`
+	Proof                string            `json:"proof" form:"proof"`
+	Ico                  bool              `json:"ico" form:"ico"`
+	BuiltOn              string            `json:"builton"`
+	GenesisDate          time.Time         `json:"genesis"`
+	NetworkHashrate      float64           `json:"hashrate"`
+	MaxSupply            float64           `json:"supply"`
+	TotalCoinsMined      float64           `json:"mined"`
+	BlockHeight          int               `json:"blockheight"`
+	BlockTime            int               `json:"blocktime"`
+	Difficulty           float64           `json:"difficulty"`
+	DifficultyAdjustment string            `json:"difficultyadjustment"`
+	BlockReward          float64           `json:"blockreward"`
+	BlockRewardReduction string            `json:"blockrewardreduction"`
+	Rank                 int               `json:"rank" form:"rank"`
+	Platform             string            `json:"platform" form:"platform"`
+	BitNode              bool              `json:"bitnode" form:"bitnode"`
+	SrcID                map[string]string `json:"srcid"`
+	Logo                 []byte            `json:"logo" form:"logo"`
+	LogoBase64           utl.Images        `json:"logobase64" form:"logobase64"`
+	// Links Links `json:"links" form:"links"`
 	//Nodes    nodes.BitNodes    `json:"bitnode"`
 	//Markets  map[string]string `json:"markets"`
 }
@@ -128,4 +129,35 @@ type CoinsShort struct {
 type Coins struct {
 	N int      `json:"n"`
 	C []string `json:"c"`
+}
+
+type CoinUser struct {
+	Id                   int       `json:"id" form:"id"`
+	Name                 string    `json:"name" form:"name"`
+	Slug                 string    `json:"slug" form:"slug"`
+	Description          string    `json:"description" form:"description"`
+	Selected             bool      `json:"selected" form:"selected"`
+	Favorite             bool      `json:"fav" form:"favorite"`
+	UpdatedAt            time.Time `json:"updated"`
+	Order                int       `json:"order" form:"order"`
+	SubDomain            []string  `json:"subdomain" form:"subdomain"`
+	Symbol               string    `json:"symbol" form:"symbol"`
+	Token                string    `json:"token" form:"token"`
+	Algo                 string    `json:"algo" form:"algo"`
+	Proof                string    `json:"proof" form:"proof"`
+	Ico                  bool      `json:"ico" form:"ico"`
+	BuiltOn              string    `json:"builton"`
+	GenesisDate          time.Time `json:"genesis"`
+	NetworkHashrate      float64   `json:"hashrate"`
+	MaxSupply            float64   `json:"supply"`
+	TotalCoinsMined      float64   `json:"mined"`
+	BlockHeight          int       `json:"blockheight"`
+	BlockTime            int       `json:"blocktime"`
+	Difficulty           float64   `json:"difficulty"`
+	DifficultyAdjustment string    `json:"difficultyadjustment"`
+	BlockReward          float64   `json:"blockreward"`
+	BlockRewardReduction string    `json:"blockrewardreduction"`
+	Rank                 int       `json:"rank" form:"rank"`
+	Platform             string    `json:"platform" form:"platform"`
+	BitNode              bool      `json:"bitnode" form:"bitnode"`
 }

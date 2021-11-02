@@ -1,7 +1,8 @@
 package coin
 
 import (
-	"github.com/comhttp/jorm/pkg/utl"
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 )
 
@@ -32,7 +33,7 @@ import (
 //	j.Write("info", "nodecoins", nodeCoins)
 //}
 
-func (cq *CoinsQueries) ProcessCoins() {
+func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 	log.Print("Start ProcessCoins")
 
 	usableCoins := Coins{N: 0}
@@ -43,17 +44,19 @@ func (cq *CoinsQueries) ProcessCoins() {
 
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
-	c := cq.GetCoins()
-	for i, slug := range c.C {
-		coin, err := cq.getCoin(slug)
-		utl.ErrorLog(err)
-		if coin.Algo != "N/A" &&
+	for i, coin := range coins {
+
+		cq.WriteCoin(coin.Slug, coinUser(coin))
+
+		if coin.Algo != "" &&
+			coin.Algo != "N/A" &&
 			coin.Symbol != "" &&
 			//coin.NetworkHashrate != 0 &&
-			coin.BlockHeight != 0 &&
-			coin.Difficulty != 0 &&
+			// coin.BlockHeight != 0 &&
+			// coin.Difficulty != 0 &&
 			coin.Name != "" &&
 			coin.Description != "" {
+
 			algoCoins.N++
 			algoCoins.C = append(algoCoins.C, CoinShort{
 				Rank:   coin.Rank,
@@ -62,11 +65,12 @@ func (cq *CoinsQueries) ProcessCoins() {
 				Slug:   coin.Slug,
 				Algo:   coin.Algo,
 			})
-			//for _, a := range algoCoins.A {
-			//	if a != coin.Algo {
-			//		algoCoins.A = append(algoCoins.A, coin.Algo)
-			//	}
-			//}
+			// for _, a := range algoCoins.C {
+			// 	if a.Algo != coin.Algo {
+			// 		algoCoins.C = append(algoCoins.C, coin)
+			// 	}
+			// }
+
 		} else {
 			if coin.Description != "" {
 				//len(c[i].WebSite) > 0 &&
@@ -85,13 +89,50 @@ func (cq *CoinsQueries) ProcessCoins() {
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, coin.Slug)
+
+		fmt.Println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii:", i)
+
 	}
 
 	cq.WriteInfo("restcoins", restCoins)
+
 	cq.WriteInfo("algocoins", algoCoins)
 	cq.WriteInfo("wordscoins", coinsWords)
 	cq.WriteInfo("usablecoins", usableCoins)
 	cq.WriteInfo("allcoins", allCoins)
 	cq.WriteInfo("bincoins", coinsBin)
 	log.Print("End ProcessCoins")
+}
+
+func coinUser(coin *Coin) CoinUser {
+	return CoinUser{
+		Id:                   coin.Id,
+		Name:                 coin.Name,
+		Slug:                 coin.Slug,
+		Description:          coin.Description,
+		Selected:             coin.Selected,
+		Favorite:             coin.Favorite,
+		UpdatedAt:            coin.UpdatedAt,
+		Order:                coin.Order,
+		SubDomain:            coin.SubDomain,
+		Symbol:               coin.Symbol,
+		Token:                coin.Token,
+		Algo:                 coin.Algo,
+		Proof:                coin.Proof,
+		Ico:                  coin.Ico,
+		BuiltOn:              coin.BuiltOn,
+		GenesisDate:          coin.GenesisDate,
+		NetworkHashrate:      coin.NetworkHashrate,
+		MaxSupply:            coin.MaxSupply,
+		TotalCoinsMined:      coin.TotalCoinsMined,
+		BlockHeight:          coin.BlockHeight,
+		BlockTime:            coin.BlockTime,
+		Difficulty:           coin.Difficulty,
+		DifficultyAdjustment: coin.DifficultyAdjustment,
+		BlockReward:          coin.BlockReward,
+		BlockRewardReduction: coin.BlockRewardReduction,
+		Rank:                 coin.Rank,
+		Platform:             coin.Platform,
+		BitNode:              coin.BitNode,
+	}
 }

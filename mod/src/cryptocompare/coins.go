@@ -2,7 +2,9 @@ package cryptocompare
 
 import (
 	"fmt"
+
 	"github.com/comhttp/jorm/mod/coin"
+	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -20,7 +22,7 @@ type Coin struct {
 	CoinName         string `json:"CoinName"`
 	FullName         string `json:"FullName"`
 	Description      string `json:"Description"`
-	BuiltOn      string `json:"BuiltOn"`
+	BuiltOn          string `json:"BuiltOn"`
 	AssetTokenStatus string `json:"AssetTokenStatus"`
 	Algorithm        string `json:"Algorithm"`
 	ProofType        string `json:"ProofType"`
@@ -45,7 +47,7 @@ type Coin struct {
 	} `json:"Rating"`
 	IsTrading          bool    `json:"IsTrading"`
 	TotalCoinsMined    float64 `json:"TotalCoinsMined"`
-	Difficulty    float64 `json:"Difficulty"`
+	Difficulty         float64 `json:"Difficulty"`
 	BlockNumber        int     `json:"BlockNumber"`
 	NetHashesPerSecond float64 `json:"NetHashesPerSecond"`
 	BlockReward        float64 `json:"BlockReward"`
@@ -57,14 +59,14 @@ type Coin struct {
 	IsUsedInNft        int     `json:"IsUsedInNft"`
 }
 
-func (c *cryptocompare) GetAllCoins() {
+func (c *cryptocompare) GetAllCoins(s strapi.StrapiRestClient) {
 	allCoins := &rawAllCoins{}
 	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/all/coinlist", allCoins)
 	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare COINS:::::::::::::::::::::::::::::: ")
 	for _, ccCoin := range allCoins.Data {
 		if ccCoin.CoinName != "" {
 			slug := utl.MakeSlug(ccCoin.CoinName)
-			coin.SetCoin("cryptocompare", slug, getCryptoCompareCoin(ccCoin))
+			go coin.SetCoin(s, "cryptocompare", slug, getCryptoCompareCoin(ccCoin))
 		}
 	}
 	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare COINS:::::::::::::::::::::::::::::: ")
@@ -75,7 +77,7 @@ func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin) {
 	return func(c *coin.Coin) {
 		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
 			c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
-			fmt.Println("ImageURL:  ","https://cryptocompare.com" + ccCoin.ImageURL)
+			fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)
 		}
 		c.SetSrcID("cryptocompare", ccCoin.ID)
 		c.SetName(ccCoin.CoinName)

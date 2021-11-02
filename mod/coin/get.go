@@ -1,8 +1,39 @@
 package coin
 
 import (
+	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 )
+
+func GetCoins(s strapi.StrapiRestClient, cc interface{}) {
+	err := s.GetAll("coins", &cc)
+	utl.ErrorLog(err)
+	// if len(cc) != 0 {
+	// 	c := cc[0]
+	// 	if c.Checked == nil {
+	// 		c.Checked = make(map[string]bool)
+	// 	}
+	// 	if !c.Checked[src] {
+	// 		log.Print("Check Coin: ", c.Slug)
+	// 		get(c)
+	// 		c.Checked[src] = true
+	// 	} else {
+	// 		get(c)
+	// 		log.Print("Already checked Coin: ", c.Slug)
+	// 	}
+	// 	s.Put("coins", c)
+	// } else {
+	// 	c := NewCoin(slug)
+	// 	log.Print("Insert Coin: ", slug)
+	// 	if c.Checked == nil {
+	// 		c.Checked = make(map[string]bool)
+	// 	}
+	// 	get(c)
+	// 	c.Checked[src] = true
+	// 	s.Post("coins", c)
+	// }
+	return
+}
 
 func (cq *CoinsQueries) GetCoin(slug string) (Coin, error) {
 	c, err := cq.getCoin(slug)

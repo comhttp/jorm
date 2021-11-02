@@ -2,6 +2,7 @@ package cfg
 
 // Conf is the configuration for accessing bitnodes endpoint
 type Config struct {
+	Strapi  string
 	COMHTTP []string
 	Port    map[string]string
 	Path    string
