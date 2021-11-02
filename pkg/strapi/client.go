@@ -55,7 +55,7 @@ func call(method, url, contentType string, post []byte, response interface{}) er
 }
 
 func (s StrapiRestClient) GetAll(col string, data interface{}) error {
-	return call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=99", "application/json", nil, &data)
+	return call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=99999", "application/json", nil, &data)
 }
 
 func (s StrapiRestClient) Get(col, slug string, data interface{}) error {
