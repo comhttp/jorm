@@ -52,9 +52,6 @@ func call(method, url, contentType string, post []byte, response interface{}) er
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-	fmt.Println("cccccc", response)
 	return nil
 }
 
@@ -74,14 +71,14 @@ func (s StrapiRestClient) Put(col string, data interface{}) error {
 }
 
 func (s StrapiRestClient) Post(col string, data interface{}) error {
-	var res interface{}
-
 	postRest, _ := json.Marshal(data)
-	log.Println("Reponse: ", &res)
-
-	fmt.Println("s.BaseUrl", s.BaseUrl)
-
-	return call(http.MethodPost, "application/json", s.BaseUrl+"/"+col, postRest, &res)
+	responseBody := bytes.NewBuffer(postRest)
+	resp, err := http.Post(s.BaseUrl+"/"+col, "application/json", responseBody)
+	if err != nil {
+		log.Print(err)
+	}
+	log.Print(resp)
+	return nil
 }
 
 func (s StrapiRestClient) DelAll(col string) error {

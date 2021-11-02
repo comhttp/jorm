@@ -1,7 +1,6 @@
 package coin
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
@@ -12,47 +11,38 @@ import (
 
 func NewCoin(slug string) (c *Coin) {
 	c = new(Coin)
-
 	c.Slug = slug
 	return c
 }
 
 func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
-	// var cc []*Coin
-	// err := s.Get("coins", slug, &cc)
-	// utl.ErrorLog(err)
-	// if len(cc) != 0 {
-	// c := cc[0]
-	// if c.Checked == nil {
-	// 	c.Checked = make(map[string]bool)
-	// }
-	// if !c.Checked[src] {
-	// 	log.Print("Check Coin: ", c.Slug)
-	// 	get(c)
-	// 	c.Checked[src] = true
-	// } else {
-	// 	get(c)
-	// 	log.Print("Already checked Coin: ", c.Slug)
-	// }
-	// s.Put("coins", c)
-
-	fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-
-	// } else {
-
-	c := NewCoin(slug)
-	// log.Print("Insert Coin: ", slug)
-	// if c.Checked == nil {
-	// 	c.Checked = make(map[string]bool)
-	// }
-	get(c)
-
-	fmt.Println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-	fmt.Println("cccccc", c.Name)
-	fmt.Println("cccccc", c.Algo)
-	// c.Checked[src] = true
-	s.Post("coins", c)
-	// }
+	var cc []*Coin
+	err := s.Get("coins", slug, &cc)
+	utl.ErrorLog(err)
+	if len(cc) != 0 {
+		c := cc[0]
+		if c.Checked == nil {
+			c.Checked = make(map[string]bool)
+		}
+		if !c.Checked[src] {
+			log.Print("Check Coin: ", c.Slug)
+			get(c)
+			c.Checked[src] = true
+		} else {
+			get(c)
+			log.Print("Already checked Coin: ", c.Slug)
+		}
+		s.Put("coins", c)
+	} else {
+		c := NewCoin(slug)
+		log.Print("Insert Coin: ", slug)
+		if c.Checked == nil {
+			c.Checked = make(map[string]bool)
+		}
+		get(c)
+		c.Checked[src] = true
+		s.Post("coins", c)
+	}
 	return
 }
 
