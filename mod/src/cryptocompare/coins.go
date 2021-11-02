@@ -66,17 +66,17 @@ func (c *cryptocompare) GetAllCoins(s strapi.StrapiRestClient) {
 	for _, ccCoin := range allCoins.Data {
 		if ccCoin.CoinName != "" {
 			slug := utl.MakeSlug(ccCoin.CoinName)
-			go coin.SetCoin(s, "cryptocompare", slug, getCryptoCompareCoin(ccCoin))
+			coin.SetCoin(s, "cryptocompare", slug, getCryptoCompareCoin(ccCoin))
 		}
 	}
 	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare COINS:::::::::::::::::::::::::::::: ")
 	return
 }
 
-func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin, logo *coin.Logo) {
-	return func(c *coin.Coin, logo *coin.Logo) {
+func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin) {
+	return func(c *coin.Coin) {
 		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
-			logo = c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
+			c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
 			fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)
 		}
 		c.SetSrcID("cryptocompare", ccCoin.ID)

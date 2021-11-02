@@ -73,12 +73,13 @@ func (s StrapiRestClient) Post(col string, data interface{}) error {
 	var res interface{}
 	postRest, _ := json.Marshal(data)
 	log.Println("Reponse: ", &res)
+
 	return call(http.MethodPost, "application/json", s.BaseUrl+"/"+col, postRest, &res)
 }
 
 func (s StrapiRestClient) DelAll(col string) error {
 	var all []map[string]interface{}
-	err := call(http.MethodGet, s.BaseUrl+"/"+col, "application/json", nil, &all)
+	err := call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=9999", "application/json", nil, &all)
 	utl.ErrorLog(err)
 	for _, entry := range all {
 		go s.Del(col, fmt.Sprint(entry["id"]))
