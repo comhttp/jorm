@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/comhttp/jorm/pkg/jdb"
-	"github.com/comhttp/jorm/pkg/utl"
 )
 
 type CoinsQueries struct {
@@ -45,8 +44,8 @@ type Coin struct {
 	Platform             string            `json:"platform" form:"platform"`
 	BitNode              bool              `json:"bitnode" form:"bitnode"`
 	SrcID                map[string]string `json:"srcid"`
-	Logo                 []byte            `json:"logo" form:"logo"`
-	LogoBase64           utl.Images        `json:"logobase64" form:"logobase64"`
+	// Logo                 []byte            `json:"logo" form:"logo"`
+	// LogoBase64           utl.Images        `json:"logobase64" form:"logobase64"`
 	// Links Links `json:"links" form:"links"`
 	//Nodes    nodes.BitNodes    `json:"bitnode"`
 	//Markets  map[string]string `json:"markets"`

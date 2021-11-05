@@ -15,10 +15,16 @@ func NewCoin(slug string) (c *Coin) {
 	return c
 }
 
-func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
+func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, l *utl.Logo)) {
 	var cc []*Coin
 	err := s.Get("coins", slug, &cc)
 	utl.ErrorLog(err)
+	var ll []*utl.Logo
+	err = s.Get("logos", slug, &ll)
+	utl.ErrorLog(err)
+	l := &utl.Logo{
+		Slug: slug,
+	}
 	if len(cc) != 0 {
 		c := cc[0]
 		if c.Checked == nil {
@@ -26,10 +32,13 @@ func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
 		}
 		if !c.Checked[src] {
 			log.Print("Check Coin: ", c.Slug)
-			get(c)
+			get(c, l)
+			if ll[0].Data == "" {
+				s.Post("logos", l)
+			}
 			c.Checked[src] = true
 		} else {
-			get(c)
+			get(c, l)
 			log.Print("Already checked Coin: ", c.Slug)
 		}
 		s.Put("coins", c)
@@ -39,9 +48,10 @@ func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin)) {
 		if c.Checked == nil {
 			c.Checked = make(map[string]bool)
 		}
-		get(c)
+		get(c, l)
 		c.Checked[src] = true
 		s.Post("coins", c)
+		s.Post("logos", l)
 	}
 	return
 }
@@ -164,22 +174,6 @@ func (c *Coin) SetExplorer(explorer interface{}) {
 
 func (c *Coin) SetChat(chat interface{}) {
 	//c.Chat = utl.InsertStringSlice(c.Chat, chat)
-	return
-}
-
-func (c *Coin) SetLogo(logo interface{}) {
-	if logo.(string) != "" && logo.(string) != "missing_large.png" {
-		//imgs := utl.GetIMG(logo.(string), cfg.Path+cfg.C.Out+"/imgs/", c.Slug)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "all", imgs)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "16", imgs.Img16)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "32", imgs.Img32)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "64", imgs.Img64)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "128", imgs.Img128)
-		//jdb.JDB.Write(filepath.FromSlash(cfg.C.Out+"/imgs/"+c.Slug+"/base64/"), "256", imgs.Img256)
-		//Create a empty file
-		c.LogoBase64 = utl.GetIMG(logo.(string), c.Slug)
-
-	}
 	return
 }
 

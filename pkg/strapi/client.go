@@ -8,8 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/comhttp/jorm/pkg/utl"
 )
 
 type StrapiRestClient struct {
@@ -58,13 +56,13 @@ func call(method, url, contentType string, post []byte, response interface{}) er
 func (s StrapiRestClient) GetAll(col string, data interface{}) error {
 	var count int
 	call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
-	times := count / 300
+	times := count / 99
 	start := 0
 	var allDataRaw []interface{}
 	for i := 0; i < times; i++ {
 		var dataRaw interface{}
-		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=300", "application/json", nil, &dataRaw)
-		start = start + 300
+		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=99", "application/json", nil, &dataRaw)
+		start = start + 99
 		fmt.Println("Times: ", i)
 		allDataRaw = append(allDataRaw, dataRaw)
 	}
@@ -94,10 +92,31 @@ func (s StrapiRestClient) Post(col string, data interface{}) error {
 }
 
 func (s StrapiRestClient) DelAll(col string) error {
-	var all []map[string]interface{}
-	err := call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=9999", "application/json", nil, &all)
-	utl.ErrorLog(err)
-	for _, entry := range all {
+
+	// var count int
+	// call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
+	// times := count / 99
+	// start := 0
+
+	// fmt.Println("countcountcount: ", count)
+	// fmt.Println("timestimestimestimes: ", times)
+
+	var allDataRaw []map[string]interface{}
+	call(http.MethodGet, s.BaseUrl+"/"+col+"?_limit=3333", "application/json", nil, &allDataRaw)
+
+	// for i := 0; i < times; i++ {
+
+	// 	fmt.Println("start: ", start)
+	// fmt.Println("allDataRawallDataRawallDataRawallDataRaw", allDataRaw)
+
+	// 	dataRaw := make(map[string]interface{})
+	// 	call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=99", "application/json", nil, &dataRaw)
+	// 	start = start + 99
+	// 	fmt.Println("Times: ", i)
+	// 	allDataRaw = append(allDataRaw, dataRaw)
+	// }
+	for _, entry := range allDataRaw {
+		fmt.Println("entryslugentryslugentryslug", entry["slug"])
 		go s.Del(col, fmt.Sprint(entry["id"]))
 	}
 	return nil

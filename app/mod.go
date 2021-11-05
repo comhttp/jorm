@@ -21,11 +21,13 @@ func (j *JORM) JormSRV() {
 
 	s := strapi.New(j.config.Strapi)
 
+	// s.DelAll("coins")
+	// s.DelAll("logos")
+
 	//c, err := s.GetCoin("parallelcoin")
 	//if err != nil{
 	//	fmt.Println(err)
 	//}
-	// s.DelAll("coins")
 	//fmt.Println("Coin: ",c)
 	// c, err := j.JDBclient("coins")
 	// utl.ErrorLog(err)

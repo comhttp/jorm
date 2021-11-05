@@ -73,10 +73,10 @@ func (c *cryptocompare) GetAllCoins(s strapi.StrapiRestClient) {
 	return
 }
 
-func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin) {
-	return func(c *coin.Coin) {
+func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin, l *utl.Logo) {
+	return func(c *coin.Coin, l *utl.Logo) {
 		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
-			c.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
+			l.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
 			fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)
 		}
 		c.SetSrcID("cryptocompare", ccCoin.ID)
