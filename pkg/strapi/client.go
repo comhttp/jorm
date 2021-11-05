@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 type StrapiRestClient struct {
@@ -53,20 +54,20 @@ func call(method, url, contentType string, post []byte, response interface{}) er
 	return nil
 }
 
-func (s StrapiRestClient) GetAll(col string, data interface{}) error {
+func (s StrapiRestClient) GetAll(col string) (data []map[string]interface{}, err error) {
 	var count int
 	call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
 	times := count / 99
 	start := 0
-	var allDataRaw []interface{}
 	for i := 0; i < times; i++ {
-		var dataRaw interface{}
+		var dataRaw map[string]interface{}
 		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=99", "application/json", nil, &dataRaw)
 		start = start + 99
 		fmt.Println("Times: ", i)
-		allDataRaw = append(allDataRaw, dataRaw)
+		data = append(data, dataRaw)
+		time.Sleep(1 * time.Second)
 	}
-	return nil
+	return data, err
 }
 
 func (s StrapiRestClient) Get(col, slug string, data interface{}) error {

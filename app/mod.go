@@ -113,10 +113,26 @@ func (j *JORM) OurSRV() {
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccc:", s)
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	coins := coin.GetCoins(s)
+	// coins := coin.GetCoins(s)
+
+	coins, err := s.GetAll("coins")
+	utl.ErrorLog(err)
+
+	logos, err := s.GetAll("logos")
+	utl.ErrorLog(err)
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)
+
+	lq := coin.Queries(c, "logo")
+
+	for _, logo := range logos {
+		// l := logo.([]map[string]interface{})[0].(map[string]interface{})
+		lq.WriteLogo(logo["slug"].(string), logo["data"])
+	}
+	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)
+	// fmt.Println("coinscoinscoinscoinscoinscoinscoinscoinscoinscoinscoins:", coins)
+
 	cq := coin.Queries(c, "coin")
 
 	cq.ProcessCoins(coins)

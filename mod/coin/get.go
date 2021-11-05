@@ -6,8 +6,8 @@ import (
 )
 
 func GetCoins(s strapi.StrapiRestClient) (cc []*Coin) {
-	err := s.GetAll("coins", &cc)
-	utl.ErrorLog(err)
+	// err := s.GetAll("coins", &cc)
+	// utl.ErrorLog(err)
 	// if len(cc) != 0 {
 	// 	c := cc[0]
 	// 	if c.Checked == nil {

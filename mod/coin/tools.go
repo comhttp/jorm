@@ -31,8 +31,8 @@ import (
 //	j.Write("info", "nodecoins", nodeCoins)
 //}
 
-func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
-	log.Print("Start ProcessCoins")
+func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
+	log.Print("Start Process Coins")
 
 	usableCoins := Coins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
@@ -44,24 +44,24 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 	allCoins := Coins{N: 0}
 	for i, coin := range coins {
 
-		cq.WriteCoin(coin.Slug, coinUser(coin))
+		cq.WriteCoin(coin["Slug"].(string), coin)
 
-		if coin.Algo != "" &&
-			coin.Algo != "N/A" &&
-			coin.Symbol != "" &&
+		if coin["algo"].(string) != "" &&
+			coin["algo"].(string) != "N/A" &&
+			coin["symbol"].(string) != "" &&
 			//coin.NetworkHashrate != 0 &&
 			// coin.BlockHeight != 0 &&
 			// coin.Difficulty != 0 &&
-			coin.Name != "" &&
-			coin.Description != "" {
+			coin["name"].(string) != "" &&
+			coin["description"].(string) != "" {
 
 			algoCoins.N++
 			algoCoins.C = append(algoCoins.C, CoinShort{
-				Rank:   coin.Rank,
-				Name:   coin.Name,
-				Symbol: coin.Symbol,
-				Slug:   coin.Slug,
-				Algo:   coin.Algo,
+				Rank:   coin["rank"].(int),
+				Name:   coin["name"].(string),
+				Symbol: coin["symbol"].(string),
+				Slug:   coin["slug"].(string),
+				Algo:   coin["algo"].(string),
 			})
 			// for _, a := range algoCoins.C {
 			// 	if a.Algo != coin.Algo {
@@ -69,30 +69,30 @@ func (cq *CoinsQueries) ProcessCoins(coins []*Coin) {
 			// 	}
 			// }
 			for _, a := range algoCoins.A {
-				if a != coin.Algo {
-					algoCoins.A = append(algoCoins.A, coin.Algo)
+				if a != coin["algo"].(string) {
+					algoCoins.A = append(algoCoins.A, coin["algo"].(string))
 					return
 				}
 				return
 			}
 		} else {
-			if coin.Description != "" {
+			if coin["description"].(string) != "" {
 				//len(c[i].WebSite) > 0 &&
 				// len(coin.WebSite) > 0 &&
 				//if c[i].Platform != "token" &&
 				restCoins.N++
-				restCoins.C = append(restCoins.C, coin.Slug)
+				restCoins.C = append(restCoins.C, coin["slug"].(string))
 			} else {
 				coinsBin.N++
-				coinsBin.C = append(coinsBin.C, coin.Slug)
+				coinsBin.C = append(coinsBin.C, coin["slug"].(string))
 			}
 		}
 		usableCoins.N = i
-		usableCoins.C = append(usableCoins.C, coin.Slug)
-		coinsWords.C = append(coinsWords.C, coin.Name)
+		usableCoins.C = append(usableCoins.C, coin["slug"].(string))
+		coinsWords.C = append(coinsWords.C, coin["name"].(string))
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
-		allCoins.C = append(allCoins.C, coin.Slug)
+		allCoins.C = append(allCoins.C, coin["slug"].(string))
 	}
 
 	cq.WriteInfo("restcoins", restCoins)

@@ -90,6 +90,10 @@ func (cq *CoinsQueries) WriteCoin(slug string, c interface{}) error {
 	return cq.j.Write("coin", slug, c)
 }
 
+func (cq *CoinsQueries) WriteLogo(slug string, c interface{}) error {
+	return cq.j.Write("logo", slug, c)
+}
+
 func (cq *CoinsQueries) WriteInfo(slug string, c interface{}) error {
 	return cq.j.Write("info", slug, c)
 }
