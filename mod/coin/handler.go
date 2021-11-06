@@ -216,7 +216,7 @@ func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Requ
 			Symbol: ac.Symbol,
 			Slug:   ac.Slug,
 			Algo:   ac.Algo,
-			Logo:   base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 64)),
+			Logo:   base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 16)),
 		})
 	}
 	algoCoinsLogo.A = algoCoins.A
