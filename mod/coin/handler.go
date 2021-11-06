@@ -245,7 +245,15 @@ func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Requ
 	//}
 	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	//json.NewEncoder(w).Encode(out)
-	json.NewEncoder(w).Encode(algoCoinsLogo)
+	// json.NewEncoder(w).Encode(algoCoinsLogo)
+
+	out, err := json.Marshal(algoCoinsLogo)
+	if err != nil {
+		log.Print("Error encoding JSON")
+		return
+	}
+	w.Write([]byte(out))
+
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//}
