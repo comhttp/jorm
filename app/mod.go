@@ -129,6 +129,7 @@ func (j *JORM) OurSRV() {
 			// l := logo.(map[string]interface{})
 			// l := ll[0].(map[string]interface{})
 			lq.WriteLogo(logo["slug"].(string), logo["data"])
+			time.Sleep(333 * time.Millisecond)
 		}
 	}
 	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)

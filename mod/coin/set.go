@@ -34,8 +34,10 @@ func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, l *i
 		if !c.Checked[src] {
 			log.Print("Check Coin: ", c.Slug)
 			get(c, l)
-			if ll[0].Data == "" {
-				s.Post("logos", l)
+			if len(ll) > 0 {
+				if ll[0].Data == "" {
+					s.Post("logos", l)
+				}
 			}
 			c.Checked[src] = true
 		} else {
