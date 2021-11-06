@@ -114,24 +114,25 @@ func (j *JORM) OurSRV() {
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	// coins := coin.GetCoins(s)
 	fmt.Println("Start OUR process")
-	logos := s.GetAll("logos")
 
 	coins := s.GetAll("coins")
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)
 
-	lq := coin.Queries(c, "logo")
-
 	go func() {
 		fmt.Println("Start logos import")
+
+		logos := s.GetAll("logos")
+		lq := coin.Queries(c, "logo")
+
 		for _, logo := range logos {
 			// l := logo.([]map[string]interface{})[0].(map[string]interface{})
 			if logo != nil {
 				// l := logo.(map[string]interface{})
 				// l := ll[0].(map[string]interface{})
 				lq.WriteLogo(logo["slug"].(string), logo["data"])
-				time.Sleep(333 * time.Millisecond)
+				time.Sleep(999 * time.Millisecond)
 			}
 		}
 		fmt.Println("End logos import")
