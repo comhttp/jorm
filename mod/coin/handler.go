@@ -207,9 +207,10 @@ func (cq *CoinsQueries) getLogo(coin string, size float64) []byte {
 // jsonHandler handles a request for json data
 func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Request) {
 	algoCoins := cq.GetAlgoCoins()
-	var algoCoinsLogo []CoinShortLogo
+
+	var algoCoinsLogo AlgoCoinsLogo
 	for _, ac := range algoCoins.C {
-		algoCoinsLogo = append(algoCoinsLogo, CoinShortLogo{
+		algoCoinsLogo.C = append(algoCoinsLogo.C, CoinShortLogo{
 			Rank:   ac.Rank,
 			Name:   ac.Name,
 			Symbol: ac.Symbol,
@@ -218,6 +219,8 @@ func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Requ
 			Logo:   base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 64)),
 		})
 	}
+	algoCoinsLogo.A = algoCoins.A
+	algoCoinsLogo.N = algoCoins.N
 	// out, err := json.Marshal(algoCoinsLogo)
 	// if err != nil {
 	// 	log.Print("Error encoding JSON: ", err)

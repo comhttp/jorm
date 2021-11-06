@@ -135,6 +135,13 @@ type AlgoCoins struct {
 	C []CoinShort `json:"c"`
 	A []string    `json:"a"`
 }
+
+type AlgoCoinsLogo struct {
+	N int             `json:"n"`
+	C []CoinShortLogo `json:"c"`
+	A []string        `json:"a"`
+}
+
 type CoinsShort struct {
 	N int         `json:"n"`
 	C []CoinShort `json:"c"`

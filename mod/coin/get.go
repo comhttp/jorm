@@ -91,8 +91,8 @@ func (cq *CoinsQueries) GetCoinsWords() (c Coins) {
 	utl.ErrorLog(err)
 	return c
 }
-func (cq *CoinsQueries) GetAlgoCoins() CoinsShort {
-	c := CoinsShort{}
+func (cq *CoinsQueries) GetAlgoCoins() AlgoCoins {
+	c := AlgoCoins{}
 	err := cq.j.Read("info", "algocoins", &c)
 	utl.ErrorLog(err)
 	return c

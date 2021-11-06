@@ -1,6 +1,8 @@
 package coin
 
 import (
+	"time"
+
 	"github.com/rs/zerolog/log"
 )
 
@@ -87,6 +89,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, c["slug"].(string))
+		time.Sleep(99 * time.Microsecond)
 
 	}
 
