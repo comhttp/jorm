@@ -109,29 +109,34 @@ func (j *JORM) OurSRV() {
 	s := strapi.New(j.config.Strapi)
 
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
+	fmt.Println("Start OUR")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	// coins := coin.GetCoins(s)
+	fmt.Println("Start OUR process")
+	logos := s.GetAll("logos")
 
 	coins := s.GetAll("coins")
-
-	logos := s.GetAll("logos")
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)
 
 	lq := coin.Queries(c, "logo")
 
-	for _, logo := range logos {
-		// l := logo.([]map[string]interface{})[0].(map[string]interface{})
-		if logo != nil {
-			// l := logo.(map[string]interface{})
-			// l := ll[0].(map[string]interface{})
-			lq.WriteLogo(logo["slug"].(string), logo["data"])
-			time.Sleep(333 * time.Millisecond)
+	go func() {
+		fmt.Println("Start logos import")
+		for _, logo := range logos {
+			// l := logo.([]map[string]interface{})[0].(map[string]interface{})
+			if logo != nil {
+				// l := logo.(map[string]interface{})
+				// l := ll[0].(map[string]interface{})
+				lq.WriteLogo(logo["slug"].(string), logo["data"])
+				time.Sleep(333 * time.Millisecond)
+			}
 		}
-	}
+		fmt.Println("End logos import")
+	}()
+
 	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)
 
 	// for i, cc := range coins {
@@ -170,6 +175,7 @@ func (j *JORM) OurSRV() {
 	// 		}
 	// 	}
 	// }()
+	fmt.Println("End OUR process")
 }
 
 func (j *JORM) ExplorerSRV(coin string) {

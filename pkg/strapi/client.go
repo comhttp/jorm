@@ -58,19 +58,19 @@ func (s StrapiRestClient) GetAll(col string) []map[string]interface{} {
 	var count int
 	var data []map[string]interface{}
 	call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
-	times := count/99 + 1
+	items := 384
+	times := count/items + 1
 	start := 0
 	for i := 0; i < times; i++ {
 		var dataRaw []map[string]interface{}
-		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit=99", "application/json", nil, &dataRaw)
-		start = start + 99
+		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit="+fmt.Sprint(items), "application/json", nil, &dataRaw)
+		start = start + items
 		fmt.Println(col+" times: ", i)
 		for _, d := range dataRaw {
 			data = append(data, d)
 		}
 		time.Sleep(1 * time.Second)
 	}
-
 	return data
 }
 
