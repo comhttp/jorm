@@ -47,6 +47,9 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	for i, c := range coins {
 
 		cq.WriteCoin(c["slug"].(string), c)
+
+		log.Print("Tu jeee")
+
 		if c["algo"].(string) != "" &&
 			c["algo"].(string) != "N/A" &&
 			c["symbol"].(string) != "" &&
