@@ -123,19 +123,21 @@ func (j *JORM) OurSRV() {
 	// go func() {
 	fmt.Println("Start logos import")
 
-	logos := s.GetAll("logos")
-	lq := coin.Queries(c, "logo")
+	// logos := s.GetAll("logos")
+	// lq := coin.Queries(c, "logo")
 
-	for _, logo := range logos {
-		// l := logo.([]map[string]interface{})[0].(map[string]interface{})
-		if logo != nil {
-			// l := logo.(map[string]interface{})
-			// l := ll[0].(map[string]interface{})
-			lq.WriteLogo(logo["slug"].(string), logo["data"])
-			time.Sleep(999 * time.Millisecond)
-		}
-	}
-	fmt.Println("End logos import")
+	// for _, logo := range logos {
+	// 	// l := logo.([]map[string]interface{})[0].(map[string]interface{})
+	// 	if logo != nil {
+	// 		// l := logo.(map[string]interface{})
+	// 		// l := ll[0].(map[string]interface{})
+	// 		lq.WriteLogo(logo["slug"].(string), logo["data"])
+	// 		time.Sleep(999 * time.Millisecond)
+	// 	}
+	// }
+
+	// fmt.Println("End logos import")
+
 	// }()
 
 	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)

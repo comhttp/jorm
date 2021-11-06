@@ -1,8 +1,11 @@
 package coin
 
 import (
+	"encoding/base64"
+	"fmt"
 	"time"
 
+	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
 )
 
@@ -94,6 +97,28 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 
 	}
 
+	algoCoins.A = utl.RemoveDuplicateStr(algoCoins.A)
+
+	var algoCoinsLogo AlgoCoinsLogo
+	for _, ac := range algoCoins.C {
+		logo := base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 16))
+
+		fmt.Println("logologologologologologoccc :   ", logo)
+
+		if logo != "" {
+			algoCoinsLogo.C = append(algoCoinsLogo.C, CoinShortLogo{
+				Rank:   ac.Rank,
+				Name:   ac.Name,
+				Symbol: ac.Symbol,
+				Slug:   ac.Slug,
+				Algo:   ac.Algo,
+				Logo:   logo,
+			})
+		}
+	}
+	algoCoinsLogo.A = algoCoins.A
+	algoCoinsLogo.N = algoCoins.N
+
 	// fmt.Println("algoCoinsAAAA :   ", algoCoins.A)
 	// fmt.Println("algoCoins :   ", algoCoins)
 	// fmt.Println("coinsWords :   ", coinsWords)
@@ -104,6 +129,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	cq.WriteInfo("restcoins", restCoins)
 
 	cq.WriteInfo("algocoins", algoCoins)
+	cq.WriteInfo("algocoinslogo", algoCoinsLogo)
 	cq.WriteInfo("wordscoins", coinsWords)
 	cq.WriteInfo("usablecoins", usableCoins)
 	cq.WriteInfo("allcoins", allCoins)
