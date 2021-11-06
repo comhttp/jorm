@@ -106,7 +106,7 @@ func (j *JORM) JormSRV() {
 
 func (j *JORM) OurSRV() {
 
-	// s := strapi.New(j.config.Strapi)
+	s := strapi.New(j.config.Strapi)
 
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("Start OUR")
@@ -115,7 +115,7 @@ func (j *JORM) OurSRV() {
 	// coins := coin.GetCoins(s)
 	fmt.Println("Start OUR process")
 
-	// coins := s.GetAll("coins")
+	coins := s.GetAll("coins")
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)
@@ -147,8 +147,7 @@ func (j *JORM) OurSRV() {
 
 	cq := coin.Queries(c, "coin")
 
-	fmt.Println("cqcqcq:  ", cq.GetAllCoins())
-	// cq.ProcessCoins(coins)
+	cq.ProcessCoins(coins)
 
 	// // cq := &coin.CoinsQueries{}
 	// jdbCl, err := j.JDBclient("coins")
