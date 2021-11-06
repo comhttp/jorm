@@ -2,7 +2,6 @@ package coin
 
 import (
 	"encoding/base64"
-	"fmt"
 	"time"
 
 	"github.com/comhttp/jorm/pkg/utl"
@@ -102,9 +101,6 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	var algoCoinsLogo AlgoCoinsLogo
 	for _, ac := range algoCoins.C {
 		logo := base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 16))
-
-		fmt.Println("logologologologologologoccc :   ", logo)
-
 		if logo != "" {
 			algoCoinsLogo.C = append(algoCoinsLogo.C, CoinShortLogo{
 				Rank:   ac.Rank,
@@ -112,7 +108,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 				Symbol: ac.Symbol,
 				Slug:   ac.Slug,
 				Algo:   ac.Algo,
-				Logo:   logo,
+				Logo:   "data:image/png;base64," + logo,
 			})
 		}
 	}
