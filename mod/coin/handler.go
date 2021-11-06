@@ -2,7 +2,6 @@ package coin
 
 import "C"
 import (
-	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"net/http"
@@ -206,55 +205,12 @@ func (cq *CoinsQueries) getLogo(coin string, size float64) []byte {
 
 // jsonHandler handles a request for json data
 func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Request) {
-	algoCoins := cq.GetAlgoCoins()
-
-	var algoCoinsLogo AlgoCoinsLogo
-	for _, ac := range algoCoins.C {
-		algoCoinsLogo.C = append(algoCoinsLogo.C, CoinShortLogo{
-			Rank:   ac.Rank,
-			Name:   ac.Name,
-			Symbol: ac.Symbol,
-			Slug:   ac.Slug,
-			Algo:   ac.Algo,
-			Logo:   base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 16)),
-		})
-	}
-	algoCoinsLogo.A = algoCoins.A
-	algoCoinsLogo.N = algoCoins.N
-	// out, err := json.Marshal(algoCoinsLogo)
-	// if err != nil {
-	// 	log.Print("Error encoding JSON: ", err)
-	// }
-	//v := mux.Vars(r)
-	//m := minify.New()
-	//height, err := strconv.ParseUint(v["file"], 10, 64)
-	//if err != nil {
-	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
-	//path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
-	//http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(j.config.Path+"/www/"+path)))).ServeHTTP(w, r)
-	//} else {
-	//	index := map[uint64]string{}
-	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {
-	//	log.Print("Error", err)
-	//}
-
-	//log.Print("index[height]", index[height])
-	//out := map[string]interface{}{}
-	//if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
-	//	log.Print("Error", err)
-	//}
-	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
-	//json.NewEncoder(w).Encode(out)
-	// json.NewEncoder(w).Encode(algoCoinsLogo)
-
+	algoCoinsLogo := cq.GetAlgoCoinsLogo()
 	out, err := json.Marshal(algoCoinsLogo)
 	if err != nil {
-		log.Print("Error encoding JSON")
-		return
+		log.Print("Error encoding JSON", err)
 	}
-	w.Write([]byte(out))
-
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	//}
+	w.Write([]byte(out))
 }

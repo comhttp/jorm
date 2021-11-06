@@ -97,6 +97,14 @@ func (cq *CoinsQueries) GetAlgoCoins() AlgoCoins {
 	utl.ErrorLog(err)
 	return c
 }
+
+func (cq *CoinsQueries) GetAlgoCoinsLogo() AlgoCoinsLogo {
+	c := AlgoCoinsLogo{}
+	err := cq.j.Read("info", "algocoinslogo", &c)
+	utl.ErrorLog(err)
+	return c
+}
+
 func (cq *CoinsQueries) GetUsableCoins() Coins {
 	c := Coins{}
 	err := cq.j.Read("info", "usablecoins", &c)
