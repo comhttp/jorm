@@ -1,4 +1,4 @@
-package utl
+package img
 
 import (
 	"encoding/hex"
@@ -21,7 +21,7 @@ func (l *Logo) SetLogo(url string) {
 		}
 		defer res.Body.Close()
 		logo, err := ioutil.ReadAll(res.Body)
-		img256, _ := imageResize(logo, options{Width: 256, Height: 256})
+		img256, _ := ImageResize(logo, Options{Width: 256, Height: 256})
 
 		l.Data = hex.EncodeToString(img256)
 	}

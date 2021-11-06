@@ -1,4 +1,4 @@
-package utl
+package img
 
 import (
 	"encoding/base64"
@@ -44,11 +44,11 @@ func GetIMG(url, slug string) Images {
 
 	content, err := ioutil.ReadAll(res.Body)
 
-	img16, _ := imageResize(content, options{Width: 16, Height: 16})
-	img32, _ := imageResize(content, options{Width: 32, Height: 32})
-	img64, _ := imageResize(content, options{Width: 64, Height: 64})
-	img128, _ := imageResize(content, options{Width: 128, Height: 128})
-	img256, _ := imageResize(content, options{Width: 256, Height: 256})
+	img16, _ := ImageResize(content, Options{Width: 16, Height: 16})
+	img32, _ := ImageResize(content, Options{Width: 32, Height: 32})
+	img64, _ := ImageResize(content, Options{Width: 64, Height: 64})
+	img128, _ := ImageResize(content, Options{Width: 128, Height: 128})
+	img256, _ := ImageResize(content, Options{Width: 256, Height: 256})
 	i := new(Images)
 	i.Img16 = base64.StdEncoding.EncodeToString(img16)
 	i.Img32 = base64.StdEncoding.EncodeToString(img32)

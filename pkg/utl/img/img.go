@@ -1,15 +1,16 @@
-package utl
+package img
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"image"
 	_ "image/gif" // register gif format
 	"image/jpeg"
 	"image/png"
 	"io"
 	"math"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/disintegration/imaging"
 	"github.com/muesli/smartcrop"
@@ -26,8 +27,8 @@ const defaultQuality = 95
 // maximum distance into image to look for EXIF tags
 const maxExifSize = 1 << 20
 
-// options specifies transformations to be performed on the requested image.
-type options struct {
+// Options specifies transformations to be performed on the requested image.
+type Options struct {
 	// See ParseOptions for interpretation of Width and Height values
 	Width  float64
 	Height float64
@@ -72,7 +73,7 @@ var resampleFilter = imaging.Lanczos
 // Transform the provided image.  img should contain the raw bytes of an
 // encoded image in one of the supported formats (gif, jpeg, or png).  The
 // bytes of a similarly encoded image is returned.
-func imageResize(img []byte, opt options) ([]byte, error) {
+func ImageResize(img []byte, opt Options) ([]byte, error) {
 	if !opt.transform() {
 		// bail if no transformation was requested
 		return img, nil
@@ -161,7 +162,7 @@ func evaluateFloat(f float64, max int) int {
 
 // resizeParams determines if the image needs to be resized, and if so, the
 // dimensions to resize to.
-func resizeParams(m image.Image, opt options) (w, h int, resize bool) {
+func resizeParams(m image.Image, opt Options) (w, h int, resize bool) {
 	// convert percentage width and height values to absolute values
 	imgW := m.Bounds().Dx()
 	imgH := m.Bounds().Dy()
@@ -187,7 +188,7 @@ func resizeParams(m image.Image, opt options) (w, h int, resize bool) {
 }
 
 // cropParams calculates crop rectangle parameters to keep it in image bounds
-func cropParams(m image.Image, opt options) image.Rectangle {
+func cropParams(m image.Image, opt Options) image.Rectangle {
 	if !opt.SmartCrop && opt.CropX == 0 && opt.CropY == 0 && opt.CropWidth == 0 && opt.CropHeight == 0 {
 		return m.Bounds()
 	}
@@ -245,7 +246,7 @@ func cropParams(m image.Image, opt options) image.Rectangle {
 }
 
 // read EXIF orientation tag from r and adjust opt to orient image correctly.
-func exifOrientation(r io.Reader) (opt options) {
+func exifOrientation(r io.Reader) (opt Options) {
 	// Exif Orientation Tag values
 	// http://sylvana.net/jpegcrop/exif_orientation.html
 	const (
@@ -297,7 +298,7 @@ func exifOrientation(r io.Reader) (opt options) {
 
 // transformImage modifies the image m based on the transformations specified
 // in opt.
-func transformImage(m image.Image, opt options) image.Image {
+func transformImage(m image.Image, opt Options) image.Image {
 	// Parse crop and resize parameters before applying any transforms.
 	// This is to ensure that any percentage-based values are based off the
 	// size of the original image.
@@ -343,6 +344,6 @@ func transformImage(m image.Image, opt options) image.Image {
 	return m
 }
 
-func (o options) transform() bool {
+func (o Options) transform() bool {
 	return o.Width != 0 || o.Height != 0 || o.Rotate != 0 || o.FlipHorizontal || o.FlipVertical || o.Quality != 0 || o.Format != "" || o.CropX != 0 || o.CropY != 0 || o.CropWidth != 0 || o.CropHeight != 0
 }

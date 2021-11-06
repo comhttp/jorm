@@ -42,58 +42,60 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
-	for i, coin := range coins {
+	for i, c := range coins {
 
-		cq.WriteCoin(coin["Slug"].(string), coin)
-
-		if coin["algo"].(string) != "" &&
-			coin["algo"].(string) != "N/A" &&
-			coin["symbol"].(string) != "" &&
+		cq.WriteCoin(c["slug"].(string), c)
+		if c["algo"].(string) != "" &&
+			c["algo"].(string) != "N/A" &&
+			c["symbol"].(string) != "" &&
 			//coin.NetworkHashrate != 0 &&
 			// coin.BlockHeight != 0 &&
 			// coin.Difficulty != 0 &&
-			coin["name"].(string) != "" &&
-			coin["description"].(string) != "" {
+			c["name"].(string) != "" &&
+			c["description"].(string) != "" {
 
 			algoCoins.N++
 			algoCoins.C = append(algoCoins.C, CoinShort{
-				Rank:   coin["rank"].(int),
-				Name:   coin["name"].(string),
-				Symbol: coin["symbol"].(string),
-				Slug:   coin["slug"].(string),
-				Algo:   coin["algo"].(string),
+				Rank:   int(c["rank"].(float64)),
+				Name:   c["name"].(string),
+				Symbol: c["symbol"].(string),
+				Slug:   c["slug"].(string),
+				Algo:   c["algo"].(string),
 			})
-			// for _, a := range algoCoins.C {
-			// 	if a.Algo != coin.Algo {
-			// 		algoCoins.C = append(algoCoins.C, coin)
-			// 	}
+			algoCoins.A = append(algoCoins.A, c["algo"].(string))
+
+			// } else {
+			// fmt.Println("cname else  :::", c["name"].(string))
+			// if c["description"].(string) != "" {
+			// 	//len(c[i].WebSite) > 0 &&
+			// 	// len(coin.WebSite) > 0 &&
+			// 	//if c[i].Platform != "token" &&
+			// 	restCoins.N++
+			// 	restCoins.C = append(restCoins.C, c["slug"].(string))
+			// } else {
+
+			// 	fmt.Println("descriptiondescriptiondescription ccc :   ", c)
+
+			// 	coinsBin.N++
+			// 	coinsBin.C = append(coinsBin.C, c["slug"].(string))
 			// }
-			for _, a := range algoCoins.A {
-				if a != coin["algo"].(string) {
-					algoCoins.A = append(algoCoins.A, coin["algo"].(string))
-					return
-				}
-				return
-			}
-		} else {
-			if coin["description"].(string) != "" {
-				//len(c[i].WebSite) > 0 &&
-				// len(coin.WebSite) > 0 &&
-				//if c[i].Platform != "token" &&
-				restCoins.N++
-				restCoins.C = append(restCoins.C, coin["slug"].(string))
-			} else {
-				coinsBin.N++
-				coinsBin.C = append(coinsBin.C, coin["slug"].(string))
-			}
 		}
+
 		usableCoins.N = i
-		usableCoins.C = append(usableCoins.C, coin["slug"].(string))
-		coinsWords.C = append(coinsWords.C, coin["name"].(string))
+		usableCoins.C = append(usableCoins.C, c["slug"].(string))
+		coinsWords.C = append(coinsWords.C, c["name"].(string))
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
-		allCoins.C = append(allCoins.C, coin["slug"].(string))
+		allCoins.C = append(allCoins.C, c["slug"].(string))
+
 	}
+
+	// fmt.Println("algoCoinsAAAA :   ", algoCoins.A)
+	// fmt.Println("algoCoins :   ", algoCoins)
+	// fmt.Println("coinsWords :   ", coinsWords)
+	// fmt.Println("usableCoins :   ", usableCoins)
+	// fmt.Println("allCoins :   ", allCoins)
+	// fmt.Println("coinsBin :   ", coinsBin)
 
 	cq.WriteInfo("restcoins", restCoins)
 
@@ -102,6 +104,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	cq.WriteInfo("usablecoins", usableCoins)
 	cq.WriteInfo("allcoins", allCoins)
 	cq.WriteInfo("bincoins", coinsBin)
+
 	log.Print("End ProcessCoins")
 }
 

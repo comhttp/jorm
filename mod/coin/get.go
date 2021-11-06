@@ -39,6 +39,7 @@ func (cq *CoinsQueries) GetCoin(slug string) (Coin, error) {
 	c, err := cq.getCoin(slug)
 	return *c, err
 }
+
 func (cq *CoinsQueries) GetCoinShort(slug string) (CoinShort, error) {
 	c, err := cq.getCoin(slug)
 	cs := &CoinShort{
@@ -52,8 +53,8 @@ func (cq *CoinsQueries) GetCoinShort(slug string) (CoinShort, error) {
 }
 
 func (cq *CoinsQueries) getCoin(key string) (c *Coin, err error) {
-	//err = cq.j.Read("coin", key, &c)
-	//utl.ErrorLog(err)
+	err = cq.j.Read("coin", key, &c)
+	utl.ErrorLog(err)
 	return c, err
 }
 
@@ -107,4 +108,10 @@ func (cq *CoinsQueries) GetCoinsBin() Coins {
 	err := cq.j.Read("info", "bincoins", &c)
 	utl.ErrorLog(err)
 	return c
+}
+
+func (cq *CoinsQueries) GetLogo(coin string) (l string, err error) {
+	err = cq.j.Read("logo", coin, &l)
+	utl.ErrorLog(err)
+	return l, err
 }

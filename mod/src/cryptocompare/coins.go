@@ -6,6 +6,7 @@ import (
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl/img"
 )
 
 type rawAllCoins struct {
@@ -73,8 +74,8 @@ func (c *cryptocompare) GetAllCoins(s strapi.StrapiRestClient) {
 	return
 }
 
-func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin, l *utl.Logo) {
-	return func(c *coin.Coin, l *utl.Logo) {
+func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin, l *img.Logo) {
+	return func(c *coin.Coin, l *img.Logo) {
 		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
 			l.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
 			fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)

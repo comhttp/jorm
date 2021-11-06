@@ -40,5 +40,11 @@ func ENSOroutes(cq *CoinsQueries, r *mux.Router) *mux.Router {
 	//n.HandleFunc("/{coin}/nodes", cq.CoinNodesHandler).Methods("GET")
 	n.HandleFunc("/{coin}/{nodeip}", cq.nodeHandler).Methods("GET")
 
+	l := r.PathPrefix("/logo").Subrouter()
+	l.HandleFunc("/{coin}/{size}", cq.LogoHandler).Methods("GET")
+
+	j := r.PathPrefix("/json").Subrouter()
+	j.HandleFunc("/algo", cq.jsonAlgoCoinsHandler).Methods("GET")
+
 	return r
 }

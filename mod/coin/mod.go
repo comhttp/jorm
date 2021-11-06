@@ -120,6 +120,16 @@ type CoinShort struct {
 	Algo   string `json:"a"`
 }
 
+// Coin stores identifying information about coins in the database
+type CoinShortLogo struct {
+	Rank   int    `json:"r"`
+	Name   string `json:"n"`
+	Symbol string `json:"y"`
+	Slug   string `json:"s"`
+	Algo   string `json:"a"`
+	Logo   string `json:"l"`
+}
+
 type AlgoCoins struct {
 	N int         `json:"n"`
 	C []CoinShort `json:"c"`

@@ -6,6 +6,7 @@ import (
 
 	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl/img"
 	"github.com/rs/zerolog/log"
 )
 
@@ -15,14 +16,14 @@ func NewCoin(slug string) (c *Coin) {
 	return c
 }
 
-func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, l *utl.Logo)) {
+func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, l *img.Logo)) {
 	var cc []*Coin
 	err := s.Get("coins", slug, &cc)
 	utl.ErrorLog(err)
-	var ll []*utl.Logo
+	var ll []*img.Logo
 	err = s.Get("logos", slug, &ll)
 	utl.ErrorLog(err)
-	l := &utl.Logo{
+	l := &img.Logo{
 		Slug: slug,
 	}
 	if len(cc) != 0 {

@@ -110,16 +110,13 @@ func (j *JORM) OurSRV() {
 
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccc:", s)
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
 	// coins := coin.GetCoins(s)
 
-	coins, err := s.GetAll("coins")
-	utl.ErrorLog(err)
+	coins := s.GetAll("coins")
 
-	logos, err := s.GetAll("logos")
-	utl.ErrorLog(err)
+	logos := s.GetAll("logos")
 
 	c, err := j.JDBclient("coins")
 	utl.ErrorLog(err)
@@ -128,10 +125,18 @@ func (j *JORM) OurSRV() {
 
 	for _, logo := range logos {
 		// l := logo.([]map[string]interface{})[0].(map[string]interface{})
-		lq.WriteLogo(logo["slug"].(string), logo["data"])
+		if logo != nil {
+			// l := logo.(map[string]interface{})
+			// l := ll[0].(map[string]interface{})
+			lq.WriteLogo(logo["slug"].(string), logo["data"])
+		}
 	}
 	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)
-	// fmt.Println("coinscoinscoinscoinscoinscoinscoinscoinscoinscoinscoins:", coins)
+
+	// for i, cc := range coins {
+	// 	fmt.Println("coinscoinscoinscoinscoinscoinscoinscoinscoinscoinscoins:", cc)
+	// 	fmt.Println("coiiiii:", i)
+	// }
 
 	cq := coin.Queries(c, "coin")
 

@@ -2,10 +2,15 @@ package coin
 
 import "C"
 import (
+	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/comhttp/jorm/pkg/utl/img"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
-	"net/http"
 )
 
 type home struct {
@@ -175,6 +180,69 @@ func (cq *CoinsQueries) ViewJSONfolder(w http.ResponseWriter, r *http.Request) {
 	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
 	//json.NewEncoder(w).Encode(out)
 	json.NewEncoder(w).Encode("out")
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//}
+}
+
+// LogoHandler handles a request for logo data
+func (cq *CoinsQueries) LogoHandler(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	size, err := strconv.ParseFloat(v["size"], 32)
+	log.Print("Error encoding JSON: ", err)
+	w.Write(cq.getLogo(v["coin"], size))
+}
+
+// LogoHandler handles a request for logo data
+func (cq *CoinsQueries) getLogo(coin string, size float64) []byte {
+	logoRawString, err := cq.GetLogo(coin)
+	if err != nil {
+		log.Print("Error encoding JSON")
+	}
+	logoRaw, err := hex.DecodeString(logoRawString)
+	logo, _ := img.ImageResize(logoRaw, img.Options{Width: size, Height: size})
+	return logo
+}
+
+// jsonHandler handles a request for json data
+func (cq *CoinsQueries) jsonAlgoCoinsHandler(w http.ResponseWriter, r *http.Request) {
+	algoCoins := cq.GetAlgoCoins()
+	var algoCoinsLogo []CoinShortLogo
+	for _, ac := range algoCoins.C {
+		algoCoinsLogo = append(algoCoinsLogo, CoinShortLogo{
+			Rank:   ac.Rank,
+			Name:   ac.Name,
+			Symbol: ac.Symbol,
+			Slug:   ac.Slug,
+			Algo:   ac.Algo,
+			Logo:   base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 64)),
+		})
+	}
+	// out, err := json.Marshal(algoCoinsLogo)
+	// if err != nil {
+	// 	log.Print("Error encoding JSON: ", err)
+	// }
+	//v := mux.Vars(r)
+	//m := minify.New()
+	//height, err := strconv.ParseUint(v["file"], 10, 64)
+	//if err != nil {
+	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
+	//path := v["sec"] + "/" + v["coin"] + "/" + v["type"]
+	//http.StripPrefix("/e/"+path, m.Middleware(http.FileServer(http.Dir(j.config.Path+"/www/"+path)))).ServeHTTP(w, r)
+	//} else {
+	//	index := map[uint64]string{}
+	//if err := jdb.JDB.Read("/www/data/"+v["coin"]+"/index", v["type"], &index); err != nil {
+	//	log.Print("Error", err)
+	//}
+
+	//log.Print("index[height]", index[height])
+	//out := map[string]interface{}{}
+	//if err := jdb.JDB.Read(cfg.C.Out+"/"+v["coin"]+"/"+v["type"], index[height], &out); err != nil {
+	//	log.Print("Error", err)
+	//}
+	//m.AddFuncRegexp(regexp.MustCompile("[/+]json$"), mjson.Minify)
+	//json.NewEncoder(w).Encode(out)
+	json.NewEncoder(w).Encode(algoCoinsLogo)
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//}
