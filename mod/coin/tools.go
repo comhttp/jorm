@@ -45,6 +45,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
 	for i, c := range coins {
+		log.Print("pree Tu jeee")
 
 		cq.WriteCoin(c["slug"].(string), c)
 
