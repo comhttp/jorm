@@ -100,7 +100,7 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 
 	var algoCoinsLogo AlgoCoinsLogo
 	for _, ac := range algoCoins.C {
-		logo := base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 16))
+		logo := base64.StdEncoding.EncodeToString(cq.getLogo(ac.Slug, 32))
 		if logo != "" {
 			algoCoinsLogo.C = append(algoCoinsLogo.C, CoinShortLogo{
 				Rank:   ac.Rank,
