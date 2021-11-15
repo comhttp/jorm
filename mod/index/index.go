@@ -1,9 +1,10 @@
-package strapi
+package index
 
 import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 )
 
@@ -41,10 +42,10 @@ import (
 //
 //}
 
-func (s StrapiRestClient) SetIndex(slug string, collection []map[string]interface{}, typeFunc func(c map[string]interface{}) interface{}) {
+func SetIndex(s strapi.StrapiRestClient, slug string, collection []map[string]interface{}, typeFunc func(c map[string]interface{}) interface{}) {
 	var new bool
 	// collection := s.GetAll(col)
-	indexRaw := s.GetIndex(slug)
+	indexRaw := GetIndex(s, slug)
 	if indexRaw == nil {
 		indexRaw = make(map[string]interface{})
 	}
@@ -87,9 +88,9 @@ func (s StrapiRestClient) SetIndex(slug string, collection []map[string]interfac
 	return
 }
 
-func (s StrapiRestClient) SetIndexItem(slug string, item map[string]interface{}) {
+func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interface{}) {
 	var new bool
-	indexRaw := s.GetIndex(slug)
+	indexRaw := GetIndex(s, slug)
 	if indexRaw == nil {
 		indexRaw = make(map[string]interface{})
 	}
@@ -122,7 +123,7 @@ func (s StrapiRestClient) SetIndexItem(slug string, item map[string]interface{})
 	return
 }
 
-func (s StrapiRestClient) GetIndex(col string) (ix map[string]interface{}) {
+func GetIndex(s strapi.StrapiRestClient, col string) (ix map[string]interface{}) {
 	indexRaw := []interface{}{}
 	err := s.Get("indices", col, &indexRaw)
 	utl.ErrorLog(err)
