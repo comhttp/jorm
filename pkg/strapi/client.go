@@ -58,7 +58,7 @@ func (s StrapiRestClient) GetAll(col string) []map[string]interface{} {
 	var count int
 	var data []map[string]interface{}
 	call(http.MethodGet, s.BaseUrl+"/"+col+"/count", "application/json", nil, &count)
-	items := 384
+	items := 768
 	times := count/items + 1
 	start := 0
 	for i := 0; i < times; i++ {
@@ -79,10 +79,11 @@ func (s StrapiRestClient) Get(col, slug string, data interface{}) error {
 }
 
 func (s StrapiRestClient) Put(col string, data interface{}) error {
-	var res interface{}
+	var resp interface{}
 	putRest, _ := json.Marshal(&data)
-	log.Println("Reponse: ", &res)
-	return call(http.MethodPut, "application/json", s.BaseUrl+"/"+col, putRest, &res)
+	log.Print(resp)
+
+	return call(http.MethodPut, "application/json", s.BaseUrl+"/"+col, putRest, &resp)
 }
 
 func (s StrapiRestClient) Post(col string, data interface{}) error {

@@ -61,13 +61,20 @@ type Coin struct {
 }
 
 func (c *cryptocompare) GetAllCoins(s strapi.StrapiRestClient) {
+	var coins []string
+	err := s.Get("indices", "coins", coins)
+	utl.ErrorLog(err)
+	var logos []string
+	err = s.Get("indices", "logos", logos)
+	utl.ErrorLog(err)
+
 	allCoins := &rawAllCoins{}
 	utl.GetSourceHeadersAPIkey(c.apiKey, c.apiEndpoint+"data/all/coinlist", allCoins)
 	fmt.Println("::::::::::::::::::::::::::::::::START cryptocompare COINS:::::::::::::::::::::::::::::: ")
 	for _, ccCoin := range allCoins.Data {
 		if ccCoin.CoinName != "" {
 			slug := utl.MakeSlug(ccCoin.CoinName)
-			coin.SetCoin(s, "cryptocompare", slug, getCryptoCompareCoin(ccCoin))
+			coin.SetCoin(s, coins, logos, "cryptocompare", slug, getCryptoCompareCoin(ccCoin))
 		}
 	}
 	fmt.Println("::::::::::::::::::::::::::::::::END cryptocompare COINS:::::::::::::::::::::::::::::: ")
@@ -78,7 +85,7 @@ func getCryptoCompareCoin(ccCoin Coin) func(c *coin.Coin, l *img.Logo) {
 	return func(c *coin.Coin, l *img.Logo) {
 		if ccCoin.ImageURL != "" && ccCoin.ImageURL != "<nil>" {
 			l.SetLogo("https://cryptocompare.com" + ccCoin.ImageURL)
-			fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)
+			// fmt.Println("ImageURL:  ", "https://cryptocompare.com"+ccCoin.ImageURL)
 		}
 		c.SetSrcID("cryptocompare", ccCoin.ID)
 		c.SetName(ccCoin.CoinName)

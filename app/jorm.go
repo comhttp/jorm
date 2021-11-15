@@ -28,7 +28,7 @@ import (
 
 type (
 	JORM struct {
-		Coins     coin.Coins
+		Coins     []string
 		Coin      string
 		NodeCoins []string
 		Explorers map[string]*explorer.Explorer
@@ -44,6 +44,10 @@ type (
 		goHTML     *template.Template
 		config     cfg.Config
 		jdbServers map[string]string
+	}
+	Index struct {
+		Slug string      `json:"slug"`
+		Data interface{} `json:"data"`
 	}
 )
 

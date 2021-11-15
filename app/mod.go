@@ -9,7 +9,6 @@ import (
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/mod/src/cryptocompare"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/strapi"
@@ -57,9 +56,26 @@ func (j *JORM) JormSRV() {
 	//
 	//}
 
-	cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+	/////////////////----------------------------------------------------------------------------
 
-	cc.GetAllCoins(s)
+	// coins := s.GetAll("coins")
+	// s.SetIndex("coins", coins, nil)
+	// s.SetIndex("allcoins", coins, coin.SetCoinsIndex())
+
+	// logos := s.GetAll("logos")
+	// s.SetIndex("logos", logos, nil)
+
+	c, err := j.JDBclient("coins")
+	utl.ErrorLog(err)
+
+	cq := coin.Queries(c, "coin")
+
+	cq.ProcessCoins(s)
+	// cc := cryptocompare.NewCryptoCompareAPI(j.config.ApiKeys["cryptocompare"])
+
+	// cc.GetAllCoins(s)
+
+	/////////////////----------------------------------------------------------------------------
 	//cc.GetAllExchanges(eq)
 	//minerstat.GetAllCoins(cq)
 
@@ -102,83 +118,6 @@ func (j *JORM) JormSRV() {
 	//log.Fatal(j.WWW.ListenAndServe())
 	//log.Fatal(j.WS.ListenAndServeTLS("", ""))
 
-}
-
-func (j *JORM) OurSRV() {
-
-	s := strapi.New(j.config.Strapi)
-
-	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	fmt.Println("Start OUR")
-	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	fmt.Println("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc: ")
-	// coins := coin.GetCoins(s)
-	fmt.Println("Start OUR process")
-
-	coins := s.GetAll("coins")
-
-	c, err := j.JDBclient("coins")
-	utl.ErrorLog(err)
-
-	// go func() {
-	fmt.Println("Start logos import")
-
-	// logos := s.GetAll("logos")
-	// lq := coin.Queries(c, "logo")
-
-	// for _, logo := range logos {
-	// 	// l := logo.([]map[string]interface{})[0].(map[string]interface{})
-	// 	if logo != nil {
-	// 		// l := logo.(map[string]interface{})
-	// 		// l := ll[0].(map[string]interface{})
-	// 		lq.WriteLogo(logo["slug"].(string), logo["data"])
-	// 		time.Sleep(999 * time.Millisecond)
-	// 	}
-	// }
-
-	// fmt.Println("End logos import")
-
-	// }()
-
-	// fmt.Println("logoslogoslogoslogoslogoslogoslogoslogoslogoslogos:", logos)
-
-	// for i, cc := range coins {
-	// 	fmt.Println("coinscoinscoinscoinscoinscoinscoinscoinscoinscoinscoins:", cc)
-	// 	fmt.Println("coiiiii:", i)
-	// }
-
-	cq := coin.Queries(c, "coin")
-
-	cq.ProcessCoins(coins)
-
-	// // cq := &coin.CoinsQueries{}
-	// jdbCl, err := j.JDBclient("coins")
-	// if err != nil {
-	// 	utl.ErrorLog(err)
-	// }
-	// fmt.Println("jdbCljdbCljdbCljdbCljdbCljdbCl: ", jdbCl)
-	// cq := coin.Queries(jdbCl, "coins")
-	// if cq != nil {
-	// 	cq.ProcessCoins(coins)
-	// }
-
-	// fmt.Println("cqcqcqcqcqcqcq: ", cq.GetAllCoins())
-
-	// ticker := time.NewTicker(999 * time.Second)
-	// quit := make(chan struct{})
-	// go func() {
-	// 	for {
-	// 		select {
-	// 		case <-ticker.C:
-	// 			j.Tickers()
-	// 			log.Print("OKNO wooikos")
-	// 		case <-quit:
-	// 			ticker.Stop()
-	// 			return
-	// 		}
-	// 	}
-	// }()
-	fmt.Println("End OUR process")
 }
 
 func (j *JORM) ExplorerSRV(coin string) {

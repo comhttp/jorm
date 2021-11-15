@@ -4,9 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
-	"github.com/comhttp/jorm/pkg/utl/img"
 	"github.com/rs/zerolog/log"
 )
 
@@ -14,91 +12,6 @@ func NewCoin(slug string) (c *Coin) {
 	c = new(Coin)
 	c.Slug = slug
 	return c
-}
-
-func SetCoin(s strapi.StrapiRestClient, src, slug string, get func(c *Coin, l *img.Logo)) {
-	var cc []*Coin
-	err := s.Get("coins", slug, &cc)
-	utl.ErrorLog(err)
-	var ll []*img.Logo
-	err = s.Get("logos", slug, &ll)
-	utl.ErrorLog(err)
-	l := &img.Logo{
-		Slug: slug,
-	}
-	if len(cc) != 0 {
-		c := cc[0]
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		if !c.Checked[src] {
-			log.Print("Check Coin: ", c.Slug)
-			get(c, l)
-			if len(ll) > 0 {
-				if ll[0].Data == "" {
-					s.Post("logos", l)
-				}
-			}
-			c.Checked[src] = true
-		} else {
-			get(c, l)
-			log.Print("Already checked Coin: ", c.Slug)
-		}
-		s.Put("coins", c)
-	} else {
-		c := NewCoin(slug)
-		log.Print("Insert Coin: ", slug)
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		get(c, l)
-		c.Checked[src] = true
-		s.Post("coins", c)
-		s.Post("logos", l)
-	}
-	return
-}
-
-func (cq *CoinsQueries) SetCoin(src, slug string, get func(c Coin)) {
-	c, err := cq.getCoin(slug)
-	if err != nil {
-		c = NewCoin(slug)
-		log.Print("Insert Coin: ", slug)
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		get(*c)
-		c.Checked[src] = true
-		//cq.WriteCoin(slug, c)
-		//utl.ErrorLog(err)
-	} else {
-		if c.Checked == nil {
-			c.Checked = make(map[string]bool)
-		}
-		if !c.Checked[src] {
-			log.Print("Check Coin: ", c.Slug)
-			get(*c)
-			c.Checked[src] = true
-		} else {
-			get(*c)
-			log.Print("Already checked Coin: ", c.Slug)
-		}
-		//cq.WriteCoin(slug, c)
-
-	}
-	return
-}
-
-func (cq *CoinsQueries) WriteCoin(slug string, c interface{}) error {
-	return cq.j.Write("coin", slug, c)
-}
-
-func (cq *CoinsQueries) WriteLogo(slug string, c interface{}) error {
-	return cq.j.Write("logo", slug, c)
-}
-
-func (cq *CoinsQueries) WriteInfo(slug string, c interface{}) error {
-	return cq.j.Write("info", slug, c)
 }
 
 func (c *Coin) SetSrcID(src, id string) {

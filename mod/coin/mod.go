@@ -23,7 +23,7 @@ type Coin struct {
 	CreatedAt            time.Time         `json:"created"`
 	UpdatedAt            time.Time         `json:"updated"`
 	Order                int               `json:"order" form:"order"`
-	SubDomain            []string          `json:"subdomain" form:"subdomain"`
+	SubDomain            bool              `json:"subdomain" form:"subdomain"`
 	Symbol               string            `json:"symbol" form:"symbol"`
 	Token                string            `json:"token" form:"token"`
 	Algo                 string            `json:"algo" form:"algo"`
@@ -161,7 +161,6 @@ type CoinUser struct {
 	Favorite             bool      `json:"fav" form:"favorite"`
 	UpdatedAt            time.Time `json:"updated"`
 	Order                int       `json:"order" form:"order"`
-	SubDomain            []string  `json:"subdomain" form:"subdomain"`
 	Symbol               string    `json:"symbol" form:"symbol"`
 	Token                string    `json:"token" form:"token"`
 	Algo                 string    `json:"algo" form:"algo"`

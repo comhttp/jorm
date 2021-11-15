@@ -2,9 +2,12 @@ package coin
 
 import (
 	"encoding/base64"
+	"encoding/hex"
 	"time"
 
+	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
+	"github.com/comhttp/jorm/pkg/utl/img"
 	"github.com/rs/zerolog/log"
 )
 
@@ -34,9 +37,49 @@ import (
 //	}
 //	j.Write("info", "nodecoins", nodeCoins)
 //}
+func SetCoinsIndex() func(c map[string]interface{}) interface{} {
+	return func(c map[string]interface{}) interface{} {
+		return &CoinShort{
+			Rank:   int(c["rank"].(float64)),
+			Name:   c["name"].(string),
+			Symbol: c["symbol"].(string),
+			Slug:   c["slug"].(string),
+			Algo:   c["algo"].(string),
+		}
+	}
+}
+func (cq *CoinsQueries) SetCoinsLogoIndex(s strapi.StrapiRestClient) func(c map[string]interface{}) interface{} {
+	return func(c map[string]interface{}) interface{} {
+		var size float64 = 32
+		l := &img.Logo{}
+		err := s.Get("logos", c["slug"].(string), l)
+		utl.ErrorLog(err)
+		logoRaw, err := hex.DecodeString(l.Data)
+		logoRawBytes, _ := img.ImageResize(logoRaw, img.Options{Width: size, Height: size})
 
-func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
+		logo := base64.StdEncoding.EncodeToString(logoRawBytes)
+		return &CoinShortLogo{
+			Rank:   int(c["rank"].(float64)),
+			Name:   c["name"].(string),
+			Symbol: c["symbol"].(string),
+			Slug:   c["slug"].(string),
+			Algo:   c["algo"].(string),
+			Logo:   "data:image/png;base64," + logo,
+		}
+
+	}
+}
+func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	log.Print("Start Process Coins")
+	coins := s.GetAll("coins")
+
+	s.SetIndex("coins", coins, nil)
+	s.SetIndex("allcoins", coins, SetCoinsIndex())
+
+	logos := s.GetAll("logos")
+	s.SetIndex("logos", logos, nil)
+
+	var logocoins []map[string]interface{}
 
 	usableCoins := Coins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
@@ -92,8 +135,12 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 		coinsWords.N = usableCoins.N
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, c["slug"].(string))
-		time.Sleep(99 * time.Microsecond)
 
+		if strapi.CheckIndex(c["slug"].(string), logos[0]) {
+			logocoins = append(logocoins, c)
+		}
+
+		time.Sleep(99 * time.Microsecond)
 	}
 
 	algoCoins.A = utl.RemoveDuplicateStr(algoCoins.A)
@@ -122,8 +169,9 @@ func (cq *CoinsQueries) ProcessCoins(coins []map[string]interface{}) {
 	// fmt.Println("allCoins :   ", allCoins)
 	// fmt.Println("coinsBin :   ", coinsBin)
 
-	cq.WriteInfo("restcoins", restCoins)
+	s.SetIndex("allcoinslogo", logocoins, cq.SetCoinsLogoIndex(s))
 
+	cq.WriteInfo("restcoins", restCoins)
 	cq.WriteInfo("algocoins", algoCoins)
 	cq.WriteInfo("algocoinslogo", algoCoinsLogo)
 	cq.WriteInfo("wordscoins", coinsWords)
@@ -144,7 +192,6 @@ func coinUser(coin *Coin) CoinUser {
 		Favorite:             coin.Favorite,
 		UpdatedAt:            coin.UpdatedAt,
 		Order:                coin.Order,
-		SubDomain:            coin.SubDomain,
 		Symbol:               coin.Symbol,
 		Token:                coin.Token,
 		Algo:                 coin.Algo,
