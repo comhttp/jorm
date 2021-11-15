@@ -30,10 +30,9 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	coinsBin := Coins{N: 0}
 	allCoins := Coins{N: 0}
 	for i, c := range coins {
-
 		cq.WriteCoin(c["slug"].(string), c)
 
-		if c["subdomain"].(bool) {
+		if c["subdomain"] != nil && c["subdomain"].(bool) {
 			subdomain = append(subdomain, c)
 		}
 		if c["algo"].(string) != "" &&
