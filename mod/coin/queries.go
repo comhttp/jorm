@@ -60,3 +60,14 @@ func (cq *CoinsQueries) WriteInfoS(infos map[string]interface{}) error {
 	}
 	return nil
 }
+
+func (cq *CoinsQueries) WriteIndex(slug string, c interface{}) error {
+	return cq.j.Write("index", slug, c)
+}
+
+func (cq *CoinsQueries) WriteIndiceS(indices map[string]interface{}) error {
+	for slug, index := range indices {
+		return cq.WriteIndex(slug, index)
+	}
+	return nil
+}

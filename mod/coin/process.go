@@ -14,13 +14,10 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	log.Print("Start Process Coins")
 	coins := s.GetAll("coins")
 	subdomain := s.GetAll("subdomain")
-	index.SetIndex(s, "coins", coins, nil)
-	index.SetIndex(s, "allcoins", coins, SetCoinsIndex())
-
 	logos := s.GetAll("logos")
-	index.SetIndex(s, "logos", logos, nil)
-
+	var indices map[string]interface{}
 	var infos map[string]interface{}
+
 	var logocoins []map[string]interface{}
 	var algocoins []map[string]interface{}
 
@@ -114,12 +111,16 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	// fmt.Println("usableCoins :   ", usableCoins)
 	// fmt.Println("allCoins :   ", allCoins)
 	// fmt.Println("coinsBin :   ", coinsBin)
-	index.SetIndex(s, "subdomain", subdomain, SetCoinsIndex())
 
-	index.SetIndex(s, "allcoinslogo", logocoins, cq.SetCoinsLogoIndex(s))
+	indices["coins"] = index.SetIndex(s, "coins", coins, nil)
+	indices["allcoins"] = index.SetIndex(s, "allcoins", coins, SetCoinsIndex())
+	indices["logos"] = index.SetIndex(s, "logos", logos, nil)
+	indices["subdomain"] = index.SetIndex(s, "subdomain", subdomain, SetCoinsIndex())
+	indices["allcoinslogo"] = index.SetIndex(s, "allcoinslogo", logocoins, cq.SetCoinsLogoIndex(s))
+	indices["algocoins"] = index.SetIndex(s, "algocoins", algocoins, SetCoinsIndex())
+	indices["algocoinslogo"] = index.SetIndex(s, "algocoinslogo", algocoins, cq.SetCoinsLogoIndex(s))
 
-	index.SetIndex(s, "algocoins", algocoins, SetCoinsIndex())
-	index.SetIndex(s, "algocoinslogo", algocoins, cq.SetCoinsLogoIndex(s))
+	cq.WriteIndiceS(indices)
 
 	infos["restcoins"] = restCoins
 	infos["algocoins"] = algoCoins
