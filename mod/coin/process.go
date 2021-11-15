@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"time"
 
+	"github.com/comhttp/jorm/mod/index"
 	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
@@ -12,14 +13,15 @@ import (
 func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	log.Print("Start Process Coins")
 	coins := s.GetAll("coins")
-
-	s.SetIndex("coins", coins, nil)
-	s.SetIndex("allcoins", coins, SetCoinsIndex())
+	subdomain := s.GetAll("subdomain")
+	index.SetIndex(s, "coins", coins, nil)
+	index.SetIndex(s, "allcoins", coins, SetCoinsIndex())
 
 	logos := s.GetAll("logos")
-	s.SetIndex("logos", logos, nil)
+	index.SetIndex(s, "logos", logos, nil)
 
 	var logocoins []map[string]interface{}
+	var algocoins []map[string]interface{}
 
 	usableCoins := Coins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
@@ -33,6 +35,9 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 
 		cq.WriteCoin(c["slug"].(string), c)
 
+		if c["subdomain"].(bool) {
+			subdomain = append(subdomain, c)
+		}
 		if c["algo"].(string) != "" &&
 			c["algo"].(string) != "N/A" &&
 			c["symbol"].(string) != "" &&
@@ -51,7 +56,7 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 				Algo:   c["algo"].(string),
 			})
 			algoCoins.A = append(algoCoins.A, c["algo"].(string))
-
+			algocoins = append(algocoins, c)
 			// } else {
 			// fmt.Println("cname else  :::", c["name"].(string))
 			// if c["description"].(string) != "" {
@@ -76,7 +81,7 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 		allCoins.N = i
 		allCoins.C = append(allCoins.C, c["slug"].(string))
 
-		if strapi.CheckIndex(c["slug"].(string), logos[0]) {
+		if index.CheckIndex(c["slug"].(string), logos[0]) {
 			logocoins = append(logocoins, c)
 		}
 
@@ -108,11 +113,12 @@ func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	// fmt.Println("usableCoins :   ", usableCoins)
 	// fmt.Println("allCoins :   ", allCoins)
 	// fmt.Println("coinsBin :   ", coinsBin)
+	index.SetIndex(s, "subdomain", subdomain, SetCoinsIndex())
 
-	s.SetIndex("allcoinslogo", logocoins, cq.SetCoinsLogoIndex(s))
+	index.SetIndex(s, "allcoinslogo", logocoins, cq.SetCoinsLogoIndex(s))
 
-	s.SetIndex("algocoins", algoCoins, SetCoinsIndex())
-	s.SetIndex("algocoinslogo", algoCoinsLogo, cq.SetCoinsLogoIndex(s))
+	index.SetIndex(s, "algocoins", algocoins, SetCoinsIndex())
+	index.SetIndex(s, "algocoinslogo", algocoins, cq.SetCoinsLogoIndex(s))
 
 	cq.WriteInfo("restcoins", restCoins)
 	cq.WriteInfo("algocoins", algoCoins)

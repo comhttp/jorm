@@ -35,8 +35,8 @@ import (
 //	}
 //	j.Write("info", "nodecoins", nodeCoins)
 //}
-func SetCoinsIndex() func(c map[string]interface{}) *CoinShort {
-	return func(c map[string]interface{}) *CoinShort {
+func SetCoinsIndex() func(c map[string]interface{}) interface{} {
+	return func(c map[string]interface{}) interface{} {
 		return &CoinShort{
 			Rank:   int(c["rank"].(float64)),
 			Name:   c["name"].(string),
@@ -46,8 +46,8 @@ func SetCoinsIndex() func(c map[string]interface{}) *CoinShort {
 		}
 	}
 }
-func (cq *CoinsQueries) SetCoinsLogoIndex(s strapi.StrapiRestClient) func(c map[string]interface{}) *CoinShortLogo {
-	return func(c map[string]interface{}) *CoinShortLogo {
+func (cq *CoinsQueries) SetCoinsLogoIndex(s strapi.StrapiRestClient) func(c map[string]interface{}) interface{} {
+	return func(c map[string]interface{}) interface{} {
 		var size float64 = 32
 		l := &img.Logo{}
 		err := s.Get("logos", c["slug"].(string), l)
