@@ -53,3 +53,10 @@ func (cq *CoinsQueries) WriteLogo(slug string, c interface{}) error {
 func (cq *CoinsQueries) WriteInfo(slug string, c interface{}) error {
 	return cq.j.Write("info", slug, c)
 }
+
+func (cq *CoinsQueries) WriteInfoS(infos map[string]interface{}) error {
+	for slug, info := range infos {
+		return cq.WriteInfo(slug, info)
+	}
+	return nil
+}

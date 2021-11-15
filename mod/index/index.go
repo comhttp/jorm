@@ -41,8 +41,13 @@ import (
 //	//}
 //
 //}
-
-func SetIndex(s strapi.StrapiRestClient, slug string, collection []map[string]interface{}, typeFunc func(c map[string]interface{}) interface{}) {
+// func SetIndexS(s strapi.StrapiRestClient, indices map[string]struct{collection []map[string]interface{}, typeFunc func(c map[string]interface{}) interface{})} {
+// 	for slug, index := range indices {
+// 		return SetIndex(s,slug, index)
+// 	}
+// 	return nil
+// }
+func SetIndex(s strapi.StrapiRestClient, slug string, collection []map[string]interface{}, typeFunc func(c map[string]interface{}) interface{}) interface{} {
 	var new bool
 	// collection := s.GetAll(col)
 	indexRaw := GetIndex(s, slug)
@@ -85,10 +90,10 @@ func SetIndex(s strapi.StrapiRestClient, slug string, collection []map[string]in
 		s.Put("indices", index)
 	}
 	fmt.Println("Indexing done for: ", slug)
-	return
+	return index
 }
 
-func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interface{}) {
+func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interface{}) interface{} {
 	var new bool
 	indexRaw := GetIndex(s, slug)
 	if indexRaw == nil {
@@ -120,7 +125,7 @@ func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interf
 		s.Put("indices", index)
 	}
 	fmt.Println("Indexed: ", itemSlug)
-	return
+	return index
 }
 
 func GetIndex(s strapi.StrapiRestClient, col string) (ix map[string]interface{}) {

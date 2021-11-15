@@ -32,8 +32,8 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "our":
 		log.Print("our")
-		j.OurSRV()
-		j.WWW.Handler = j.OURhandlers()
+		// j.OurSRV()
+		// j.WWW.Handler = j.OURhandlers()
 		j.WWW.Addr = ":" + j.config.Port["our"]
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	//ourSRV()
