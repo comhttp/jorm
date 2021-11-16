@@ -90,7 +90,7 @@ func SetIndex(s strapi.StrapiRestClient, slug string, collection []map[string]in
 		s.Put("indices", index)
 	}
 	fmt.Println("Indexing done for: ", slug)
-	return index
+	return indexRaw
 }
 
 func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interface{}) interface{} {
@@ -125,7 +125,7 @@ func SetIndexItem(s strapi.StrapiRestClient, slug string, item map[string]interf
 		s.Put("indices", index)
 	}
 	fmt.Println("Indexed: ", itemSlug)
-	return index
+	return indexRaw
 }
 
 func GetIndex(s strapi.StrapiRestClient, col string) (ix map[string]interface{}) {
