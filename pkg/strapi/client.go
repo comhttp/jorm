@@ -63,7 +63,7 @@ func (s StrapiRestClient) GetAll(col, filter string) []map[string]interface{} {
 	start := 0
 	for i := 0; i < times; i++ {
 		var dataRaw []map[string]interface{}
-		call(http.MethodGet, s.BaseUrl+"/"+col+"?_start="+fmt.Sprint(start)+"&_limit="+fmt.Sprint(items)+filter, "application/json", nil, &dataRaw)
+		call(http.MethodGet, s.BaseUrl+"/"+col+"?"+filter+"_start="+fmt.Sprint(start)+"&_limit="+fmt.Sprint(items), "application/json", nil, &dataRaw)
 		start = start + items
 		fmt.Println(col+" times: ", i)
 		for _, d := range dataRaw {
