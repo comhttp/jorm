@@ -1,6 +1,8 @@
 package coin
 
 import (
+	"fmt"
+
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/rs/zerolog/log"
 )
@@ -67,6 +69,8 @@ func (cq *CoinsQueries) WriteIndex(slug string, c interface{}) error {
 
 func (cq *CoinsQueries) WriteIndiceS(indices map[string]interface{}) error {
 	for slug, index := range indices {
+		fmt.Println("laaaaaaaaaaaaaaaaaa slugslug", slug)
+		fmt.Println("laaaaaaaaaaaaaaaaaa slugslug", index)
 		return cq.WriteIndex(slug, index)
 	}
 	return nil
