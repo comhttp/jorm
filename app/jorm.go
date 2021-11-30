@@ -2,6 +2,7 @@ package app
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"text/template"
 	"time"
@@ -55,6 +56,7 @@ func (j *JORM) setExplorers() {
 	c, _ := cfg.NewCFG(j.config.Path, nil)
 	bitNodesCfg, err := c.ReadAll("nodes")
 	utl.ErrorLog(err)
+
 	j.Explorers = make(map[string]*explorer.Explorer)
 	explorerJDBS := make(map[string]*jdb.JDB)
 	for coin, _ := range bitNodesCfg {
@@ -71,6 +73,7 @@ func (j *JORM) setExplorers() {
 			eq := explorer.Queries(explorerJDBS, "info")
 			j.Explorers[coin] = eq.NewExplorer(coin)
 			j.Explorers[coin].BitNodes = coinBitNodes
+
 		}
 	}
 	//eq := explorer.Queries(coins, "info")
@@ -111,14 +114,23 @@ func (j *JORM) ENSOhandlers() http.Handler {
 	eq := exchange.Queries(e, "exchange")
 
 	explorerJDBS := make(map[string]*jdb.JDB)
+	rpcBitNodes := make(map[string]nodes.BitNodes)
+
+	fmt.Println("j.Explorers j.Explorers j.Explorers j.Explorers : ", j.Explorers)
 
 	for _, coin := range j.Explorers {
+		fmt.Println("coincoincoin: ", coin)
+
 		jdbCl, err := j.JDBclient(coin.Coin)
 		if err != nil {
 			utl.ErrorLog(err)
 		} else {
 			explorerJDBS[coin.Coin] = jdbCl
 		}
+		err = c.Read("nodes", coin.Coin, &coin.BitNodes)
+		utl.ErrorLog(err)
+		rpcBitNodes[coin.Coin] = coin.BitNodes
+		fmt.Println("coincoincoin: ", coin)
 
 	}
 
@@ -130,33 +142,33 @@ func (j *JORM) ENSOhandlers() http.Handler {
 	//s := r.Host("enso.okno.rs").Subrouter()
 	r.StrictSlash(true)
 	//n := r.PathPrefix("/n").Subrouter()
+
 	coin.ENSOroutes(cq, r)
 	exchange.ENSOroutes(eq, r)
 	explorer.ENSOroutes(exq, r)
+
+	nodes.ENSOroutesDirect(j.config.Path, j.config.RPC, r)
+
 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 }
 
 func NewJORM(service, path, singleCoin string) (j *JORM) {
 	j = new(JORM)
 	j.comhttp = &COMHTTP{}
-	if path == "" {
-		j.config.Path = "/var/db/jorm/"
-	}
+	j.config.Path = path
 	c, _ := cfg.NewCFG(j.config.Path, nil)
-	j.config = cfg.Config{}
 	err := c.Read("conf", "conf", &j.config)
 	utl.ErrorLog(err)
 
 	j.jdbServers = make(map[string]string)
 	err = c.Read("conf", "jdbs", &j.jdbServers)
 	utl.ErrorLog(err)
-
 	//ttt := j.JDBS.B["coins"].ReadAllPerPages("coin", 10, 1)
-
 	j.WWW = &http.Server{
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
 	j.srvJORM(service, path, singleCoin)
 	return j
 }

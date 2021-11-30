@@ -15,6 +15,13 @@ type BitNode struct {
 // BitNodes is array of bitnodes addresses
 type BitNodes []BitNode
 
+type bitNodesRPC struct {
+	bitNodes func(coin string) BitNodes
+	path     string
+	username string
+	password string
+}
+
 // BitNoded data
 type BitNoded struct {
 	Coin     string          `json:"coin"`

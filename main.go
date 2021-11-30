@@ -15,7 +15,7 @@ var goHTML embed.FS
 func main() {
 	// Get cmd line parameters
 	service := flag.String("srv", "", "Service")
-	path := flag.String("path", "", "Path")
+	path := flag.String("path", "/var/db/jorm", "Path")
 	port := flag.String("port", "", "Port")
 	coin := flag.String("coin", "", "Coin")
 	loglevel := flag.String("loglevel", "debug", "Logging level (debug, info, warn, error)")

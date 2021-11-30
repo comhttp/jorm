@@ -2,9 +2,10 @@ package jdb
 
 import (
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"strings"
 	"sync"
+
+	"github.com/rs/zerolog/log"
 )
 
 //func (j *JDB)CollectionQueries(collection string) *CollectionQueries {
@@ -30,6 +31,16 @@ func (j *JDB) Write(collection, key string, v interface{}) error {
 	defer mutex.Unlock()
 	// move final file into place
 	return j.client.SetJSON(collection+j.delimiter+key, v)
+}
+
+// Write locks the database and attempts to write the record to the database under
+// the [collection] specified with the [resource] name given
+func (j *JDB) WriteAll(data map[string]interface{}) error {
+	mutex := j.getOrCreateMutex("all")
+	mutex.Lock()
+	defer mutex.Unlock()
+	// move final file into place
+	return j.client.SetJSONs(data)
 }
 
 // Read a record from the database

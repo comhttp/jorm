@@ -2,11 +2,12 @@ package coingecko
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/comhttp/jorm/mod/coin"
 	"github.com/rs/zerolog/log"
 	gecko "github.com/superoo7/go-gecko/v3"
 	"github.com/superoo7/go-gecko/v3/types"
-	"time"
 )
 
 func GetAllCoins(coinQueries *coin.CoinsQueries) {
