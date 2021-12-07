@@ -2,20 +2,16 @@ package app
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 	"text/template"
 	"time"
 
+	explorer "github.com/comhttp/explorer/app"
 	"github.com/comhttp/jorm/mod/coin"
-	"github.com/comhttp/jorm/mod/exchange"
-	"github.com/comhttp/jorm/mod/explorer"
 	"github.com/comhttp/jorm/mod/nodes"
 	"github.com/comhttp/jorm/pkg/cfg"
 	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/utl"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 )
 
 //const (
@@ -32,7 +28,7 @@ type (
 		Coins     []string
 		Coin      string
 		NodeCoins []string
-		Explorers map[string]*explorer.Explorer
+		Explorers map[string]*explorer.ExplorerJDBs
 		//Hosts         map[string]Host
 		WWW       *http.Server
 		WS        *http.Server
@@ -57,7 +53,7 @@ func (j *JORM) setExplorers() {
 	bitNodesCfg, err := c.ReadAll("nodes")
 	utl.ErrorLog(err)
 
-	j.Explorers = make(map[string]*explorer.Explorer)
+	j.Explorers = make(map[string]*explorer.ExplorerJDBs)
 	explorerJDBS := make(map[string]*jdb.JDB)
 	for coin, _ := range bitNodesCfg {
 		//coins[coin] = j.JDBclient(coin)
@@ -70,9 +66,9 @@ func (j *JORM) setExplorers() {
 			coinBitNodes := nodes.BitNodes{}
 			err = c.Read("nodes", coin, &coinBitNodes)
 			utl.ErrorLog(err)
-			eq := explorer.Queries(explorerJDBS, "info")
-			j.Explorers[coin] = eq.NewExplorer(coin)
-			j.Explorers[coin].BitNodes = coinBitNodes
+			// eq := explorer.InitExplorerJDBs(explorerJDBS, "info", coin)
+			// j.Explorers[coin] = eq.NewExplorer(coin)
+			// j.Explorers[coin].BitNodes = coinBitNodes
 
 		}
 	}
@@ -103,54 +99,54 @@ func (j *JORM) JDBclient(jdbId string) (*jdb.JDB, error) {
 
 // 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
 // }
-func (j *JORM) ENSOhandlers() http.Handler {
-	//coinsCollection := Queries(j.B["coins"],"coin")
-	c, err := j.JDBclient("coins")
-	utl.ErrorLog(err)
-	cq := coin.Queries(c, "coin")
+// func (j *JORM) ENSOhandlers() http.Handler {
+// 	//coinsCollection := Queries(j.B["coins"],"coin")
+// 	c, err := j.JDBclient("coins")
+// 	utl.ErrorLog(err)
+// 	cq := coin.Queries(c, "coin")
 
-	e, err := j.JDBclient("exchanges")
-	utl.ErrorLog(err)
-	eq := exchange.Queries(e, "exchange")
+// 	e, err := j.JDBclient("exchanges")
+// 	utl.ErrorLog(err)
+// 	eq := exchange.Queries(e, "exchange")
 
-	explorerJDBS := make(map[string]*jdb.JDB)
-	rpcBitNodes := make(map[string]nodes.BitNodes)
+// 	explorerJDBS := make(map[string]*jdb.JDB)
+// 	rpcBitNodes := make(map[string]nodes.BitNodes)
 
-	fmt.Println("j.Explorers j.Explorers j.Explorers j.Explorers : ", j.Explorers)
+// 	fmt.Println("j.Explorers j.Explorers j.Explorers j.Explorers : ", j.Explorers)
 
-	for _, coin := range j.Explorers {
-		fmt.Println("coincoincoin: ", coin)
+// 	for _, coin := range j.Explorers {
+// 		fmt.Println("coincoincoin: ", coin)
 
-		jdbCl, err := j.JDBclient(coin.Coin)
-		if err != nil {
-			utl.ErrorLog(err)
-		} else {
-			explorerJDBS[coin.Coin] = jdbCl
-		}
-		err = c.Read("nodes", coin.Coin, &coin.BitNodes)
-		utl.ErrorLog(err)
-		rpcBitNodes[coin.Coin] = coin.BitNodes
-		fmt.Println("coincoincoin: ", coin)
+// 		jdbCl, err := j.JDBclient(coin.Coin)
+// 		if err != nil {
+// 			utl.ErrorLog(err)
+// 		} else {
+// 			explorerJDBS[coin.Coin] = jdbCl
+// 		}
+// 		err = c.Read("nodes", coin.Coin, &coin.BitNodes)
+// 		utl.ErrorLog(err)
+// 		rpcBitNodes[coin.Coin] = coin.BitNodes
+// 		fmt.Println("coincoincoin: ", coin)
 
-	}
+// 	}
 
-	exq := explorer.Queries(explorerJDBS, "info")
+// 	exq := explorer.Queries(explorerJDBS, "info")
 
-	//exq := exchange.Queries(j.JDBclient("exchanges"), "exchange")
-	//exq := exchange.Queries(j.JDBclient("explorers"),"explorer")
-	r := mux.NewRouter()
-	//s := r.Host("enso.okno.rs").Subrouter()
-	r.StrictSlash(true)
-	//n := r.PathPrefix("/n").Subrouter()
+// 	//exq := exchange.Queries(j.JDBclient("exchanges"), "exchange")
+// 	//exq := exchange.Queries(j.JDBclient("explorers"),"explorer")
+// 	r := mux.NewRouter()
+// 	//s := r.Host("enso.okno.rs").Subrouter()
+// 	r.StrictSlash(true)
+// 	//n := r.PathPrefix("/n").Subrouter()
 
-	// coin.ENSOroutes(cq, r)
-	// exchange.ENSOroutes(eq, r)
-	// explorer.ENSOroutes(exq, r)
+// 	// coin.ENSOroutes(cq, r)
+// 	// exchange.ENSOroutes(eq, r)
+// 	// explorer.ENSOroutes(exq, r)
 
-	nodes.ENSOroutesDirect(j.config.Path, j.config.RPC, r)
+// 	nodes.ENSOroutesDirect(j.config.Path, j.config.RPC, r)
 
-	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
-}
+// 	return handlers.CORS()(handlers.CompressHandler(utl.InterceptHandler(r, utl.DefaultErrorHandler)))
+// }
 
 func NewJORM(service, path, singleCoin string) (j *JORM) {
 	j = new(JORM)

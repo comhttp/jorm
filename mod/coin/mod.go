@@ -152,6 +152,11 @@ type Coins struct {
 	C []string `json:"c"`
 }
 
+type BitnodedCoins struct {
+	N int            `json:"n"`
+	C map[string]int `json:"c"`
+}
+
 type CoinUser struct {
 	Id                   int       `json:"id" form:"id"`
 	Name                 string    `json:"name" form:"name"`

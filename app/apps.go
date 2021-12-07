@@ -27,7 +27,7 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 	case "enso":
 		log.Print("enso")
 		j.setExplorers()
-		j.WWW.Handler = j.ENSOhandlers()
+		// j.WWW.Handler = j.ENSOhandlers()
 		j.WWW.Addr = ":" + j.config.Port["enso"]
 		log.Fatal().Err(j.WWW.ListenAndServe())
 	case "our":
@@ -50,7 +50,7 @@ func (j *JORM) srvJORM(service, path, singleCoin string) {
 	case "explorer":
 		//log.Print("explorer " + *coin)
 		if path == "" {
-			j.ExplorerSRV(singleCoin)
+			// j.ExplorerSRV(singleCoin)
 			j.WWW.Addr = ":" + j.config.Port[singleCoin]
 		} else {
 			log.Print("Missing coin for explorer!")

@@ -2,15 +2,9 @@ package app
 
 import "C"
 import (
-	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/comhttp/jorm/mod/coin"
-	"github.com/comhttp/jorm/mod/explorer"
-	"github.com/comhttp/jorm/mod/nodes"
-	"github.com/comhttp/jorm/pkg/cfg"
-	"github.com/comhttp/jorm/pkg/jdb"
 	"github.com/comhttp/jorm/pkg/strapi"
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/rs/zerolog/log"
@@ -120,45 +114,45 @@ func (j *JORM) JormSRV() {
 
 }
 
-func (j *JORM) ExplorerSRV(coin string) {
-	log.Print("Coin: ", coin)
-	http.HandleFunc("/", status)
-	//info := explorer.Queries(j.JDBS, "info")
-	jdbCl, err := j.JDBclient(coin)
-	utl.ErrorLog(err)
-	jdbs := map[string]*jdb.JDB{
-		coin: jdbCl,
-	}
+// func (j *JORM) ExplorerSRV(coin string) {
+// 	log.Print("Coin: ", coin)
+// 	http.HandleFunc("/", status)
+// 	//info := explorer.Queries(j.JDBS, "info")
+// 	jdbCl, err := j.JDBclient(coin)
+// 	utl.ErrorLog(err)
+// 	jdbs := map[string]*jdb.JDB{
+// 		coin: jdbCl,
+// 	}
 
-	c, _ := cfg.NewCFG("/var/db/jorm", nil)
-	coinBitNodes := nodes.BitNodes{}
-	err = c.Read("nodes", coin, &coinBitNodes)
-	utl.ErrorLog(err)
-	eq := explorer.Queries(jdbs, "info")
+// 	c, _ := cfg.NewCFG("/var/db/jorm", nil)
+// 	coinBitNodes := nodes.BitNodes{}
+// 	err = c.Read("nodes", coin, &coinBitNodes)
+// 	utl.ErrorLog(err)
+// 	eq := explorer.Queries(jdbs, "info")
 
-	j.Explorers = make(map[string]*explorer.Explorer)
-	j.Explorers[coin] = eq.NewExplorer(coin)
-	j.Explorers[coin].BitNodes = coinBitNodes
+// 	j.Explorers = make(map[string]*explorer.Explorer)
+// 	j.Explorers[coin] = eq.NewExplorer(coin)
+// 	j.Explorers[coin].BitNodes = coinBitNodes
 
-	//info.status = info.GetStatus()
-	j.Explorers[coin].Status, err = eq.GetStatus(coin)
-	utl.ErrorLog(err)
-	fmt.Println("ssss", j.Explorers[coin].Status)
-	ticker := time.NewTicker(12 * time.Second)
-	quit := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <-ticker.C:
+// 	//info.status = info.GetStatus()
+// 	j.Explorers[coin].Status, err = eq.GetStatus(coin)
+// 	utl.ErrorLog(err)
+// 	fmt.Println("ssss", j.Explorers[coin].Status)
+// 	ticker := time.NewTicker(12 * time.Second)
+// 	quit := make(chan struct{})
+// 	go func() {
+// 		for {
+// 			select {
+// 			case <-ticker.C:
 
-				eq.ExploreCoin(j.Explorers[coin].BitNodes, j.config.RPC.Username, j.config.RPC.Password, coin)
-			case <-quit:
-				ticker.Stop()
-				return
-			}
-		}
-	}()
-	//log.Print("JORM explorer is listening: ", port)
-	// Start HTTP server
-	//log.Fatal(http.ListenAndServe(":"+port, nil))
-}
+// 				eq.ExploreCoin(j.Explorers[coin].BitNodes, j.config.RPC.Username, j.config.RPC.Password, coin)
+// 			case <-quit:
+// 				ticker.Stop()
+// 				return
+// 			}
+// 		}
+// 	}()
+// 	//log.Print("JORM explorer is listening: ", port)
+// 	// Start HTTP server
+// 	//log.Fatal(http.ListenAndServe(":"+port, nil))
+// }
