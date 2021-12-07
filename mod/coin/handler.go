@@ -1,6 +1,5 @@
 package coin
 
-import "C"
 import (
 	"encoding/hex"
 	"encoding/json"
