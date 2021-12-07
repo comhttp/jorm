@@ -143,9 +143,9 @@ func (j *JORM) ENSOhandlers() http.Handler {
 	r.StrictSlash(true)
 	//n := r.PathPrefix("/n").Subrouter()
 
-	coin.ENSOroutes(cq, r)
-	exchange.ENSOroutes(eq, r)
-	explorer.ENSOroutes(exq, r)
+	// coin.ENSOroutes(cq, r)
+	// exchange.ENSOroutes(eq, r)
+	// explorer.ENSOroutes(exq, r)
 
 	nodes.ENSOroutesDirect(j.config.Path, j.config.RPC, r)
 

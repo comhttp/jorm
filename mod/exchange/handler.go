@@ -2,32 +2,13 @@ package exchange
 
 import (
 	"encoding/json"
+	"net/http"
+	"strings"
+
 	"github.com/comhttp/jorm/pkg/utl"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
-	"net/http"
-	"strings"
 )
-
-func ENSOroutes(eq *ExchangeQueries, r *mux.Router) *mux.Router {
-	//cq := j.CollectionQueries("coin").(CoinsQueries)
-	//s := r.Host("enso.okno.rs").Subrouter()
-	r.StrictSlash(true)
-
-	//s.HandleFunc("/", h.HomeHandler)
-
-	//f := s.PathPrefix("/f").Subrouter()
-	//f.HandleFunc("/addcoin", h.AddCoinHandler).Methods("POST")
-	//f.HandleFunc("/addnode", h.AddNodeHandler).Methods("POST")
-
-	e := r.PathPrefix("/exchanges").Subrouter()
-	e.HandleFunc("/", eq.ExchangesHandler).Methods("GET")
-	e.HandleFunc("/{exchange}", eq.ExchangeHandler).Methods("GET")
-	e.HandleFunc("/{exchange}/markets", eq.MarketsHandler).Methods("GET")
-	e.HandleFunc("/{exchange}/markets/{market}", eq.MarketHandler).Methods("GET")
-
-	return r
-}
 
 // CoinsHandler handles a request for coin data
 func (eq *ExchangeQueries) ExchangeHandler(w http.ResponseWriter, r *http.Request) {

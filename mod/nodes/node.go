@@ -8,7 +8,7 @@ import (
 
 type BitNode struct {
 	IP   string `json:"ip"`
-	Port int64  `json:"p"`
+	Port int64  `json:"port"`
 	Jrc  *utl.Endpoint
 }
 

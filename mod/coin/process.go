@@ -13,13 +13,13 @@ import (
 func (cq *CoinsQueries) ProcessCoins(s strapi.StrapiRestClient) {
 	log.Print("Start Process Coins")
 	coins := s.GetAll("coins", "")
-	subdomain := s.GetAll("subdomain", "&subdomain=true")
+	subdomain := s.GetAll("subdomain", "")
 	logos := s.GetAll("logos", "")
-	indices := map[string]interface{}{}
-	infos := map[string]interface{}{}
+	var indices map[string]interface{}
+	var infos map[string]interface{}
 
-	logocoins := []map[string]interface{}{}
-	algocoins := []map[string]interface{}{}
+	var logocoins []map[string]interface{}
+	var algocoins []map[string]interface{}
 
 	usableCoins := Coins{N: 0}
 	algoCoins := AlgoCoins{N: 0}
